@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Seller Balance Detail | AZHON Finance</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-container": "#6b3500",
+                    "primary-fixed-dim": "#b0c8eb",
+                    "primary-container": "#0a2540",
+                    "surface-tint": "#49607e",
+                    "on-primary-container": "#768dad",
+                    "tertiary-fixed-dim": "#59dad1",
+                    "surface-container-low": "#f5f3f6",
+                    "surface-container-high": "#e9e8ea",
+                    "secondary-fixed": "#ffdcc5",
+                    "on-surface-variant": "#43474d",
+                    "inverse-surface": "#2f3033",
+                    "surface-variant": "#e3e2e5",
+                    "on-tertiary-container": "#009b94",
+                    "primary": "#000f22",
+                    "on-primary-fixed-variant": "#314865",
+                    "surface-container": "#efedf0",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed": "#301400",
+                    "on-primary": "#ffffff",
+                    "tertiary": "#001110",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed": "#001c37",
+                    "inverse-primary": "#b0c8eb",
+                    "background": "#faf9fb",
+                    "surface-dim": "#dbd9dc",
+                    "secondary": "#944b00",
+                    "outline-variant": "#c4c6ce",
+                    "secondary-fixed-dim": "#ffb783",
+                    "on-error": "#ffffff",
+                    "outline": "#74777e",
+                    "surface-bright": "#faf9fb",
+                    "surface-container-highest": "#e3e2e5",
+                    "on-tertiary-fixed-variant": "#00504c",
+                    "tertiary-container": "#002927",
+                    "on-tertiary-fixed": "#00201e",
+                    "tertiary-fixed": "#79f6ed",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "secondary-container": "#fe9744",
+                    "on-secondary-fixed-variant": "#713700",
+                    "error": "#ba1a1a",
+                    "primary-fixed": "#d2e4ff",
+                    "on-surface": "#1b1c1e",
+                    "surface": "#faf9fb",
+                    "inverse-on-surface": "#f2f0f3",
+                    "on-tertiary": "#ffffff",
+                    "on-background": "#1b1c1e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "sm": "8px",
+                    "xs": "4px",
+                    "lg": "24px",
+                    "margin": "24px",
+                    "unit": "4px",
+                    "md": "16px",
+                    "gutter": "20px"
+            },
+            "fontFamily": {
+                    "h3": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "h2": ["Plus Jakarta Sans"],
+                    "label-caps": ["Plus Jakarta Sans"],
+                    "data-mono": ["Plus Jakarta Sans"],
+                    "h1": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "body-sm": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "h3": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "h2": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "data-mono": ["14px", {"lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "h1": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .data-grid-bento {
+            display: grid;
+            grid-template-columns: repeat(12, minmax(0, 1fr));
+            gap: 20px;
+        }
+        body {
+            background-color: #F8FAFC;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Side Navigation Shell -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-primary dark:bg-primary flex flex-col py-lg z-50">
+<div class="px-6 mb-10">
+<h1 class="font-h3 text-h3 font-bold text-on-primary dark:text-on-primary">AZHON Finance</h1>
+<p class="text-[10px] text-on-primary-container font-label-caps tracking-widest opacity-80 uppercase">Institutional Grade Ops</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 hover:bg-primary-fixed-variant/20 transition-colors cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md">Overview</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container rounded-lg mx-2 cursor-pointer active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-body-md">Seller Balances</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 hover:bg-primary-fixed-variant/20 transition-colors cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-body-md">Payout Queue</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 hover:bg-primary-fixed-variant/20 transition-colors cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">lock_clock</span>
+<span class="font-body-md">Escrow Holds</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 hover:bg-primary-fixed-variant/20 transition-colors cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-body-md">Transaction Ledger</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 hover:bg-primary-fixed-variant/20 transition-colors cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-body-md">Audit Logs</span>
+</a>
+</nav>
+<div class="mt-auto pt-lg border-t border-on-primary/10">
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 transition-colors" href="#">
+<span class="material-symbols-outlined">contact_support</span>
+<span class="font-body-md">Support</span>
+</a>
+</div>
+</aside>
+<!-- Top Navigation Shell -->
+<header class="flex justify-between items-center h-16 w-full pl-72 pr-margin ml-auto bg-surface-container-lowest dark:bg-surface-container-lowest border-b border-outline-variant sticky top-0 z-40">
+<div class="flex items-center gap-4 w-1/2">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 text-body-sm focus:ring-2 focus:ring-secondary/20" placeholder="Search transactions, sellers, or ledger IDs..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="material-symbols-outlined text-primary hover:bg-surface-container-low p-2 rounded-full transition-colors">notifications</button>
+<button class="material-symbols-outlined text-primary hover:bg-surface-container-low p-2 rounded-full transition-colors">help_outline</button>
+<div class="flex items-center gap-3 border-l pl-6 border-outline-variant">
+<div class="text-right">
+<p class="font-data-mono text-body-sm leading-none">Ops_Lead_04</p>
+<p class="text-[10px] font-label-caps text-on-surface-variant">ADMIN LEVEL 4</p>
+</div>
+<span class="material-symbols-outlined text-primary text-3xl">account_circle</span>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 p-lg">
+<!-- Seller Summary Header -->
+<section class="mb-xl flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+<div class="flex items-center gap-6">
+<div class="w-20 h-20 rounded-xl bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-5xl">storefront</span>
+</div>
+<div>
+<div class="flex items-center gap-3 mb-1">
+<h2 class="font-h1 text-h2 text-primary">Global Logistics Partners LLC</h2>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full font-label-caps">VERIFIED MERCHANT</span>
+</div>
+<p class="text-on-surface-variant font-body-md flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">id_card</span>
+                        MID: AZ-9920-5541 • Joined Oct 2021 • <span class="text-secondary font-bold">Tier 1 Elite</span>
+</p>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-6 py-3 border-2 border-primary text-primary font-bold rounded-lg hover:bg-primary hover:text-on-primary transition-all active:scale-95">
+<span class="material-symbols-outlined">description</span>
+                    View Full Ledger
+                </button>
+<button class="flex items-center gap-2 px-6 py-3 bg-secondary text-on-secondary font-bold rounded-lg hover:brightness-110 shadow-lg active:scale-95 transition-all">
+<span class="material-symbols-outlined">payments</span>
+                    Request Payout
+                </button>
+</div>
+</section>
+<!-- Balance Blocks Bento Grid -->
+<section class="data-grid-bento mb-xl">
+<!-- Main Available Balance -->
+<div class="col-span-12 md:col-span-4 bg-white rounded-xl p-6 shadow-[0px_4px_20px_rgba(10,37,64,0.05)] border border-outline-variant relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-full h-2 bg-secondary"></div>
+<p class="font-label-caps text-on-surface-variant mb-2">AVAILABLE FOR PAYOUT</p>
+<h3 class="font-h1 text-h1 text-primary mb-4">$442,890.12</h3>
+<div class="flex items-center gap-2 text-tertiary font-data-mono bg-tertiary-fixed/20 p-2 rounded-lg w-fit">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+                    +14.2% from last cycle
+                </div>
+</div>
+<!-- Pending Balance -->
+<div class="col-span-6 md:col-span-2 bg-white rounded-xl p-6 shadow-[0px_4px_20px_rgba(10,37,64,0.05)] border border-outline-variant relative">
+<div class="absolute top-0 left-0 w-full h-1 bg-primary"></div>
+<p class="font-label-caps text-on-surface-variant mb-1">PENDING</p>
+<h4 class="font-h3 text-h3 text-primary">$89,200.00</h4>
+<p class="text-body-sm text-on-surface-variant mt-2">Clearing in 48h</p>
+</div>
+<!-- Held/Escrow -->
+<div class="col-span-6 md:col-span-2 bg-white rounded-xl p-6 shadow-[0px_4px_20px_rgba(10,37,64,0.05)] border border-outline-variant relative">
+<div class="absolute top-0 left-0 w-full h-1 bg-primary"></div>
+<p class="font-label-caps text-on-surface-variant mb-1">ESCROW HELD</p>
+<h4 class="font-h3 text-h3 text-primary">$12,500.00</h4>
+<p class="text-body-sm text-on-surface-variant mt-2">Contractual Reserve</p>
+</div>
+<!-- In Payout -->
+<div class="col-span-6 md:col-span-2 bg-white rounded-xl p-6 shadow-[0px_4px_20px_rgba(10,37,64,0.05)] border border-outline-variant relative">
+<div class="absolute top-0 left-0 w-full h-1 bg-tertiary-fixed-dim"></div>
+<p class="font-label-caps text-on-surface-variant mb-1">IN PAYOUT</p>
+<h4 class="font-h3 text-h3 text-primary">$150,000.00</h4>
+<p class="text-body-sm text-on-surface-variant mt-2">Processing: ACH #442</p>
+</div>
+<!-- Reversed/Adjusted -->
+<div class="col-span-6 md:col-span-2 bg-white rounded-xl p-6 shadow-[0px_4px_20px_rgba(10,37,64,0.05)] border border-outline-variant relative">
+<div class="absolute top-0 left-0 w-full h-1 bg-error"></div>
+<p class="font-label-caps text-on-surface-variant mb-1">REVERSED</p>
+<h4 class="font-h3 text-error">-$2,140.50</h4>
+<p class="text-body-sm text-on-surface-variant mt-2">Refunds &amp; Adj.</p>
+</div>
+</section>
+<div class="data-grid-bento">
+<!-- Transaction History Table -->
+<section class="col-span-12 lg:col-span-8 bg-white rounded-xl shadow-[0px_4px_20px_rgba(10,37,64,0.05)] border border-outline-variant overflow-hidden">
+<div class="p-6 border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-h3 text-h3 text-primary">Transaction Ledger</h3>
+<div class="flex gap-2">
+<button class="px-4 py-2 bg-surface-container text-body-sm font-bold rounded-lg hover:bg-surface-container-high transition-colors">Export CSV</button>
+<button class="px-4 py-2 bg-surface-container text-body-sm font-bold rounded-lg hover:bg-surface-container-high transition-colors">Date Range</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-lowest">
+<tr>
+<th class="px-6 py-4 font-label-caps text-on-surface-variant border-b border-outline-variant">DATE &amp; ID</th>
+<th class="px-6 py-4 font-label-caps text-on-surface-variant border-b border-outline-variant">DESCRIPTION</th>
+<th class="px-6 py-4 font-label-caps text-on-surface-variant border-b border-outline-variant">STATUS</th>
+<th class="px-6 py-4 font-label-caps text-on-surface-variant border-b border-outline-variant text-right">AMOUNT</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-low transition-colors group cursor-pointer">
+<td class="px-6 py-4">
+<p class="font-data-mono text-primary">OCT 24, 2023</p>
+<p class="text-[10px] text-on-surface-variant font-label-caps">TXN-4492-AX</p>
+</td>
+<td class="px-6 py-4">
+<p class="font-body-md text-primary font-semibold">Bulk Fulfillment - Order Group #99</p>
+<p class="text-body-sm text-on-surface-variant">Commercial Logistics Package</p>
+</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-tertiary-container font-label-caps">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim"></span> CLEARED
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<p class="font-data-mono text-primary font-bold">+$12,450.00</p>
+<button class="text-[10px] font-label-caps text-secondary opacity-0 group-hover:opacity-100 transition-opacity">DOWNLOAD RECEIPT</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group cursor-pointer">
+<td class="px-6 py-4">
+<p class="font-data-mono text-primary">OCT 23, 2023</p>
+<p class="text-[10px] text-on-surface-variant font-label-caps">TXN-4488-AX</p>
+</td>
+<td class="px-6 py-4">
+<p class="font-body-md text-primary font-semibold">Prime Service Charge - Monthly</p>
+<p class="text-body-sm text-on-surface-variant">Infrastructure Maintenance</p>
+</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-on-secondary-fixed-variant font-label-caps">
+<span class="w-2 h-2 rounded-full bg-secondary"></span> SETTLED
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<p class="font-data-mono text-secondary font-bold">-$1,500.00</p>
+<button class="text-[10px] font-label-caps text-secondary opacity-0 group-hover:opacity-100 transition-opacity">DOWNLOAD INVOICE</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group cursor-pointer">
+<td class="px-6 py-4">
+<p class="font-data-mono text-primary">OCT 22, 2023</p>
+<p class="text-[10px] text-on-surface-variant font-label-caps">TXN-4481-AX</p>
+</td>
+<td class="px-6 py-4">
+<p class="font-body-md text-primary font-semibold">Client Refund #RT-551</p>
+<p class="text-body-sm text-on-surface-variant">Inventory Discrepancy Adjustment</p>
+</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-error font-label-caps">
+<span class="w-2 h-2 rounded-full bg-error"></span> REVERSED
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<p class="font-data-mono text-error font-bold">-$450.25</p>
+<button class="text-[10px] font-label-caps text-secondary opacity-0 group-hover:opacity-100 transition-opacity">DETAILS</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group cursor-pointer">
+<td class="px-6 py-4">
+<p class="font-data-mono text-primary">OCT 21, 2023</p>
+<p class="text-[10px] text-on-surface-variant font-label-caps">TXN-4475-AX</p>
+</td>
+<td class="px-6 py-4">
+<p class="font-body-md text-primary font-semibold">Marketplace Settlement</p>
+<p class="text-body-sm text-on-surface-variant">Direct Channel Sales</p>
+</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-on-primary-container font-label-caps">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span> PENDING
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<p class="font-data-mono text-primary font-bold">+$48,900.00</p>
+<button class="text-[10px] font-label-caps text-secondary opacity-0 group-hover:opacity-100 transition-opacity">VIEW HOLD</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 bg-surface-container-lowest text-center">
+<button class="text-primary font-bold text-body-sm hover:underline">Load 50 More Transactions</button>
+</div>
+</section>
+<!-- Commission & Payouts Side Panel -->
+<div class="col-span-12 lg:col-span-4 space-y-6">
+<!-- Commission Breakdown -->
+<div class="bg-white rounded-xl shadow-[0px_4px_20px_rgba(10,37,64,0.05)] border border-outline-variant p-6 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary-container"></div>
+<h4 class="font-h3 text-h3 text-primary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined">analytics</span>
+                        Commission &amp; Charges
+                    </h4>
+<div class="space-y-4">
+<div class="flex justify-between items-center pb-2 border-b border-outline-variant">
+<span class="text-on-surface-variant font-body-md">Standard Marketplace (2.5%)</span>
+<span class="font-data-mono text-primary">$3,450.12</span>
+</div>
+<div class="flex justify-between items-center pb-2 border-b border-outline-variant">
+<span class="text-on-surface-variant font-body-md">Transaction Processing</span>
+<span class="font-data-mono text-primary">$890.40</span>
+</div>
+<div class="flex justify-between items-center pb-2 border-b border-outline-variant">
+<div class="flex items-center gap-1">
+<span class="text-on-surface-variant font-body-md">Prime Services</span>
+<span class="material-symbols-outlined text-sm text-secondary">verified</span>
+</div>
+<span class="font-data-mono text-primary">$1,500.00</span>
+</div>
+<div class="pt-2 flex justify-between items-center font-bold text-primary">
+<span class="font-body-md">Total Monthly Deductions</span>
+<span class="font-data-mono">$5,840.52</span>
+</div>
+</div>
+</div>
+<!-- Payout Settings -->
+<div class="bg-white rounded-xl shadow-[0px_4px_20px_rgba(10,37,64,0.05)] border border-outline-variant p-6">
+<h4 class="font-h3 text-h3 text-primary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined">account_balance</span>
+                        Payout Methods
+                    </h4>
+<div class="bg-surface-container-low rounded-lg p-4 mb-4 flex items-center gap-4">
+<div class="bg-white p-2 rounded-lg shadow-sm">
+<span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+</div>
+<div class="flex-1">
+<p class="font-bold text-primary">Chase Business Checking</p>
+<p class="text-body-sm text-on-surface-variant">Ending in •••• 9901</p>
+</div>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-2 py-0.5 rounded text-[10px] font-label-caps">PRIMARY</span>
+</div>
+<div class="bg-surface-container-low rounded-lg p-4 flex items-center gap-4 border border-dashed border-outline">
+<div class="bg-white/50 p-2 rounded-lg">
+<span class="material-symbols-outlined text-on-surface-variant opacity-50">add_card</span>
+</div>
+<div class="flex-1">
+<p class="font-bold text-on-surface-variant opacity-50">Add Backup Method</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-50">chevron_right</span>
+</div>
+</div>
+<!-- Intelligence Signal -->
+<div class="bg-primary text-on-primary rounded-xl p-6 shadow-xl relative overflow-hidden">
+<div class="absolute -right-8 -bottom-8 opacity-10">
+<span class="material-symbols-outlined text-[120px]">psychology_alt</span>
+</div>
+<div class="flex items-center gap-2 mb-4">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<p class="font-label-caps text-on-primary-container">PREDICTIVE INSIGHT</p>
+</div>
+<p class="font-h3 text-h3 mb-4">Payout Optimization Available</p>
+<p class="text-body-sm text-on-primary-container mb-6 leading-relaxed">Based on your historical flow, switching to Daily Settlement for the remainder of Q4 could improve liquidity by 22%. Transaction fees will remain at Tier 1 rates.</p>
+<button class="w-full py-3 bg-on-primary text-primary font-bold rounded-lg hover:bg-primary-fixed-dim transition-colors">Apply Strategy</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Intelligence Feed (Minimized Corner) -->
+<div class="fixed bottom-margin right-margin z-50">
+<div class="bg-white rounded-xl shadow-2xl border border-outline-variant w-80 overflow-hidden">
+<div class="bg-primary p-3 flex justify-between items-center">
+<p class="text-[10px] font-label-caps text-on-primary">SYSTEM ACTIVITY</p>
+<span class="material-symbols-outlined text-sm text-on-primary cursor-pointer">close</span>
+</div>
+<div class="p-2 space-y-2">
+<div class="flex gap-3 items-start p-2 hover:bg-surface-container transition-colors rounded-lg">
+<span class="material-symbols-outlined text-secondary text-lg">error_outline</span>
+<div>
+<p class="text-body-sm font-bold text-primary">Reserve Level Adjusted</p>
+<p class="text-[11px] text-on-surface-variant">System increased hold to 5% due to high volume.</p>
+<p class="font-data-mono text-[10px] mt-1 text-outline">12:45 PM</p>
+</div>
+</div>
+<div class="flex gap-3 items-start p-2 hover:bg-surface-container transition-colors rounded-lg">
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-lg">check_circle</span>
+<div>
+<p class="text-body-sm font-bold text-primary">Payout ACH-442 Processed</p>
+<p class="text-[11px] text-on-surface-variant">Batch execution successful for $150,000.00.</p>
+<p class="font-data-mono text-[10px] mt-1 text-outline">11:02 AM</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

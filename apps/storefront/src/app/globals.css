@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+:root {
+  /* AZHON Official Design System */
+  --azhon-primary: #FF5500;
+  --azhon-secondary: #0A0A0A;
+  --azhon-tertiary: #00B3DE;
+  --azhon-neutral: #82746C;
+  --azhon-bg-warm: #FCF9F6;
+  
+  --background: #ffffff;
+  --foreground: #0A0A0A;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--azhon-primary);
+  --color-secondary: var(--azhon-secondary);
+  --color-tertiary: var(--azhon-tertiary);
+  --color-neutral: var(--azhon-neutral);
+  --color-warm: var(--azhon-bg-warm);
+  --font-sans: var(--font-jakarta);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-jakarta), sans-serif;
+  -webkit-font-smoothing: antialiased;
+}

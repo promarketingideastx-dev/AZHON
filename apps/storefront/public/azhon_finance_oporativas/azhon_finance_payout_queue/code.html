@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AZHON Finance - Payout Queue</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-container": "#6b3500",
+                    "primary-fixed-dim": "#b0c8eb",
+                    "primary-container": "#0a2540",
+                    "surface-tint": "#49607e",
+                    "on-primary-container": "#768dad",
+                    "tertiary-fixed-dim": "#59dad1",
+                    "surface-container-low": "#f5f3f6",
+                    "surface-container-high": "#e9e8ea",
+                    "secondary-fixed": "#ffdcc5",
+                    "on-surface-variant": "#43474d",
+                    "inverse-surface": "#2f3033",
+                    "surface-variant": "#e3e2e5",
+                    "on-tertiary-container": "#009b94",
+                    "primary": "#000f22",
+                    "on-primary-fixed-variant": "#314865",
+                    "surface-container": "#efedf0",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed": "#301400",
+                    "on-primary": "#ffffff",
+                    "tertiary": "#001110",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed": "#001c37",
+                    "inverse-primary": "#b0c8eb",
+                    "background": "#faf9fb",
+                    "surface-dim": "#dbd9dc",
+                    "secondary": "#944b00",
+                    "outline-variant": "#c4c6ce",
+                    "secondary-fixed-dim": "#ffb783",
+                    "on-error": "#ffffff",
+                    "outline": "#74777e",
+                    "surface-bright": "#faf9fb",
+                    "surface-container-highest": "#e3e2e5",
+                    "on-tertiary-fixed-variant": "#00504c",
+                    "tertiary-container": "#002927",
+                    "on-tertiary-fixed": "#00201e",
+                    "tertiary-fixed": "#79f6ed",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "secondary-container": "#fe9744",
+                    "on-secondary-fixed-variant": "#713700",
+                    "error": "#ba1a1a",
+                    "primary-fixed": "#d2e4ff",
+                    "on-surface": "#1b1c1e",
+                    "surface": "#faf9fb",
+                    "inverse-on-surface": "#f2f0f3",
+                    "on-tertiary": "#ffffff",
+                    "on-background": "#1b1c1e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "sm": "8px",
+                    "xs": "4px",
+                    "lg": "24px",
+                    "margin": "24px",
+                    "unit": "4px",
+                    "md": "16px",
+                    "gutter": "20px"
+            },
+            "fontFamily": {
+                    "h3": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "h2": ["Plus Jakarta Sans"],
+                    "label-caps": ["Plus Jakarta Sans"],
+                    "data-mono": ["Plus Jakarta Sans"],
+                    "h1": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "body-sm": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "h3": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "h2": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "data-mono": ["14px", {"lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "h1": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e3e2e5; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #c4c6ce; }
+        .payout-card-accent { border-top: 8px solid #000f22; }
+        .payout-card-accent-orange { border-top: 8px solid #944b00; }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-surface">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-primary flex flex-col py-lg z-50">
+<div class="px-6 mb-10">
+<h1 class="font-h3 text-h3 font-bold text-on-primary">AZHON Finance</h1>
+<p class="text-on-primary-container font-label-caps opacity-80">Institutional Grade Ops</p>
+</div>
+<nav class="flex-1 space-y-1">
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 cursor-pointer active:scale-95 transition-all">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md">Overview</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 cursor-pointer active:scale-95 transition-all">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-body-md">Seller Balances</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container rounded-lg mx-2 cursor-pointer active:scale-95 transition-all">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-body-md">Payout Queue</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 cursor-pointer active:scale-95 transition-all">
+<span class="material-symbols-outlined">lock_clock</span>
+<span class="font-body-md">Escrow Holds</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 cursor-pointer active:scale-95 transition-all">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-body-md">Transaction Ledger</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 cursor-pointer active:scale-95 transition-all">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-body-md">Audit Logs</span>
+</div>
+</nav>
+<div class="mt-auto pt-lg border-t border-primary-container mx-4">
+<button class="w-full mb-6 bg-secondary text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-on-secondary-fixed-variant transition-colors active:scale-95">
+<span class="material-symbols-outlined">add</span>
+<span>New Transaction</span>
+</button>
+<div class="flex items-center gap-3 px-4 py-2 text-on-primary-container/70 hover:text-on-primary cursor-pointer">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md">Settings</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-2 text-on-primary-container/70 hover:text-on-primary cursor-pointer">
+<span class="material-symbols-outlined">contact_support</span>
+<span class="font-body-md">Support</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Shell -->
+<main class="pl-64 min-h-screen">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-40 flex justify-between items-center h-16 w-full px-margin bg-surface-container-lowest border-b border-outline-variant">
+<div class="flex items-center flex-1 max-w-xl">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container rounded-lg border-none focus:ring-2 focus:ring-on-tertiary-container text-body-md" placeholder="Search payouts, sellers, or IDs..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-lg ml-auto">
+<div class="flex items-center gap-4 text-primary">
+<span class="material-symbols-outlined cursor-pointer hover:bg-surface-container-low p-2 rounded-full transition-colors">notifications</span>
+<span class="material-symbols-outlined cursor-pointer hover:bg-surface-container-low p-2 rounded-full transition-colors">help_outline</span>
+<div class="flex items-center gap-2 cursor-pointer hover:bg-surface-container-low pl-2 pr-1 py-1 rounded-full transition-colors">
+<span class="text-body-sm font-bold">Admin Console</span>
+<span class="material-symbols-outlined text-3xl">account_circle</span>
+</div>
+</div>
+</div>
+</header>
+<div class="p-margin">
+<!-- Header Section -->
+<div class="flex justify-between items-end mb-xl">
+<div>
+<h2 class="font-h2 text-h2 text-primary">Payout Queue</h2>
+<p class="text-on-surface-variant">Review and manage institutional seller withdrawal requests.</p>
+</div>
+<div class="flex gap-md">
+<button class="px-md py-2 border-2 border-primary text-primary rounded-lg font-bold flex items-center gap-2 hover:bg-primary hover:text-white transition-all active:scale-95">
+<span class="material-symbols-outlined">auto_fix_high</span>
+<span>Auto-Review Status</span>
+</button>
+<button class="px-md py-2 bg-secondary text-white rounded-lg font-bold flex items-center gap-2 hover:bg-on-secondary-fixed-variant transition-all active:scale-95 shadow-lg">
+<span class="material-symbols-outlined">layers</span>
+<span>Process Batch</span>
+</button>
+</div>
+</div>
+<!-- KPI Bento Grid -->
+<div class="grid grid-cols-12 gap-gutter mb-xl">
+<div class="col-span-3 bg-surface-container-lowest p-lg rounded-xl shadow-[0px_4px_20px_rgba(10,37,64,0.05)] payout-card-accent">
+<p class="font-label-caps text-on-surface-variant mb-2">PENDING APPROVAL</p>
+<h3 class="font-h1 text-h1 text-primary">142</h3>
+<div class="mt-4 flex items-center gap-2 text-secondary font-bold">
+<span class="material-symbols-outlined">trending_up</span>
+<span class="text-data-mono">+$4.2M today</span>
+</div>
+</div>
+<div class="col-span-3 bg-surface-container-lowest p-lg rounded-xl shadow-[0px_4px_20px_rgba(10,37,64,0.05)] payout-card-accent">
+<p class="font-label-caps text-on-surface-variant mb-2">AVG. PROCESSING TIME</p>
+<h3 class="font-h1 text-h1 text-primary">2.4<span class="text-h3">h</span></h3>
+<div class="mt-4 flex items-center gap-2 text-on-tertiary-container font-bold">
+<span class="material-symbols-outlined">check_circle</span>
+<span class="text-data-mono">-12% vs last week</span>
+</div>
+</div>
+<div class="col-span-3 bg-surface-container-lowest p-lg rounded-xl shadow-[0px_4px_20px_rgba(10,37,64,0.05)] payout-card-accent-orange">
+<p class="font-label-caps text-on-surface-variant mb-2">HIGH RISK FLAGS</p>
+<h3 class="font-h1 text-h1 text-secondary">08</h3>
+<div class="mt-4 flex items-center gap-2 text-error font-bold">
+<span class="material-symbols-outlined">report</span>
+<span class="text-data-mono">Immediate Action Required</span>
+</div>
+</div>
+<div class="col-span-3 bg-surface-container-lowest p-lg rounded-xl shadow-[0px_4px_20px_rgba(10,37,64,0.05)] payout-card-accent">
+<p class="font-label-caps text-on-surface-variant mb-2">TOTAL VOLUME (24H)</p>
+<h3 class="font-h1 text-h1 text-primary">$18.9<span class="text-h3">M</span></h3>
+<div class="mt-4 flex items-center gap-2 text-on-surface-variant font-bold">
+<span class="material-symbols-outlined">equalizer</span>
+<span class="text-data-mono">Standard deviation optimal</span>
+</div>
+</div>
+</div>
+<div class="flex gap-gutter">
+<!-- Main Queue Area -->
+<div class="flex-1 space-y-gutter">
+<!-- Filters -->
+<div class="bg-surface-container-lowest p-md rounded-xl flex items-center justify-between gap-md shadow-[0px_4px_20px_rgba(10,37,64,0.05)]">
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container rounded-lg border border-outline-variant cursor-pointer hover:border-primary transition-colors">
+<span class="font-body-sm font-bold">Country: All</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container rounded-lg border border-outline-variant cursor-pointer hover:border-primary transition-colors">
+<span class="font-body-sm font-bold">Method: Wire</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container rounded-lg border border-outline-variant cursor-pointer hover:border-primary transition-colors">
+<span class="font-body-sm font-bold">Risk: Low/Med</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</div>
+</div>
+<div class="text-on-surface-variant font-body-sm">
+                            Showing <span class="font-bold text-primary">1-25</span> of 142
+                        </div>
+</div>
+<!-- Operative Table -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(10,37,64,0.05)] overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant bg-surface-container-low/30">
+<th class="p-md font-label-caps text-on-surface-variant">Priority</th>
+<th class="p-md font-label-caps text-on-surface-variant">Seller / Entity</th>
+<th class="p-md font-label-caps text-on-surface-variant text-right">Amount</th>
+<th class="p-md font-label-caps text-on-surface-variant">Method</th>
+<th class="p-md font-label-caps text-on-surface-variant">Risk Level</th>
+<th class="p-md font-label-caps text-on-surface-variant text-center">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1 - High Priority -->
+<tr class="hover:bg-surface-container transition-colors cursor-pointer group bg-secondary-fixed/10">
+<td class="p-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">priority_high</span>
+<span class="text-label-caps text-secondary font-bold">URGENT</span>
+</div>
+</td>
+<td class="p-md">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-xs">NL</div>
+<div>
+<div class="font-bold text-primary">Nexus Logistics Int.</div>
+<div class="text-xs text-on-surface-variant">ID: 98231-USA</div>
+</div>
+</div>
+</td>
+<td class="p-md text-right">
+<div class="font-data-mono text-primary">$450,000.00</div>
+<div class="text-xs text-on-surface-variant">USD</div>
+</td>
+<td class="p-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant">account_balance</span>
+<span class="text-body-sm">SWIFT/Wire</span>
+</div>
+</td>
+<td class="p-md">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-error shadow-[0_0_8px_#ba1a1a]"></div>
+<span class="text-body-sm font-bold text-error">CRITICAL (0.92)</span>
+</div>
+</td>
+<td class="p-md text-center">
+<span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-fixed text-xs font-bold">REVIEWING</span>
+</td>
+</tr>
+<!-- Row 2 - Standard -->
+<tr class="hover:bg-surface-container transition-colors cursor-pointer group border-l-4 border-l-transparent">
+<td class="p-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline">drag_handle</span>
+<span class="text-label-caps text-outline font-bold">NORMAL</span>
+</div>
+</td>
+<td class="p-md">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-tertiary-fixed-dim flex items-center justify-center text-on-tertiary-fixed font-bold text-xs">QT</div>
+<div>
+<div class="font-bold text-primary">Quant Tech Group</div>
+<div class="text-xs text-on-surface-variant">ID: 11042-UK</div>
+</div>
+</div>
+</td>
+<td class="p-md text-right">
+<div class="font-data-mono text-primary">£124,500.00</div>
+<div class="text-xs text-on-surface-variant">GBP</div>
+</td>
+<td class="p-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant">account_balance</span>
+<span class="text-body-sm">CHAPS</span>
+</div>
+</td>
+<td class="p-md">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-on-tertiary-container"></div>
+<span class="text-body-sm font-bold text-on-tertiary-container">LOW (0.04)</span>
+</div>
+</td>
+<td class="p-md text-center">
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface-variant text-xs font-bold">PENDING</span>
+</td>
+</tr>
+<!-- Row 3 - Selected State -->
+<tr class="bg-primary-fixed/30 border-l-4 border-l-primary group cursor-pointer">
+<td class="p-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">bolt</span>
+<span class="text-label-caps text-primary font-bold">PRIORITY</span>
+</div>
+</td>
+<td class="p-md">
+<div class="flex items-center gap-3">
+<img class="w-8 h-8 rounded-full object-cover" data-alt="A professional headshot of a corporate executive in a minimalist studio. High-key soft lighting emphasizes clarity and institutional trust, following a modern corporate aesthetic with cool blue and crisp white tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBa2n1E_18UKIX6WGKi1TzfXxlvWzO0hm3H1wkc0QKfL5OJOp-ajFnssPQ7vsuXqnXLnd1qXecDUhtQPFAOBWfsOwyERZ77Gm-ALmxJkeiPFLNvXRDyRtflI2SXMY8WRsV5utGqtKTaOp1DWLbP9xvdbUnbsbYcRJS7L_rmV1y4vtR-fwjEHKEq-fSiEFMtlphz0krQm14hMp3ekk4KGZvm2v4y3fclzmotHiP0qOhFftVMQH_IDxxsSy7R7qX6c3v5RmECPgOaArUI"/>
+<div>
+<div class="font-bold text-primary">Arcane Media Corp</div>
+<div class="text-xs text-on-surface-variant">ID: 44021-DE</div>
+</div>
+</div>
+</td>
+<td class="p-md text-right">
+<div class="font-data-mono text-primary">€89,200.00</div>
+<div class="text-xs text-on-surface-variant">EUR</div>
+</td>
+<td class="p-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant">credit_card</span>
+<span class="text-body-sm">Card Transfer</span>
+</div>
+</td>
+<td class="p-md">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="text-body-sm font-bold text-secondary">MED (0.34)</span>
+</div>
+</td>
+<td class="p-md text-center">
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface-variant text-xs font-bold">PENDING</span>
+</td>
+</tr>
+<!-- Row 4 - Standard -->
+<tr class="hover:bg-surface-container transition-colors cursor-pointer">
+<td class="p-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline">drag_handle</span>
+<span class="text-label-caps text-outline font-bold">NORMAL</span>
+</div>
+</td>
+<td class="p-md">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed-dim flex items-center justify-center text-on-primary-fixed font-bold text-xs">SV</div>
+<div>
+<div class="font-bold text-primary">Solaris Ventures</div>
+<div class="text-xs text-on-surface-variant">ID: 88722-SG</div>
+</div>
+</div>
+</td>
+<td class="p-md text-right">
+<div class="font-data-mono text-primary">$12,000.00</div>
+<div class="text-xs text-on-surface-variant">USD</div>
+</td>
+<td class="p-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant">payments</span>
+<span class="text-body-sm">Local ACH</span>
+</div>
+</td>
+<td class="p-md">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-on-tertiary-container"></div>
+<span class="text-body-sm font-bold text-on-tertiary-container">LOW (0.01)</span>
+</div>
+</td>
+<td class="p-md text-center">
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface-variant text-xs font-bold">PENDING</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Side Panel Details -->
+<aside class="w-96 bg-surface-container-lowest rounded-xl shadow-[0px_8px_30px_rgba(10,37,64,0.08)] overflow-hidden flex flex-col">
+<div class="p-lg bg-primary text-on-primary">
+<div class="flex justify-between items-center mb-4">
+<span class="font-label-caps opacity-70">PAYOUT ID: TR-88219-AM</span>
+<span class="material-symbols-outlined cursor-pointer hover:rotate-90 transition-transform">close</span>
+</div>
+<h4 class="font-h3 text-h3">Arcane Media Corp</h4>
+<p class="text-body-sm opacity-80">Submitted 14 mins ago</p>
+</div>
+<div class="p-lg flex-1 overflow-y-auto space-y-xl">
+<!-- Entity Profile -->
+<section>
+<h5 class="font-label-caps text-on-surface-variant mb-4">ENTITY VERIFICATION</h5>
+<div class="space-y-md">
+<div class="flex justify-between">
+<span class="text-body-sm text-on-surface-variant">Business Type</span>
+<span class="text-body-sm font-bold text-primary">Corporation (DE)</span>
+</div>
+<div class="flex justify-between">
+<span class="text-body-sm text-on-surface-variant">KYB Status</span>
+<div class="flex items-center gap-1 text-on-tertiary-container">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="text-body-sm font-bold">VERIFIED</span>
+</div>
+</div>
+<div class="flex justify-between">
+<span class="text-body-sm text-on-surface-variant">Account Age</span>
+<span class="text-body-sm font-bold text-primary">3.2 Years</span>
+</div>
+</div>
+</section>
+<!-- Risk Assessment Card -->
+<section class="bg-surface-container p-md rounded-lg">
+<div class="flex justify-between items-center mb-md">
+<h5 class="font-label-caps text-on-surface-variant">RISK ANALYSIS</h5>
+<span class="px-2 py-0.5 bg-secondary text-white text-[10px] font-bold rounded">MED RISK</span>
+</div>
+<div class="space-y-sm">
+<div class="flex items-center justify-between">
+<span class="text-xs text-on-surface-variant">Velocity Check</span>
+<span class="text-xs font-bold text-on-tertiary-container">PASS</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1 rounded-full overflow-hidden">
+<div class="bg-secondary h-full w-[34%]"></div>
+</div>
+<p class="text-[11px] text-on-surface-variant italic">Payout exceeds 30-day average by 12%. No previous flags detected for this entity.</p>
+</div>
+</section>
+<!-- Payout Logic -->
+<section>
+<h5 class="font-label-caps text-on-surface-variant mb-4">PAYMENT DETAILS</h5>
+<div class="p-md border border-outline-variant rounded-lg space-y-md">
+<div>
+<p class="text-xs text-on-surface-variant mb-1">Destination IBAN</p>
+<p class="font-data-mono text-primary">DE89 5003 0000 1234 5678 90</p>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant mb-1">Bank Name</p>
+<p class="font-bold text-primary">Deutsche Bank AG</p>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<div>
+<p class="text-xs text-on-surface-variant mb-1">Fee</p>
+<p class="font-bold text-primary">€12.50</p>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant mb-1">Net Payout</p>
+<p class="font-bold text-primary">€89,187.50</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer Actions -->
+<div class="p-lg bg-surface-container-low border-t border-outline-variant space-y-md">
+<div class="flex gap-md">
+<button class="flex-1 py-3 bg-primary text-white rounded-lg font-bold hover:bg-opacity-90 transition-all active:scale-95 shadow-md">
+                                Approve
+                            </button>
+<button class="flex-1 py-3 bg-surface-container-lowest border border-error text-error rounded-lg font-bold hover:bg-error-container transition-all active:scale-95">
+                                Reject
+                            </button>
+</div>
+<button class="w-full py-2.5 border border-outline text-on-surface-variant rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-surface-container-highest transition-all">
+<span class="material-symbols-outlined text-sm">inventory_2</span>
+<span>Send to Batch Review</span>
+</button>
+</div>
+</aside>
+</div>
+</div>
+</main>
+<!-- Floating Action Button (Optional - For adding notes or urgent flags) -->
+<button class="fixed bottom-margin right-margin w-14 h-14 bg-secondary text-on-secondary rounded-full flex items-center justify-center shadow-xl hover:scale-110 active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined text-2xl">edit_note</span>
+</button>
+</body></html>

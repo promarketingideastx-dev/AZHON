@@ -1,0 +1,1 @@
+import { PrismaClient } from '@prisma/client'; const prisma = new PrismaClient(); async function x() { const p = await prisma.product.findMany(); console.log(p.map(x => ({title: x.title, img: x.imageUrl}))); } x();

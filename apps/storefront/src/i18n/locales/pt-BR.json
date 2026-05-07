@@ -1,0 +1,159 @@
+{
+  "cart": {
+    "title": "Seu Carrinho",
+    "sold_by": "VENDIDO POR",
+    "in_stock": "Em estoque",
+    "only_few_left": "Apenas {qty} disponíveis",
+    "save": "Salvar",
+    "delete": "Remover",
+    "order_summary": "Resumo do Pedido",
+    "subtotal": "Subtotal ({qty} itens)",
+    "estimated_shipping": "Frete Estimado",
+    "free_shipping": "GRÁTIS",
+    "taxes": "Impostos",
+    "total_savings": "Economia Total",
+    "total_to_pay": "TOTAL A PAGAR",
+    "continue_to_payment": "Continuar para Pagamento",
+    "terms_acceptance": "Ao clicar, você aceita nossos Termos de Serviço e Política de Devolução",
+    "premium_shipping_title": "Frete Global Premium",
+    "premium_shipping_desc": "Parabéns! Sua compra se qualifica para frete prioritário gratuito. Entrega estimada em 3-5 dias",
+    "secure_payments": "PAGAMENTOS 100% SEGUROS",
+    "upsell_title": "Complete seu Estilo",
+    "empty_cart": "Seu carrinho está vazio",
+    "back_to_shop": "Voltar à Loja"
+  },
+  "header": {
+    "home": "Início",
+    "categories": "Categorias",
+    "deals": "Ofertas",
+    "sell": "Vender",
+    "help": "Ajuda",
+    "search_placeholder": "Buscar produtos, marcas e mais...",
+    "search_button": "Buscar",
+    "logout": "Sair"
+  },
+  "home": {
+    "explore_categories": "Explorar Categorias",
+    "browse_department": "Navegar por departamento",
+    "see_all": "Ver Tudo",
+    "flash_deals": "Ofertas Flash",
+    "ends_in": "Termina em",
+    "new_arrivals": "Recém-Chegados",
+    "recommended": "Recomendado para você",
+    "explora": "Explorar",
+    "partnership": "Empreenda com a AZHON.",
+    "partnership_desc": "Alcance milhões de clientes. Nossa plataforma fornece as ferramentas, logística e dados para crescer.",
+    "start_selling": "Começar a Vender"
+  },
+  "categories": {
+    "title": "Todas as Categorias",
+    "adult_warning_title": "Conteúdo para Adultos (+18)",
+    "adult_warning_desc": "Esta categoria contém produtos de bem-estar íntimo. Você deve ter 18 anos ou mais.",
+    "adult_warning_confirm": "Tenho 18 anos ou mais",
+    "adult_warning_cancel": "Voltar",
+    "cell_phones": {
+      "title": "Celulares e Telefones",
+      "smartphones": "Smartphones",
+      "accessories": "Acessórios",
+      "smartwatches": "Smartwatches",
+      "spare_parts": "Peças de Reposição",
+      "landline": "Telefones Fixos",
+      "radios": "Rádios e Comunicação"
+    },
+    "electronics": {
+      "title": "Eletrônicos, Áudio e Vídeo",
+      "televisions": "Televisores",
+      "audio": "Áudio",
+      "cameras": "Câmeras e Vídeo",
+      "tv_accessories": "Acessórios TV",
+      "streaming": "Streaming",
+      "projectors": "Projetores"
+    },
+    "computing": {
+      "title": "Informática",
+      "laptops": "Laptops",
+      "desktops": "Desktops",
+      "components": "Componentes PC",
+      "peripherals": "Periféricos",
+      "networking": "Redes",
+      "storage": "Armazenamento"
+    },
+    "home": {
+      "title": "Casa e Eletrodomésticos",
+      "appliances": "Eletrodomésticos",
+      "furniture": "Móveis",
+      "kitchen": "Cozinha",
+      "decoration": "Decoração",
+      "garden": "Jardim"
+    },
+    "clothing": {
+      "title": "Roupas, Calçados e Acessórios",
+      "men": "Homens",
+      "women": "Mulheres",
+      "kids": "Crianças",
+      "footwear": "Calçados",
+      "accessories": "Acessórios"
+    },
+    "beauty": {
+      "title": "Beleza e Cuidado Pessoal",
+      "makeup": "Maquiagem",
+      "personal_care": "Cuidado Pessoal",
+      "perfumes": "Perfumes"
+    },
+    "sports": {
+      "title": "Esportes e Fitness",
+      "fitness": "Fitness e Academia",
+      "cycling": "Ciclismo",
+      "camping": "Camping e Outdoor",
+      "team_sports": "Esportes de Equipe",
+      "fishing": "Pesca e Caça",
+      "swimming": "Natação"
+    },
+    "vehicle_accessories": {
+      "title": "Acessórios para Veículos",
+      "spare_parts": "Peças",
+      "tires": "Pneus",
+      "audio": "Áudio",
+      "tools": "Ferramentas"
+    },
+    "toys": {
+      "title": "Brinquedos e Jogos",
+      "action_figures": "Bonecos de Ação",
+      "board_games": "Jogos de Tabuleiro",
+      "plush_toys": "Pelúcias"
+    },
+    "books": {
+      "title": "Livros, Revistas e Quadrinhos",
+      "physical_books": "Livros Físicos",
+      "magazines": "Revistas",
+      "ebooks": "Ebooks"
+    },
+    "music_movies": {
+      "title": "Música e Filmes",
+      "music": "Música",
+      "movies": "Filmes",
+      "series": "Séries"
+    },
+    "musical_instruments": {
+      "title": "Instrumentos Musicais",
+      "guitars": "Guitarras",
+      "keyboards": "Teclados",
+      "pro_audio": "Áudio Profissional"
+    },
+    "pets": {
+      "title": "Animais de Estimação",
+      "food": "Alimentos",
+      "accessories": "Acessórios",
+      "hygiene": "Higiene",
+      "beds_transport": "Camas e Transporte",
+      "toys": "Brinquedos",
+      "health": "Saúde"
+    },
+    "intimate_wellness": {
+      "title": "Bem-estar Íntimo",
+      "wellness": "Bem-estar",
+      "care": "Cuidado",
+      "accessories": "Acessórios"
+    }
+  }
+}

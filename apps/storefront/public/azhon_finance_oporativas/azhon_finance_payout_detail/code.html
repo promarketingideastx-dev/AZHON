@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AZHON Finance - Payout Detail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#6b3500",
+                        "primary-fixed-dim": "#b0c8eb",
+                        "primary-container": "#0a2540",
+                        "surface-tint": "#49607e",
+                        "on-primary-container": "#768dad",
+                        "tertiary-fixed-dim": "#59dad1",
+                        "surface-container-low": "#f5f3f6",
+                        "surface-container-high": "#e9e8ea",
+                        "secondary-fixed": "#ffdcc5",
+                        "on-surface-variant": "#43474d",
+                        "inverse-surface": "#2f3033",
+                        "surface-variant": "#e3e2e5",
+                        "on-tertiary-container": "#009b94",
+                        "primary": "#000f22",
+                        "on-primary-fixed-variant": "#314865",
+                        "surface-container": "#efedf0",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#301400",
+                        "on-primary": "#ffffff",
+                        "tertiary": "#001110",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed": "#001c37",
+                        "inverse-primary": "#b0c8eb",
+                        "background": "#faf9fb",
+                        "surface-dim": "#dbd9dc",
+                        "secondary": "#944b00",
+                        "outline-variant": "#c4c6ce",
+                        "secondary-fixed-dim": "#ffb783",
+                        "on-error": "#ffffff",
+                        "outline": "#74777e",
+                        "surface-bright": "#faf9fb",
+                        "surface-container-highest": "#e3e2e5",
+                        "on-tertiary-fixed-variant": "#00504c",
+                        "tertiary-container": "#002927",
+                        "on-tertiary-fixed": "#00201e",
+                        "tertiary-fixed": "#79f6ed",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#fe9744",
+                        "on-secondary-fixed-variant": "#713700",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#d2e4ff",
+                        "on-surface": "#1b1c1e",
+                        "surface": "#faf9fb",
+                        "inverse-on-surface": "#f2f0f3",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#1b1c1e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "margin": "24px",
+                        "unit": "4px",
+                        "md": "16px",
+                        "gutter": "20px"
+                    },
+                    "fontFamily": {
+                        "h3": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "h2": ["Plus Jakarta Sans"],
+                        "label-caps": ["Plus Jakarta Sans"],
+                        "data-mono": ["Plus Jakarta Sans"],
+                        "h1": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "body-sm": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "h3": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "h2": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "data-mono": ["14px", {"lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "h1": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-secondary-container/30">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-primary dark:bg-primary flex flex-col py-lg z-50">
+<div class="px-6 mb-8">
+<h1 class="font-h3 text-h3 font-bold text-on-primary dark:text-on-primary">AZHON Finance</h1>
+<p class="text-on-primary-container text-xs opacity-70">Institutional Grade Ops</p>
+</div>
+<nav class="flex-grow flex flex-col gap-1">
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 hover:bg-primary-fixed-variant/20 transition-colors cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md text-body-md">Overview</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 hover:bg-primary-fixed-variant/20 transition-colors cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="font-body-md text-body-md">Seller Balances</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container rounded-lg mx-2 cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-body-md text-body-md">Payout Queue</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 hover:bg-primary-fixed-variant/20 transition-colors cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="lock_clock">lock_clock</span>
+<span class="font-body-md text-body-md">Escrow Holds</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 hover:bg-primary-fixed-variant/20 transition-colors cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span class="font-body-md text-body-md">Transaction Ledger</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 hover:bg-primary-fixed-variant/20 transition-colors cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+<span class="font-body-md text-body-md">Audit Logs</span>
+</div>
+</nav>
+<div class="mt-auto flex flex-col gap-1 border-t border-on-primary/10 pt-4">
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 hover:bg-primary-fixed-variant/20 transition-colors cursor-pointer">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 hover:bg-primary-fixed-variant/20 transition-colors cursor-pointer">
+<span class="material-symbols-outlined" data-icon="contact_support">contact_support</span>
+<span class="font-body-md text-body-md">Support</span>
+</div>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="flex justify-between items-center h-16 w-full pl-72 pr-margin ml-auto bg-surface-container-lowest border-b border-outline-variant sticky top-0 z-40">
+<div class="flex items-center flex-1 max-w-xl">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 text-body-md focus:ring-2 focus:ring-secondary-container" placeholder="Search transactions, sellers, or IDs..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-secondary-container/10 text-on-secondary-fixed-variant">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">security</span>
+<span class="font-label-caps uppercase">System: Secure</span>
+</div>
+<span class="material-symbols-outlined cursor-pointer hover:bg-surface-container-low p-2 rounded-full transition-colors" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined cursor-pointer hover:bg-surface-container-low p-2 rounded-full transition-colors" data-icon="help_outline">help_outline</span>
+<div class="flex items-center gap-3 border-l border-outline-variant pl-4 ml-2">
+<div class="text-right">
+<p class="font-body-sm font-bold">Admin Ops</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest">Compliance Level 4</p>
+</div>
+<span class="material-symbols-outlined text-[40px] text-primary" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-64 p-margin">
+<div class="max-w-[1400px] mx-auto">
+<!-- Breadcrumbs & Header Actions -->
+<div class="flex justify-between items-end mb-8">
+<div>
+<div class="flex items-center gap-2 text-on-surface-variant font-body-sm mb-2">
+<span>Payout Queue</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-primary font-bold">REQ-99283-XP</span>
+</div>
+<h2 class="font-h2 text-h2 text-primary flex items-center gap-4">
+                        Payout Detail: $142,500.00
+                        <span class="px-3 py-1 bg-secondary-container text-on-secondary-fixed text-body-sm font-bold rounded-full">PENDING APPROVAL</span>
+</h2>
+</div>
+<div class="flex gap-3">
+<button class="px-6 py-2 border-2 border-primary text-primary font-bold rounded-lg hover:bg-primary hover:text-white transition-all active:scale-95">
+                        Reject Request
+                    </button>
+<button class="px-6 py-2 bg-secondary text-on-secondary font-bold rounded-lg shadow-lg shadow-secondary/20 hover:scale-[1.02] active:scale-95 transition-all">
+                        Approve &amp; Send Payout
+                    </button>
+</div>
+</div>
+<!-- Bento Layout -->
+<div class="bento-grid">
+<!-- Main Payout Info (8 columns) -->
+<div class="col-span-8 space-y-gutter">
+<!-- Seller Summary Card -->
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-[0px_4px_20px_rgba(10,37,64,0.05)] border-t-8 border-primary">
+<div class="flex justify-between items-start mb-6">
+<div class="flex gap-4">
+<img alt="Seller Avatar" class="w-16 h-16 rounded-lg object-cover" data-alt="A professional corporate portrait of a financial executive in a high-rise office setting. The lighting is soft and natural from a large window, creating a modern and trustworthy atmosphere. The overall aesthetic is clean and professional, with a cool color palette reflecting deep intelligence and strategic focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCx56a2vfw8h45fSIz5TPBHcJXFh2N6LglCttYMVz56UjujFg8kILFCGjX-81eGAJ5IPM4YTVAcUB_ylOIxATNWz-RUsjPwS5ruSlXOXfpFKA4EA3-orW7h-5fYI2XS_3UmbP3g108dgDxVpqWmOLKT2m1OHofJr37CNMj3L1yHPpuCWOIH6nFa8M5M7L1_CRdBOafruTcfOa-UBP6IFbNz0yIqDWFox7TJz15KOFRbp77a-ARyx-KlxjSiVFKXmN10Fg37Evgc_LCl"/>
+<div>
+<h3 class="font-h3 text-h3 text-primary">Global Logistics Partners LLC</h3>
+<p class="text-on-surface-variant font-body-md">Vendor ID: GLP-8821-USA</p>
+<div class="flex items-center gap-2 mt-2">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-2 py-0.5 rounded text-[10px] font-bold uppercase">Verified Merchant</span>
+<span class="bg-surface-container-high px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-tighter">Tier 1 Institutional</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<p class="text-on-surface-variant font-label-caps">Seller Balance</p>
+<p class="font-h2 text-h2 text-primary">$1,240,882.10</p>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-6 pt-6 border-t border-outline-variant">
+<div>
+<p class="text-on-surface-variant font-label-caps mb-1">Requested Method</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="account_balance">account_balance</span>
+<span class="font-data-mono">SWIFT / WIRE TRANSFER</span>
+</div>
+</div>
+<div>
+<p class="text-on-surface-variant font-label-caps mb-1">Source of Funds</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="shopping_cart">shopping_cart</span>
+<span class="font-data-mono">Q3 Settlement Ledger</span>
+</div>
+</div>
+<div>
+<p class="text-on-surface-variant font-label-caps mb-1">Estimated Arrival</p>
+<div class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="schedule">schedule</span>
+<span class="font-data-mono">24-48 Hours Post-Appr</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Related Ledger Entries -->
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-[0px_4px_20px_rgba(10,37,64,0.05)] border-t-8 border-tertiary">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-h3 text-h3 text-primary">Related Ledger Entries</h3>
+<button class="text-secondary font-bold text-body-sm flex items-center gap-1">
+                                View Full Ledger <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+</button>
+</div>
+<table class="w-full text-left font-body-sm">
+<thead>
+<tr class="text-on-surface-variant border-b border-outline-variant">
+<th class="py-3 font-label-caps">Date</th>
+<th class="py-3 font-label-caps">Description</th>
+<th class="py-3 font-label-caps">Reference</th>
+<th class="py-3 font-label-caps text-right">Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-outline-variant/30 hover:bg-surface-container-low transition-colors">
+<td class="py-3 font-data-mono">2023-10-24</td>
+<td class="py-3">Escrow Release: Project Zenith Alpha</td>
+<td class="py-3 font-data-mono text-on-tertiary-container">ESC-00129-A</td>
+<td class="py-3 text-right font-data-mono">+$85,000.00</td>
+</tr>
+<tr class="border-b border-outline-variant/30 hover:bg-surface-container-low transition-colors">
+<td class="py-3 font-data-mono">2023-10-22</td>
+<td class="py-3">Marketplace Net Proceeds - Batch 92</td>
+<td class="py-3 font-data-mono text-on-tertiary-container">MP-BAT-92</td>
+<td class="py-3 text-right font-data-mono">+$57,500.00</td>
+</tr>
+<tr class="bg-surface-container-high/20 font-bold">
+<td class="py-3" colspan="3 text-right">Total Verified for Payout</td>
+<td class="py-3 text-right font-data-mono text-primary">$142,500.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Internal Notes -->
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-[0px_4px_20px_rgba(10,37,64,0.05)] border-t-8 border-outline">
+<h3 class="font-h3 text-h3 text-primary mb-4">Internal Discussion &amp; Audit Trail</h3>
+<div class="space-y-4">
+<div class="flex gap-4 p-4 bg-surface-container-low rounded-lg">
+<span class="material-symbols-outlined text-primary" data-icon="person">person</span>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="font-bold text-body-sm">Compliance Officer (Sarah K.)</span>
+<span class="text-on-surface-variant text-[10px] uppercase font-label-caps">2 Hours Ago</span>
+</div>
+<p class="text-body-md text-on-surface-variant">KYC verified. Funds source matches historical patterns. No active investigations on GLP LLC. Suggest proceeding with institutional wire.</p>
+</div>
+</div>
+<div class="flex gap-4 p-4 bg-surface-container-low rounded-lg border-l-4 border-secondary">
+<span class="material-symbols-outlined text-secondary" data-icon="priority_high">priority_high</span>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="font-bold text-body-sm">Risk Engine (Auto-bot)</span>
+<span class="text-on-surface-variant text-[10px] uppercase font-label-caps">1 Hour Ago</span>
+</div>
+<p class="text-body-md text-on-surface-variant">Payout amount exceeds 25% of average monthly volume. Requires second-tier manual oversight signature.</p>
+</div>
+</div>
+<div class="mt-4 flex gap-2">
+<input class="flex-grow bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 text-body-sm focus:ring-2 focus:ring-secondary-container" placeholder="Add a note or tag a teammate (@)..." type="text"/>
+<button class="bg-primary text-white px-4 py-2 rounded-lg font-bold hover:opacity-90 active:scale-95 transition-all">Post</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Side Panels (4 columns) -->
+<div class="col-span-4 space-y-gutter">
+<!-- Risk blockers Card -->
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-[0px_4px_20px_rgba(10,37,64,0.05)]">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-h3 text-h3 text-primary">Risk Signal</h3>
+<div class="w-3 h-3 rounded-full bg-secondary animate-pulse shadow-[0_0_8px_#944b00]"></div>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-3 bg-error-container/20 rounded-lg">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-error text-[20px]" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span class="text-body-sm font-bold text-on-error-container">Large Amount Alert</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[16px]">info</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-tertiary-container/10 rounded-lg">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-tertiary-container text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-body-sm font-bold text-on-tertiary-container">AML Cleared</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[16px]">verified</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-high rounded-lg">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">block</span>
+<span class="text-body-sm font-bold">Dispute Markers (0)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Approval History Trail -->
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-[0px_4px_20px_rgba(10,37,64,0.05)]">
+<h3 class="font-h3 text-h3 text-primary mb-6">Approval Trail</h3>
+<div class="relative space-y-6 before:absolute before:left-[11px] before:top-2 before:h-[calc(100%-20px)] before:w-[2px] before:bg-outline-variant">
+<!-- Entry 1 -->
+<div class="relative flex gap-4 items-start pl-8">
+<div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-tertiary-fixed flex items-center justify-center z-10 border-4 border-surface-container-lowest">
+<span class="material-symbols-outlined text-[14px] text-on-tertiary-fixed" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div>
+<p class="font-bold text-body-sm">Request Initiated</p>
+<p class="text-on-surface-variant text-xs">Automated via Seller Portal</p>
+<p class="text-[10px] font-data-mono mt-1">Oct 25, 08:32 AM</p>
+</div>
+</div>
+<!-- Entry 2 -->
+<div class="relative flex gap-4 items-start pl-8">
+<div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-tertiary-fixed flex items-center justify-center z-10 border-4 border-surface-container-lowest">
+<span class="material-symbols-outlined text-[14px] text-on-tertiary-fixed" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div>
+<p class="font-bold text-body-sm">Compliance Review</p>
+<p class="text-on-surface-variant text-xs">Reviewed by Sarah K.</p>
+<p class="text-[10px] font-data-mono mt-1">Oct 25, 11:15 AM</p>
+</div>
+</div>
+<!-- Entry 3 (Current) -->
+<div class="relative flex gap-4 items-start pl-8">
+<div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-secondary-container flex items-center justify-center z-10 border-4 border-surface-container-lowest">
+<div class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></div>
+</div>
+<div>
+<p class="font-bold text-body-sm text-secondary">Final Authorization</p>
+<p class="text-on-surface-variant text-xs">Awaiting Senior Ops Manager</p>
+<p class="text-[10px] font-data-mono mt-1 italic">Pending Status</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Additional Actions Quick Menu -->
+<div class="bg-primary p-lg rounded-xl shadow-lg border border-primary text-white">
+<h3 class="font-h3 text-h3 mb-4">Operations Hub</h3>
+<div class="space-y-2">
+<button class="w-full flex justify-between items-center px-4 py-3 bg-white/10 hover:bg-white/20 rounded-lg text-body-sm font-bold transition-colors">
+                                Mark Settlement Received
+                                <span class="material-symbols-outlined">payments</span>
+</button>
+<button class="w-full flex justify-between items-center px-4 py-3 bg-white/10 hover:bg-white/20 rounded-lg text-body-sm font-bold transition-colors">
+                                Mark Failure / Bounce
+                                <span class="material-symbols-outlined">error</span>
+</button>
+<button class="w-full flex justify-between items-center px-4 py-3 bg-white/10 hover:bg-white/20 rounded-lg text-body-sm font-bold transition-colors border border-white/20">
+                                Export Audit PDF
+                                <span class="material-symbols-outlined">description</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual FAB (Suppressing as per mandate for Detail pages, but adding a "New Transaction" global FAB if needed elsewhere - omitting here for page focus) -->
+</body></html>

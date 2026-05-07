@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AZHON Finance - Reconciliation Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#6b3500",
+                        "primary-fixed-dim": "#b0c8eb",
+                        "primary-container": "#0a2540",
+                        "surface-tint": "#49607e",
+                        "on-primary-container": "#768dad",
+                        "tertiary-fixed-dim": "#59dad1",
+                        "surface-container-low": "#f5f3f6",
+                        "surface-container-high": "#e9e8ea",
+                        "secondary-fixed": "#ffdcc5",
+                        "on-surface-variant": "#43474d",
+                        "inverse-surface": "#2f3033",
+                        "surface-variant": "#e3e2e5",
+                        "on-tertiary-container": "#009b94",
+                        "primary": "#000f22",
+                        "on-primary-fixed-variant": "#314865",
+                        "surface-container": "#efedf0",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#301400",
+                        "on-primary": "#ffffff",
+                        "tertiary": "#001110",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed": "#001c37",
+                        "inverse-primary": "#b0c8eb",
+                        "background": "#faf9fb",
+                        "surface-dim": "#dbd9dc",
+                        "secondary": "#944b00",
+                        "outline-variant": "#c4c6ce",
+                        "secondary-fixed-dim": "#ffb783",
+                        "on-error": "#ffffff",
+                        "outline": "#74777e",
+                        "surface-bright": "#faf9fb",
+                        "surface-container-highest": "#e3e2e5",
+                        "on-tertiary-fixed-variant": "#00504c",
+                        "tertiary-container": "#002927",
+                        "on-tertiary-fixed": "#00201e",
+                        "tertiary-fixed": "#79f6ed",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#fe9744",
+                        "on-secondary-fixed-variant": "#713700",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#d2e4ff",
+                        "on-surface": "#1b1c1e",
+                        "surface": "#faf9fb",
+                        "inverse-on-surface": "#f2f0f3",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#1b1c1e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "margin": "24px",
+                        "unit": "4px",
+                        "md": "16px",
+                        "gutter": "20px"
+                    },
+                    "fontFamily": {
+                        "h3": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "h2": ["Plus Jakarta Sans"],
+                        "label-caps": ["Plus Jakarta Sans"],
+                        "data-mono": ["Plus Jakarta Sans"],
+                        "h1": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "body-sm": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "h3": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "h2": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "data-mono": ["14px", {"lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "h1": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8e5; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden">
+<!-- Side Navigation Bar -->
+<nav class="h-screen w-64 fixed left-0 top-0 bg-primary dark:bg-primary flex flex-col py-lg z-50">
+<div class="px-6 mb-10">
+<h1 class="font-h3 text-h3 font-bold text-on-primary dark:text-on-primary">AZHON Finance</h1>
+<p class="text-on-primary-container text-[11px] uppercase tracking-widest font-bold mt-1">Institutional Grade Ops</p>
+</div>
+<div class="flex-1 space-y-1">
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 hover:bg-primary-fixed-variant/20 transition-colors cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md">Overview</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 hover:bg-primary-fixed-variant/20 transition-colors cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-body-md">Seller Balances</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 hover:bg-primary-fixed-variant/20 transition-colors cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-body-md">Payout Queue</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 hover:bg-primary-fixed-variant/20 transition-colors cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined">lock_clock</span>
+<span class="font-body-md">Escrow Holds</span>
+</div>
+<!-- Active Tab -->
+<div class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container rounded-lg mx-2 cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-body-md">Transaction Ledger</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 hover:bg-primary-fixed-variant/20 transition-colors cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-body-md">Audit Logs</span>
+</div>
+</div>
+<div class="mt-auto px-2 space-y-1 border-t border-on-primary-container/10 pt-4">
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary hover:bg-primary-fixed-variant/20 transition-colors cursor-pointer active:scale-95">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md">Settings</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary hover:bg-primary-fixed-variant/20 transition-colors cursor-pointer active:scale-95">
+<span class="material-symbols-outlined">contact_support</span>
+<span class="font-body-md">Support</span>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="pl-64 flex flex-col h-screen overflow-hidden">
+<!-- Top Navigation Bar -->
+<header class="flex justify-between items-center h-16 w-full pl-8 pr-margin bg-surface-container-lowest border-b border-outline-variant sticky top-0 z-40">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full pl-10 pr-4 h-10 text-body-md focus:ring-2 focus:ring-on-tertiary-container transition-all" placeholder="Search transactions, IDs, or providers..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="flex items-center gap-2 bg-secondary text-on-secondary px-6 py-2 rounded-lg font-bold active:opacity-80 transition-all">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+                    Start Reconciliation
+                </button>
+<div class="flex items-center gap-4 text-primary">
+<span class="material-symbols-outlined cursor-pointer hover:bg-surface-container-low p-2 rounded-full transition-colors">notifications</span>
+<span class="material-symbols-outlined cursor-pointer hover:bg-surface-container-low p-2 rounded-full transition-colors">help_outline</span>
+<span class="material-symbols-outlined cursor-pointer hover:bg-surface-container-low p-2 rounded-full transition-colors">account_circle</span>
+</div>
+</div>
+</header>
+<!-- Dashboard Canvas -->
+<div class="flex-1 p-margin overflow-y-auto custom-scrollbar bg-background">
+<!-- Page Title -->
+<div class="mb-lg">
+<h2 class="font-h2 text-h2 text-primary">Reconciliation Center</h2>
+<p class="text-on-surface-variant font-body-md">Cross-referencing AZHON internal ledger against external payment gateway providers.</p>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Summary Metrics (Expected vs Provider) -->
+<div class="col-span-8 bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-[0px_4px_20px_rgba(10,37,64,0.05)] relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-primary"></div>
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="font-h3 text-h3 text-primary">Expected vs Provider Totals</h3>
+<p class="text-on-surface-variant text-body-sm">Period: 01 Oct 2023 - 31 Oct 2023</p>
+</div>
+<span class="bg-primary-fixed text-primary px-3 py-1 rounded-full text-label-caps uppercase">Batch #RC-9982</span>
+</div>
+<div class="grid grid-cols-3 gap-lg">
+<div class="p-4 bg-surface-container rounded-lg border border-outline-variant/30">
+<span class="text-label-caps text-on-surface-variant block mb-1">AZHON LEDGER (EXPECTED)</span>
+<span class="font-h2 text-h2 text-primary">$4,821,090.22</span>
+<div class="flex items-center gap-1 text-on-tertiary-container mt-2">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span class="text-body-sm font-semibold">14,209 Entries</span>
+</div>
+</div>
+<div class="p-4 bg-surface-container rounded-lg border border-outline-variant/30">
+<span class="text-label-caps text-on-surface-variant block mb-1">PROVIDER TOTALS</span>
+<span class="font-h2 text-h2 text-primary">$4,819,450.10</span>
+<div class="flex items-center gap-1 text-on-surface-variant mt-2">
+<span class="material-symbols-outlined text-[16px]">info</span>
+<span class="text-body-sm font-semibold">14,188 Entries</span>
+</div>
+</div>
+<div class="p-4 bg-error-container/20 rounded-lg border border-error/20">
+<span class="text-label-caps text-error block mb-1">CRITICAL VARIANCE</span>
+<span class="font-h2 text-h2 text-error">-$1,640.12</span>
+<div class="flex items-center gap-1 text-error mt-2">
+<span class="material-symbols-outlined text-[16px]">warning</span>
+<span class="text-body-sm font-semibold">21 Mismatches</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Source Data Import -->
+<div class="col-span-4 bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-[0px_4px_20px_rgba(10,37,64,0.05)] relative">
+<div class="absolute top-0 left-0 w-full h-1 bg-secondary"></div>
+<h3 class="font-h3 text-h3 text-primary mb-4">Source Data</h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-outline-variant">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim">database</span>
+<div>
+<p class="font-body-md font-bold text-primary">Internal_Ledger_Oct.csv</p>
+<p class="text-label-caps text-on-surface-variant">IMPORTED 2H AGO</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-tertiary-container">cloud_done</span>
+</div>
+<div class="p-4 border-2 border-dashed border-outline-variant rounded-lg flex flex-col items-center justify-center gap-2 hover:bg-surface-container transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-on-surface-variant text-[32px]">upload_file</span>
+<p class="text-body-sm text-on-surface-variant font-bold">Import Provider CSV/API</p>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 border border-primary text-primary py-2 rounded-lg text-body-sm font-bold hover:bg-primary hover:text-white transition-all">Clear Data</button>
+<button class="flex-1 bg-primary text-white py-2 rounded-lg text-body-sm font-bold active:opacity-80">Process Sync</button>
+</div>
+</div>
+</div>
+<!-- Filters and Table Toolbar -->
+<div class="col-span-12 flex items-center justify-between bg-surface-container-high/30 p-4 rounded-lg border border-outline-variant">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-md border border-outline-variant">
+<span class="text-label-caps text-on-surface-variant">PROVIDER:</span>
+<select class="border-none p-0 text-body-sm font-bold focus:ring-0">
+<option>Stripe Connect</option>
+<option>Adyen Global</option>
+<option>PayPal Treasury</option>
+</select>
+</div>
+<div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-md border border-outline-variant">
+<span class="text-label-caps text-on-surface-variant">STATUS:</span>
+<select class="border-none p-0 text-body-sm font-bold focus:ring-0">
+<option>All Statuses</option>
+<option>Matched</option>
+<option>Partial</option>
+<option>Orphan</option>
+</select>
+</div>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-on-tertiary-container/10 text-on-tertiary-container rounded text-label-caps font-bold">14,188 MATCHED</span>
+<span class="px-3 py-1 bg-secondary-container/20 text-on-secondary-container rounded text-label-caps font-bold">18 PARTIAL</span>
+<span class="px-3 py-1 bg-error-container text-on-error-container rounded text-label-caps font-bold">3 ORPHAN</span>
+</div>
+</div>
+<!-- Main Reconciliation Table -->
+<div class="col-span-9 bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden shadow-[0px_4px_20px_rgba(10,37,64,0.05)]">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low border-b border-outline-variant">
+<tr>
+<th class="px-6 py-4 text-label-caps text-on-surface-variant">TRANS ID</th>
+<th class="px-6 py-4 text-label-caps text-on-surface-variant">AZHON AMT</th>
+<th class="px-6 py-4 text-label-caps text-on-surface-variant">PROVIDER AMT</th>
+<th class="px-6 py-4 text-label-caps text-on-surface-variant">VARIANCE</th>
+<th class="px-6 py-4 text-label-caps text-on-surface-variant">STATUS</th>
+<th class="px-6 py-4 text-label-caps text-on-surface-variant">ACTION</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<!-- Matched Row -->
+<tr class="hover:bg-surface-container-lowest transition-colors cursor-pointer group">
+<td class="px-6 py-4 font-data-mono text-primary">#TXN-882910</td>
+<td class="px-6 py-4 font-data-mono">$1,200.00</td>
+<td class="px-6 py-4 font-data-mono">$1,200.00</td>
+<td class="px-6 py-4 font-data-mono text-on-surface-variant">$0.00</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-on-tertiary-container text-[12px] font-bold">
+<span class="w-2 h-2 rounded-full bg-on-tertiary-container"></span>
+                                        Matched
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">more_vert</span>
+</td>
+</tr>
+<!-- Partial/Mismatch Row -->
+<tr class="bg-secondary-container/5 hover:bg-secondary-container/10 transition-colors cursor-pointer group border-l-4 border-l-secondary">
+<td class="px-6 py-4 font-data-mono text-primary">#TXN-882911</td>
+<td class="px-6 py-4 font-data-mono">$5,400.00</td>
+<td class="px-6 py-4 font-data-mono">$4,900.00</td>
+<td class="px-6 py-4 font-data-mono text-secondary">-$500.00</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-secondary text-[12px] font-bold">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+                                        Partial
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<button class="bg-primary text-white px-3 py-1 rounded text-[11px] font-bold uppercase tracking-tight">Investigate</button>
+</td>
+</tr>
+<!-- Orphan Row -->
+<tr class="bg-error-container/5 hover:bg-error-container/10 transition-colors cursor-pointer group border-l-4 border-l-error">
+<td class="px-6 py-4 font-data-mono text-primary">#TXN-882915</td>
+<td class="px-6 py-4 font-data-mono">$1,140.12</td>
+<td class="px-6 py-4 font-data-mono">---</td>
+<td class="px-6 py-4 font-data-mono text-error">-$1,140.12</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-error text-[12px] font-bold">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+                                        Orphan
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<button class="bg-primary text-white px-3 py-1 rounded text-[11px] font-bold uppercase tracking-tight">Investigate</button>
+</td>
+</tr>
+<!-- Matched Row -->
+<tr class="hover:bg-surface-container-lowest transition-colors cursor-pointer group">
+<td class="px-6 py-4 font-data-mono text-primary">#TXN-882920</td>
+<td class="px-6 py-4 font-data-mono">$890.50</td>
+<td class="px-6 py-4 font-data-mono">$890.50</td>
+<td class="px-6 py-4 font-data-mono text-on-surface-variant">$0.00</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-on-tertiary-container text-[12px] font-bold">
+<span class="w-2 h-2 rounded-full bg-on-tertiary-container"></span>
+                                        Matched
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">more_vert</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Investigation Side Panel (Embedded) -->
+<div class="col-span-3 space-y-gutter">
+<div class="bg-white p-lg rounded-xl border border-outline-variant shadow-[0px_8px_30px_rgba(10,37,64,0.08)]">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-secondary">manage_search</span>
+<h3 class="font-h3 text-h3 text-primary">Investigation</h3>
+</div>
+<div class="p-4 bg-surface-container-low rounded-lg mb-4">
+<p class="text-label-caps text-on-surface-variant mb-1">SELECTED ENTITY</p>
+<p class="font-data-mono text-primary font-bold">#TXN-882911</p>
+<p class="text-body-sm text-on-surface-variant mt-2">Provider (Stripe) reports a partial capture. AZHON ledger expected full settlement. Likely fee-deduction mismatch.</p>
+</div>
+<div class="space-y-3 mb-6">
+<button class="w-full flex items-center justify-between px-4 py-3 bg-error text-white rounded-lg font-bold text-body-sm active:scale-95 transition-transform">
+                                Mark Mismatch
+                                <span class="material-symbols-outlined text-[18px]">priority_high</span>
+</button>
+<button class="w-full flex items-center justify-between px-4 py-3 border border-primary text-primary rounded-lg font-bold text-body-sm hover:bg-primary-fixed-variant/10 active:scale-95 transition-transform">
+                                Resolve Mismatch
+                                <span class="material-symbols-outlined text-[18px]">done_all</span>
+</button>
+<button class="w-full flex items-center justify-between px-4 py-3 bg-primary text-white rounded-lg font-bold text-body-sm active:scale-95 transition-transform">
+                                Close Conciliation
+                                <span class="material-symbols-outlined text-[18px]">lock</span>
+</button>
+</div>
+<div class="border-t border-outline-variant pt-4">
+<p class="text-label-caps text-on-surface-variant mb-2">AUDIT TRAIL</p>
+<div class="space-y-4">
+<div class="flex gap-3">
+<div class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5"></div>
+<div>
+<p class="text-body-sm font-bold">System Flagged Mismatch</p>
+<p class="text-[11px] text-on-surface-variant">Today, 10:45 AM</p>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="w-1.5 h-1.5 rounded-full bg-outline mt-1.5"></div>
+<div>
+<p class="text-body-sm font-bold">Data Imported</p>
+<p class="text-[11px] text-on-surface-variant">Today, 09:20 AM</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Intelligence Pulse -->
+<div class="bg-primary p-lg rounded-xl border border-primary-container text-on-primary">
+<div class="flex items-center gap-2 mb-2">
+<span class="w-2 h-2 rounded-full bg-secondary animate-ping"></span>
+<span class="text-label-caps text-secondary">PREDICTIVE SIGNAL</span>
+</div>
+<p class="font-body-md leading-relaxed">System predicts <span class="text-secondary font-bold">88% probability</span> that variance in batch #RC-9982 is due to UTC/PST timestamp drift at provider gateway.</p>
+<button class="mt-4 text-secondary font-bold text-body-sm flex items-center gap-1 hover:underline">
+                            View Drift Analysis
+                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB Suppression Rule Applied (Not rendered on transaction details/ops screens) -->
+</body></html>

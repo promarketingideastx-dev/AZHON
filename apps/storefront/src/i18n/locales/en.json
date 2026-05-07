@@ -1,0 +1,162 @@
+{
+  "cart": {
+    "title": "Your Cart",
+    "sold_by": "SOLD BY",
+    "in_stock": "In stock",
+    "only_few_left": "Only {qty} left",
+    "save": "Save",
+    "delete": "Remove",
+    "order_summary": "Order Summary",
+    "subtotal": "Subtotal ({qty} items)",
+    "estimated_shipping": "Estimated Shipping",
+    "free_shipping": "FREE",
+    "taxes": "Taxes",
+    "total_savings": "Total Savings",
+    "total_to_pay": "TOTAL TO PAY",
+    "continue_to_payment": "Continue to Payment",
+    "terms_acceptance": "By clicking, you accept our Terms of Service and Return Policy",
+    "premium_shipping_title": "Premium Global Shipping",
+    "premium_shipping_desc": "Congratulations! Your purchase qualifies for free priority shipping. Estimated delivery in 3-5 days",
+    "secure_payments": "100% SECURE PAYMENTS",
+    "upsell_title": "Complete Your Style",
+    "empty_cart": "Your cart is empty",
+    "back_to_shop": "Back to Shop"
+  },
+  "header": {
+    "home": "Home",
+    "categories": "Categories",
+    "deals": "Deals",
+    "sell": "Sell",
+    "help": "Help",
+    "search_placeholder": "Search products, brands and more...",
+    "search_button": "Search",
+    "logout": "Logout"
+  },
+  "home": {
+    "explore_categories": "Explore Categories",
+    "browse_department": "Browse by department",
+    "see_all": "See All",
+    "flash_deals": "Flash Deals",
+    "ends_in": "Ends in",
+    "new_arrivals": "New Arrivals",
+    "recommended": "Recommended for you",
+    "explora": "Explore",
+    "hero_title": "Elevate Your Lifestyle Every Day.",
+    "hero_desc": "Discover curated collections from global brands. Shop fast and securely.",
+    "explore_now": "Explore Now",
+    "partnership": "Partner with AZHON.",
+    "partnership_desc": "Reach millions of customers. Our platform provides the tools, logistics and data you need to scale.",
+    "start_selling": "Start Selling"
+  },
+  "categories": {
+    "title": "All Categories",
+    "adult_warning_title": "Adult Content (18+)",
+    "adult_warning_desc": "This category contains intimate wellness products. You must be at least 18 years old to enter.",
+    "adult_warning_confirm": "I am 18 or older",
+    "adult_warning_cancel": "Go back",
+    "cell_phones": {
+      "title": "Cell Phones & Telephones",
+      "smartphones": "Smartphones",
+      "accessories": "Accessories",
+      "smartwatches": "Smartwatches",
+      "spare_parts": "Spare Parts",
+      "landline": "Landline Phones",
+      "radios": "Radios & Communication"
+    },
+    "electronics": {
+      "title": "Electronics, Audio & Video",
+      "televisions": "Televisions",
+      "audio": "Audio",
+      "cameras": "Cameras & Video",
+      "tv_accessories": "TV Accessories",
+      "streaming": "Streaming",
+      "projectors": "Projectors"
+    },
+    "computing": {
+      "title": "Computing",
+      "laptops": "Laptops",
+      "desktops": "Desktops",
+      "components": "PC Components",
+      "peripherals": "Peripherals",
+      "networking": "Networking",
+      "storage": "Storage"
+    },
+    "home": {
+      "title": "Home & Appliances",
+      "appliances": "Appliances",
+      "furniture": "Furniture",
+      "kitchen": "Kitchen",
+      "decoration": "Decoration",
+      "garden": "Garden"
+    },
+    "clothing": {
+      "title": "Clothing, Footwear & Accessories",
+      "men": "Men",
+      "women": "Women",
+      "kids": "Kids",
+      "footwear": "Footwear",
+      "accessories": "Accessories"
+    },
+    "beauty": {
+      "title": "Beauty & Personal Care",
+      "makeup": "Makeup",
+      "personal_care": "Personal Care",
+      "perfumes": "Perfumes"
+    },
+    "sports": {
+      "title": "Sports & Fitness",
+      "fitness": "Fitness & Gym",
+      "cycling": "Cycling",
+      "camping": "Camping & Outdoor",
+      "team_sports": "Team Sports",
+      "fishing": "Fishing & Hunting",
+      "swimming": "Swimming"
+    },
+    "vehicles": {
+      "title": "Vehicles & Accessories",
+      "cars": "Cars & Trucks",
+      "motorcycles": "Motorcycles",
+      "parts": "Parts",
+      "accessories": "Accessories"
+    },
+    "toys": {
+      "title": "Toys & Games",
+      "action_figures": "Action Figures",
+      "board_games": "Board Games",
+      "plush_toys": "Plush Toys"
+    },
+    "books": {
+      "title": "Books, Magazines & Comics",
+      "physical_books": "Physical Books",
+      "magazines": "Magazines",
+      "ebooks": "Ebooks"
+    },
+    "music_movies": {
+      "title": "Music & Movies",
+      "music": "Music",
+      "movies": "Movies",
+      "series": "Series"
+    },
+    "musical_instruments": {
+      "title": "Musical Instruments",
+      "guitars": "Guitars",
+      "keyboards": "Keyboards",
+      "pro_audio": "Pro Audio"
+    },
+    "pets": {
+      "title": "Pets",
+      "food": "Food",
+      "accessories": "Accessories",
+      "hygiene": "Hygiene & Care",
+      "beds_transport": "Beds & Transport",
+      "toys": "Toys",
+      "health": "Health & Wellness"
+    },
+    "intimate_wellness": {
+      "title": "Intimate Wellness",
+      "wellness": "Wellness",
+      "care": "Care",
+      "accessories": "Accessories"
+    }
+  }
+}

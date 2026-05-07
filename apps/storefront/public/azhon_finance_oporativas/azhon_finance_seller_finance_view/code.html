@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AZHON Finance - Seller Balances</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #F8FAFC;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid #E2E8F0;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary-container": "#6b3500",
+                      "primary-fixed-dim": "#b0c8eb",
+                      "primary-container": "#0a2540",
+                      "surface-tint": "#49607e",
+                      "on-primary-container": "#768dad",
+                      "tertiary-fixed-dim": "#59dad1",
+                      "surface-container-low": "#f5f3f6",
+                      "surface-container-high": "#e9e8ea",
+                      "secondary-fixed": "#ffdcc5",
+                      "on-surface-variant": "#43474d",
+                      "inverse-surface": "#2f3033",
+                      "surface-variant": "#e3e2e5",
+                      "on-tertiary-container": "#009b94",
+                      "primary": "#000f22",
+                      "on-primary-fixed-variant": "#314865",
+                      "surface-container": "#efedf0",
+                      "on-secondary": "#ffffff",
+                      "on-secondary-fixed": "#301400",
+                      "on-primary": "#ffffff",
+                      "tertiary": "#001110",
+                      "error-container": "#ffdad6",
+                      "on-primary-fixed": "#001c37",
+                      "inverse-primary": "#b0c8eb",
+                      "background": "#faf9fb",
+                      "surface-dim": "#dbd9dc",
+                      "secondary": "#944b00",
+                      "outline-variant": "#c4c6ce",
+                      "secondary-fixed-dim": "#ffb783",
+                      "on-error": "#ffffff",
+                      "outline": "#74777e",
+                      "surface-bright": "#faf9fb",
+                      "surface-container-highest": "#e3e2e5",
+                      "on-tertiary-fixed-variant": "#00504c",
+                      "tertiary-container": "#002927",
+                      "on-tertiary-fixed": "#00201e",
+                      "tertiary-fixed": "#79f6ed",
+                      "surface-container-lowest": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "secondary-container": "#fe9744",
+                      "on-secondary-fixed-variant": "#713700",
+                      "error": "#ba1a1a",
+                      "primary-fixed": "#d2e4ff",
+                      "on-surface": "#1b1c1e",
+                      "surface": "#faf9fb",
+                      "inverse-on-surface": "#f2f0f3",
+                      "on-tertiary": "#ffffff",
+                      "on-background": "#1b1c1e"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xl": "32px",
+                      "sm": "8px",
+                      "xs": "4px",
+                      "lg": "24px",
+                      "margin": "24px",
+                      "unit": "4px",
+                      "md": "16px",
+                      "gutter": "20px"
+              },
+              "fontFamily": {
+                      "h3": ["Plus Jakarta Sans"],
+                      "body-lg": ["Plus Jakarta Sans"],
+                      "h2": ["Plus Jakarta Sans"],
+                      "label-caps": ["Plus Jakarta Sans"],
+                      "data-mono": ["Plus Jakarta Sans"],
+                      "h1": ["Plus Jakarta Sans"],
+                      "body-md": ["Plus Jakarta Sans"],
+                      "body-sm": ["Plus Jakarta Sans"]
+              },
+              "fontSize": {
+                      "h3": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "h2": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "data-mono": ["14px", {"lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "h1": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-primary dark:bg-primary flex flex-col py-lg z-50">
+<div class="px-6 mb-10">
+<h1 class="font-h3 text-h3 font-bold text-on-primary dark:text-on-primary">AZHON Finance</h1>
+<p class="text-on-primary-container text-xs opacity-80 mt-1">Institutional Grade Ops</p>
+</div>
+<nav class="flex-1 flex flex-col gap-1">
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 hover:bg-primary-fixed-variant/20 transition-colors cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Overview</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container rounded-lg mx-2 cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-body-md text-body-md">Seller Balances</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 hover:bg-primary-fixed-variant/20 transition-colors cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-body-md text-body-md">Payout Queue</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 hover:bg-primary-fixed-variant/20 transition-colors cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined">lock_clock</span>
+<span class="font-body-md text-body-md">Escrow Holds</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 hover:bg-primary-fixed-variant/20 transition-colors cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-body-md text-body-md">Transaction Ledger</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-primary-container/70 hover:text-on-primary mx-2 hover:bg-primary-fixed-variant/20 transition-colors cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-body-md text-body-md">Audit Logs</span>
+</div>
+</nav>
+<div class="px-4 mt-auto">
+<button class="w-full py-3 bg-secondary-container text-on-secondary-container rounded-xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                New Transaction
+            </button>
+<div class="mt-6 flex flex-col gap-1 border-t border-on-primary-container/10 pt-4">
+<div class="flex items-center gap-3 px-4 py-2 text-on-primary-container/70 hover:text-on-primary cursor-pointer">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-2 text-on-primary-container/70 hover:text-on-primary cursor-pointer">
+<span class="material-symbols-outlined">contact_support</span>
+<span class="font-body-md text-body-md">Support</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center h-16 w-full pl-8 pr-margin ml-auto bg-surface-container-lowest border-b border-outline-variant sticky top-0 z-40">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-96">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 text-body-md focus:ring-2 focus:ring-primary-container/20" placeholder="Search transactions, invoices..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined cursor-pointer hover:bg-surface-container-low p-2 rounded-full transition-colors">notifications</span>
+<span class="material-symbols-outlined cursor-pointer hover:bg-surface-container-low p-2 rounded-full transition-colors">help_outline</span>
+<div class="flex items-center gap-2 cursor-pointer ml-2">
+<span class="material-symbols-outlined text-primary-container">account_circle</span>
+<span class="font-body-md font-bold text-primary">Global Mart LLC</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Canvas -->
+<div class="p-8 max-w-7xl w-full mx-auto space-y-lg">
+<!-- Page Header -->
+<div class="flex justify-between items-end">
+<div>
+<h2 class="font-h1 text-h1 text-primary">Finance Dashboard</h2>
+<p class="text-on-surface-variant mt-1 font-body-md">Real-time oversight of your seller balances and liquidity.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-6 py-2 border border-primary-container text-primary-container font-bold rounded-lg hover:bg-primary-container/5 transition-colors">
+                        Update Payment Method
+                    </button>
+<button class="px-6 py-2 bg-secondary text-on-secondary font-bold rounded-lg hover:shadow-lg transition-all active:scale-95">
+                        Request Payout
+                    </button>
+</div>
+</div>
+<!-- Bento Balance Grid -->
+<div class="bento-grid">
+<!-- Available Balance (Hero Card) -->
+<div class="col-span-12 lg:col-span-4 bg-primary text-white p-6 rounded-xl border-t-8 border-secondary-container shadow-lg flex flex-col justify-between relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-9xl">account_balance_wallet</span>
+</div>
+<div class="z-10">
+<p class="text-label-caps opacity-70 uppercase tracking-widest">Available to Withdraw</p>
+<h3 class="text-4xl font-extrabold mt-2">$142,500.40</h3>
+<div class="mt-4 flex items-center gap-2 text-secondary-fixed-dim text-body-sm">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>+12.4% from last period</span>
+</div>
+</div>
+<div class="mt-8 flex gap-2 z-10">
+<button class="bg-secondary-container text-on-secondary-container px-4 py-2 rounded font-bold text-xs">Instant Payout</button>
+<button class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded font-bold text-xs transition-colors">View Breakdown</button>
+</div>
+</div>
+<!-- Pending Balances -->
+<div class="col-span-6 lg:col-span-2 glass-card p-6 rounded-xl border-t-8 border-primary-container shadow-sm flex flex-col justify-between">
+<div>
+<p class="text-label-caps text-on-surface-variant uppercase">Pending</p>
+<h4 class="text-h3 font-bold mt-2">$24,190.00</h4>
+</div>
+<p class="text-xs text-outline mt-4">Orders in Transit</p>
+</div>
+<!-- Held Balances -->
+<div class="col-span-6 lg:col-span-2 glass-card p-6 rounded-xl border-t-8 border-error shadow-sm flex flex-col justify-between">
+<div>
+<p class="text-label-caps text-on-surface-variant uppercase">Held / Escrow</p>
+<h4 class="text-h3 font-bold mt-2">$8,400.00</h4>
+</div>
+<div class="flex items-center gap-1 text-error text-[11px] font-bold mt-4">
+<span class="material-symbols-outlined text-xs">info</span>
+<span>Dispute Resolution</span>
+</div>
+</div>
+<!-- In Payout -->
+<div class="col-span-12 lg:col-span-4 glass-card p-6 rounded-xl border-t-8 border-tertiary-fixed-dim shadow-sm flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-label-caps text-on-surface-variant uppercase">In Payout</p>
+<h4 class="text-h3 font-bold mt-2">$12,000.00</h4>
+</div>
+<div class="bg-tertiary-fixed text-on-tertiary-fixed text-[10px] px-2 py-1 rounded font-bold">EST. ARRIVAL 24H</div>
+</div>
+<div class="mt-4 flex items-center gap-3">
+<div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-tertiary-fixed-dim h-full w-[75%]"></div>
+</div>
+<span class="text-xs font-bold text-outline">75%</span>
+</div>
+</div>
+</div>
+<!-- Transaction Ledger & Charges Breakdown -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Movement History Table -->
+<div class="col-span-12 xl:col-span-8 space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="font-h3 text-h3 text-primary flex items-center gap-2">
+<span class="material-symbols-outlined">history</span>
+                            Transaction Ledger
+                        </h3>
+<button class="text-body-sm font-bold text-primary hover:underline">Export CSV</button>
+</div>
+<div class="glass-card rounded-xl overflow-hidden shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="px-6 py-4 font-label-caps text-on-surface-variant">DATE &amp; TIME</th>
+<th class="px-6 py-4 font-label-caps text-on-surface-variant">TRANSACTION</th>
+<th class="px-6 py-4 font-label-caps text-on-surface-variant">STATUS</th>
+<th class="px-6 py-4 font-label-caps text-on-surface-variant text-right">AMOUNT</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-6 py-4 font-data-mono text-body-sm">Oct 24, 09:12 AM</td>
+<td class="px-6 py-4">
+<p class="font-body-md font-bold">Order Sale - ID #88921</p>
+<p class="text-xs text-outline">Customer Payment Received</p>
+</td>
+<td class="px-6 py-4">
+<span class="bg-surface-container text-on-surface px-2 py-1 rounded text-[11px] font-bold">SETTLED</span>
+</td>
+<td class="px-6 py-4 text-right font-data-mono text-green-600 font-bold">+$1,450.00</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-6 py-4 font-data-mono text-body-sm">Oct 23, 04:30 PM</td>
+<td class="px-6 py-4">
+<p class="font-body-md font-bold">AZHON Prime Charge</p>
+<p class="text-xs text-outline">Oct Subscription Fee</p>
+</td>
+<td class="px-6 py-4">
+<span class="bg-surface-container text-on-surface px-2 py-1 rounded text-[11px] font-bold">PAID</span>
+</td>
+<td class="px-6 py-4 text-right font-data-mono text-error font-bold">-$199.00</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-6 py-4 font-data-mono text-body-sm">Oct 22, 11:00 AM</td>
+<td class="px-6 py-4">
+<p class="font-body-md font-bold">Escrow Release</p>
+<p class="text-xs text-outline">Order #88701 Delivered</p>
+</td>
+<td class="px-6 py-4">
+<span class="bg-secondary-container/20 text-on-secondary-container px-2 py-1 rounded text-[11px] font-bold">AVAILABLE</span>
+</td>
+<td class="px-6 py-4 text-right font-data-mono text-green-600 font-bold">+$3,200.00</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-6 py-4 font-data-mono text-body-sm">Oct 21, 02:45 PM</td>
+<td class="px-6 py-4">
+<p class="font-body-md font-bold">Payout Request</p>
+<p class="text-xs text-outline">Bank Wire to Chase-4402</p>
+</td>
+<td class="px-6 py-4">
+<span class="bg-primary-container text-on-primary-container px-2 py-1 rounded text-[11px] font-bold animate-pulse">PROCESSING</span>
+</td>
+<td class="px-6 py-4 text-right font-data-mono text-on-surface font-bold">-$5,000.00</td>
+</tr>
+</tbody>
+</table>
+<div class="px-6 py-4 bg-surface-container-lowest flex justify-center">
+<button class="text-body-sm font-bold text-primary flex items-center gap-2 hover:opacity-70">
+                                View All Transactions
+                                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Charge Breakdown Sidebar -->
+<div class="col-span-12 xl:col-span-4 space-y-6">
+<div class="glass-card p-6 rounded-xl shadow-sm space-y-6 border-t-4 border-primary">
+<h3 class="font-h3 text-h3 text-primary">Intelligence Summary</h3>
+<!-- Charges Breakdown -->
+<div class="space-y-4">
+<p class="text-label-caps text-on-surface-variant uppercase">Current Period Fees</p>
+<div class="space-y-3">
+<div class="flex justify-between items-center text-body-md">
+<span class="text-on-surface-variant">Sales Commission (3.5%)</span>
+<span class="font-data-mono font-bold">$12,450.00</span>
+</div>
+<div class="flex justify-between items-center text-body-md">
+<span class="text-on-surface-variant">AZHON Prime Charge</span>
+<span class="font-data-mono font-bold">$199.00</span>
+</div>
+<div class="flex justify-between items-center text-body-md">
+<span class="text-on-surface-variant">Logistics Adjustments</span>
+<span class="font-data-mono font-bold">$842.20</span>
+</div>
+<div class="pt-3 border-t border-outline-variant flex justify-between items-center">
+<span class="font-bold text-primary">Total Deductions</span>
+<span class="font-data-mono font-bold text-error">-$13,491.20</span>
+</div>
+</div>
+</div>
+<!-- Predictive Signal Card -->
+<div class="bg-secondary-fixed/30 p-4 rounded-lg border border-secondary/20 relative overflow-hidden">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary animate-pulse">monitoring</span>
+<div>
+<p class="font-bold text-secondary text-body-sm">Cashflow Prediction</p>
+<p class="text-xs text-on-surface-variant mt-1">Based on current transit trends, an additional $18,400 will be available within 72 hours.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Invoices List -->
+<div class="glass-card p-6 rounded-xl shadow-sm space-y-4">
+<div class="flex justify-between items-center">
+<h3 class="font-h3 text-h3 text-primary">Invoices</h3>
+<span class="material-symbols-outlined text-outline cursor-pointer">filter_list</span>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-3 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer border border-transparent hover:border-outline-variant">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary p-2 bg-primary-fixed rounded-lg">description</span>
+<div>
+<p class="text-body-sm font-bold">INV-2023-10-24</p>
+<p class="text-[11px] text-outline">Oct 24 • Service Fee</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline">download</span>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer border border-transparent hover:border-outline-variant">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary p-2 bg-primary-fixed rounded-lg">description</span>
+<div>
+<p class="text-body-sm font-bold">INV-2023-10-17</p>
+<p class="text-[11px] text-outline">Oct 17 • Comm. Settlement</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline">download</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Withdrawal Requests Status -->
+<section class="space-y-4">
+<h3 class="font-h3 text-h3 text-primary flex items-center gap-2">
+<span class="material-symbols-outlined">account_balance</span>
+                    Withdrawal Activity
+                </h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="glass-card p-6 rounded-xl flex items-center justify-between border-l-4 border-green-500 shadow-sm">
+<div class="flex items-center gap-4">
+<div class="bg-green-100 p-3 rounded-full">
+<span class="material-symbols-outlined text-green-700">check_circle</span>
+</div>
+<div>
+<p class="text-label-caps text-on-surface-variant">PAID RECENTLY</p>
+<p class="text-h3 font-bold">$12,400</p>
+</div>
+</div>
+<span class="text-xs text-outline">2 Days Ago</span>
+</div>
+<div class="glass-card p-6 rounded-xl flex items-center justify-between border-l-4 border-secondary-container shadow-sm">
+<div class="flex items-center gap-4">
+<div class="bg-orange-100 p-3 rounded-full">
+<span class="material-symbols-outlined text-on-secondary-container">schedule</span>
+</div>
+<div>
+<p class="text-label-caps text-on-surface-variant">IN PROCESSING</p>
+<p class="text-h3 font-bold">$5,000</p>
+</div>
+</div>
+<span class="text-xs text-outline">Exp. Today</span>
+</div>
+<div class="glass-card p-6 rounded-xl flex items-center justify-between border-l-4 border-primary-container shadow-sm">
+<div class="flex items-center gap-4">
+<div class="bg-slate-200 p-3 rounded-full">
+<span class="material-symbols-outlined text-primary-container">info</span>
+</div>
+<div>
+<p class="text-label-caps text-on-surface-variant">UNPAID BALANCE</p>
+<p class="text-h3 font-bold">$0.00</p>
+</div>
+</div>
+<span class="text-xs text-outline">No Dues</span>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>

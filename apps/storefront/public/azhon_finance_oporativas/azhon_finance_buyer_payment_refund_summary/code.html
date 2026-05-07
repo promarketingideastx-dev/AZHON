@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AZHON Finance - Refund Summary</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-container": "#6b3500",
+                    "primary-fixed-dim": "#b0c8eb",
+                    "primary-container": "#0a2540",
+                    "surface-tint": "#49607e",
+                    "on-primary-container": "#768dad",
+                    "tertiary-fixed-dim": "#59dad1",
+                    "surface-container-low": "#f5f3f6",
+                    "surface-container-high": "#e9e8ea",
+                    "secondary-fixed": "#ffdcc5",
+                    "on-surface-variant": "#43474d",
+                    "inverse-surface": "#2f3033",
+                    "surface-variant": "#e3e2e5",
+                    "on-tertiary-container": "#009b94",
+                    "primary": "#000f22",
+                    "on-primary-fixed-variant": "#314865",
+                    "surface-container": "#efedf0",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed": "#301400",
+                    "on-primary": "#ffffff",
+                    "tertiary": "#001110",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed": "#001c37",
+                    "inverse-primary": "#b0c8eb",
+                    "background": "#faf9fb",
+                    "surface-dim": "#dbd9dc",
+                    "secondary": "#944b00",
+                    "outline-variant": "#c4c6ce",
+                    "secondary-fixed-dim": "#ffb783",
+                    "on-error": "#ffffff",
+                    "outline": "#74777e",
+                    "surface-bright": "#faf9fb",
+                    "surface-container-highest": "#e3e2e5",
+                    "on-tertiary-fixed-variant": "#00504c",
+                    "tertiary-container": "#002927",
+                    "on-tertiary-fixed": "#00201e",
+                    "tertiary-fixed": "#79f6ed",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "secondary-container": "#fe9744",
+                    "on-secondary-fixed-variant": "#713700",
+                    "error": "#ba1a1a",
+                    "primary-fixed": "#d2e4ff",
+                    "on-surface": "#1b1c1e",
+                    "surface": "#faf9fb",
+                    "inverse-on-surface": "#f2f0f3",
+                    "on-tertiary": "#ffffff",
+                    "on-background": "#1b1c1e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "sm": "8px",
+                    "xs": "4px",
+                    "lg": "24px",
+                    "margin": "24px",
+                    "unit": "4px",
+                    "md": "16px",
+                    "gutter": "20px"
+            },
+            "fontFamily": {
+                    "h3": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "h2": ["Plus Jakarta Sans"],
+                    "label-caps": ["Plus Jakarta Sans"],
+                    "data-mono": ["Plus Jakarta Sans"],
+                    "h1": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "body-sm": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "h3": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "h2": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "data-mono": ["14px", {"lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "h1": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #faf9fb;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- TopNavBar Shell -->
+<header class="bg-surface-container-lowest sticky top-0 z-50 border-b border-outline-variant flex justify-between items-center h-16 w-full px-lg md:px-xl">
+<div class="flex items-center gap-md">
+<span class="font-h3 text-h3 font-bold text-primary">AZHON Finance</span>
+</div>
+<div class="hidden md:flex items-center flex-1 max-w-md mx-xl">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-lg pl-10 pr-4 py-2 text-body-md focus:ring-2 focus:ring-secondary-container" placeholder="Search transactions..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors">help_outline</button>
+<div class="h-8 w-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container overflow-hidden">
+<span class="material-symbols-outlined">account_circle</span>
+</div>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-margin py-xl space-y-lg">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div class="space-y-xs">
+<nav class="flex items-center gap-xs text-on-surface-variant font-label-caps uppercase">
+<span>Transactions</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-secondary font-bold">Refund Summary</span>
+</nav>
+<h1 class="font-h1 text-h1 text-primary">Refund Overview</h1>
+<p class="text-on-surface-variant font-body-lg">Transaction ID: <span class="font-data-mono text-primary">AZN-9920-X82</span></p>
+</div>
+<div class="flex gap-sm">
+<button class="flex items-center gap-sm px-md py-sm bg-surface-container-lowest border border-outline-variant rounded-lg font-body-md hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">download</span>
+                    Receipt
+                </button>
+<button class="flex items-center gap-sm px-md py-sm bg-secondary text-on-secondary rounded-lg font-body-md hover:opacity-90 transition-transform active:scale-95">
+<span class="material-symbols-outlined">contact_support</span>
+                    Get Help
+                </button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Refund Status Card -->
+<div class="md:col-span-8 bg-surface-container-lowest rounded-xl p-lg border border-outline-variant shadow-[0px_4px_20px_rgba(10,37,64,0.05)] relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-secondary"></div>
+<div class="flex items-start justify-between mb-xl">
+<div class="space-y-xs">
+<span class="px-sm py-xs bg-secondary-fixed text-on-secondary-fixed-variant rounded font-label-caps uppercase">Processing Refund</span>
+<h3 class="font-h2 text-h2 text-primary">$1,240.00</h3>
+</div>
+<div class="text-right">
+<p class="text-on-surface-variant font-label-caps">Estimated Completion</p>
+<p class="font-h3 text-h3 text-primary">Oct 24, 2023</p>
+</div>
+</div>
+<!-- Progress Timeline -->
+<div class="relative py-md">
+<div class="absolute left-4 top-0 bottom-0 w-0.5 bg-surface-container-high md:left-0 md:right-0 md:top-4 md:bottom-auto md:h-0.5 md:w-full"></div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-lg relative">
+<!-- Step 1 -->
+<div class="flex flex-row md:flex-col items-start gap-md group">
+<div class="relative z-10 w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-on-secondary shadow-lg">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<div class="pt-1 md:pt-4">
+<p class="font-body-md font-bold text-primary">Request Received</p>
+<p class="text-on-surface-variant text-body-sm">Oct 18, 10:45 AM</p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-row md:flex-col items-start gap-md group">
+<div class="relative z-10 w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-on-secondary shadow-lg">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+</div>
+<div class="pt-1 md:pt-4">
+<p class="font-body-md font-bold text-primary">Merchant Approved</p>
+<p class="text-on-surface-variant text-body-sm">Oct 19, 02:30 PM</p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-row md:flex-col items-start gap-md group">
+<div class="relative z-10 w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container animate-pulse">
+<span class="material-symbols-outlined text-[18px]">sync</span>
+</div>
+<div class="pt-1 md:pt-4">
+<p class="font-body-md font-bold text-primary">Bank Processing</p>
+<p class="text-on-surface-variant text-body-sm">In Progress</p>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="flex flex-row md:flex-col items-start gap-md group opacity-40">
+<div class="relative z-10 w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">account_balance_wallet</span>
+</div>
+<div class="pt-1 md:pt-4">
+<p class="font-body-md font-bold text-primary">Funds Settled</p>
+<p class="text-on-surface-variant text-body-sm">Expected Oct 24</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Payment Method Card -->
+<div class="md:col-span-4 bg-surface-container-lowest rounded-xl p-lg border border-outline-variant shadow-[0px_4px_20px_rgba(10,37,64,0.05)] flex flex-col justify-between">
+<div>
+<h4 class="font-label-caps text-on-surface-variant uppercase mb-md">Original Payment</h4>
+<div class="flex items-center gap-md p-md bg-surface-container-low rounded-lg mb-lg">
+<div class="h-10 w-12 bg-primary flex items-center justify-center rounded-md">
+<span class="text-on-primary font-bold tracking-tighter">VISA</span>
+</div>
+<div>
+<p class="font-body-md font-bold text-primary">Ending in 4242</p>
+<p class="text-on-surface-variant text-body-sm">Expires 12/26</p>
+</div>
+</div>
+<div class="space-y-sm">
+<div class="flex justify-between">
+<span class="text-on-surface-variant text-body-sm">Total Purchase</span>
+<span class="text-primary font-data-mono">$1,240.00</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant text-body-sm">Method</span>
+<span class="text-primary font-body-sm">Credit Card</span>
+</div>
+</div>
+</div>
+<div class="mt-xl pt-lg border-t border-outline-variant">
+<p class="text-body-sm text-on-surface-variant italic leading-tight">
+                        Refunds will be credited back to your original payment method. Depending on your bank, it may take 5-10 business days to appear.
+                    </p>
+</div>
+</div>
+<!-- Purchase Details Card -->
+<div class="md:col-span-6 bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden shadow-[0px_4px_20px_rgba(10,37,64,0.05)]">
+<div class="p-lg flex items-center gap-md border-b border-outline-variant">
+<img alt="Product Image" class="w-20 h-20 object-cover rounded-lg" data-alt="A high-end, premium workstation laptop with a sleek metallic finish sits on a minimalist white desk. The lighting is soft and corporate, highlighting the technical sophistication of the hardware. The background is a clean, modern office environment with a professional intelligence tool aesthetic, utilizing a palette of soft grays and deep blues." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDR0wAaEsCJGmZ561ysrEze5mlYW-yN5bk7aVWj3dckqMFVNjy4e1793wE9qXYf3oI_KP0iVNAFLCgHfna1_d7CuKcBlQNiIhqk27ZGar0ZhHZQuhWgXNZA9jsPpNqXeTa1ZTx90Xg1FpVE_-3RRmlg2ABqHX08CV6ieHwcRwtU1bG_a0SHGHH696U4I45riJXxYvqGhIzL5MeM44CksI-fvhToldmElhgeyL5G9VSX-bJBWutlBjgi5tlVGrasGe8dkWHMJbDw1Eds"/>
+<div>
+<h4 class="font-body-lg font-bold text-primary">ProStream Z-800 Workstation</h4>
+<p class="text-on-surface-variant text-body-sm">Item #PRO-882-90</p>
+<p class="text-secondary font-bold text-body-md mt-1">$1,240.00</p>
+</div>
+</div>
+<div class="p-lg bg-surface-container-low/30 space-y-md">
+<div class="flex justify-between text-body-sm">
+<span class="text-on-surface-variant">Merchant</span>
+<span class="text-primary font-bold">TechOps Solutions Global</span>
+</div>
+<div class="flex justify-between text-body-sm">
+<span class="text-on-surface-variant">Purchase Date</span>
+<span class="text-primary">October 12, 2023</span>
+</div>
+</div>
+</div>
+<!-- Support & Quick Actions -->
+<div class="md:col-span-6 grid grid-cols-2 gap-md">
+<a class="group bg-primary p-lg rounded-xl flex flex-col justify-between hover:bg-primary-container transition-colors shadow-[0px_4px_20px_rgba(0,0,0,0.1)]" href="#">
+<span class="material-symbols-outlined text-secondary-container mb-md text-[32px]">chat_bubble</span>
+<div>
+<p class="text-on-primary font-bold font-body-md">Live Support</p>
+<p class="text-on-primary-container text-body-sm">Chat with an agent</p>
+</div>
+</a>
+<a class="group bg-surface-container-lowest border border-outline-variant p-lg rounded-xl flex flex-col justify-between hover:border-secondary transition-colors shadow-[0px_4px_20px_rgba(10,37,64,0.05)]" href="#">
+<span class="material-symbols-outlined text-secondary mb-md text-[32px]">description</span>
+<div>
+<p class="text-primary font-bold font-body-md">Full Invoice</p>
+<p class="text-on-surface-variant text-body-sm">View order details</p>
+</div>
+</a>
+<div class="col-span-2 bg-secondary-fixed p-lg rounded-xl border border-secondary/20 flex items-center gap-md">
+<div class="p-sm bg-on-secondary-fixed-variant/10 rounded-full">
+<span class="material-symbols-outlined text-on-secondary-fixed-variant">info</span>
+</div>
+<p class="text-on-secondary-fixed-variant text-body-sm font-bold">
+                        Need to change the refund destination? Contact support within 24 hours.
+                    </p>
+</div>
+</div>
+</div>
+<!-- Footer Info -->
+<footer class="mt-xl pt-xl border-t border-outline-variant flex flex-col md:flex-row justify-between gap-md text-on-surface-variant text-body-sm">
+<div class="flex gap-lg">
+<a class="hover:text-secondary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-secondary transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-secondary transition-colors" href="#">Security</a>
+</div>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">shield</span>
+<span>Protected by Institutional Grade Operations</span>
+</div>
+</footer>
+</main>
+<!-- Contextual FAB (Only for Support Action) -->
+<button class="fixed bottom-lg right-lg h-14 w-14 rounded-full bg-secondary text-on-secondary shadow-xl flex items-center justify-center hover:scale-105 transition-transform active:scale-95 group">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">support_agent</span>
+<span class="absolute right-full mr-4 bg-primary text-on-primary px-3 py-1 rounded-lg text-body-sm font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Quick Help</span>
+</button>
+</body></html>

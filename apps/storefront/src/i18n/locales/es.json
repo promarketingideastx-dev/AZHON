@@ -1,0 +1,177 @@
+{
+  "cart": {
+    "title": "Tu Carrito",
+    "sold_by": "VENDIDO POR",
+    "in_stock": "En stock",
+    "only_few_left": "Solo {qty} disponibles",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "order_summary": "Resumen del Pedido",
+    "subtotal": "Subtotal ({qty} artículos)",
+    "estimated_shipping": "Envío Estimado",
+    "free_shipping": "GRATIS",
+    "taxes": "Impuestos",
+    "total_savings": "Ahorro total",
+    "total_to_pay": "TOTAL A PAGAR",
+    "continue_to_payment": "Continuar al Pago",
+    "terms_acceptance": "Al hacer clic, aceptas nuestros Términos de Servicio y Política de Devoluciones",
+    "premium_shipping_title": "Envío Global Premium",
+    "premium_shipping_desc": "¡Felicidades! Tu compra califica para envío prioritario gratis. Entrega estimada en 3-5 días",
+    "secure_payments": "PAGOS 100% SEGUROS",
+    "upsell_title": "Completa tu Estilo",
+    "empty_cart": "Tu carrito está vacío",
+    "back_to_shop": "Volver a la tienda"
+  },
+  "header": {
+    "home": "Inicio",
+    "categories": "Categorías",
+    "deals": "Ofertas",
+    "sell": "Vender",
+    "help": "Ayuda",
+    "search_placeholder": "Buscar productos, marcas y más...",
+    "search_button": "Buscar",
+    "logout": "Salir"
+  },
+  "home": {
+    "explore_categories": "Explorar Categorías",
+    "browse_department": "Navegar por departamento",
+    "see_all": "Ver Todo",
+    "flash_deals": "Ofertas Flash",
+    "ends_in": "Termina en",
+    "new_arrivals": "Recién Llegados",
+    "recommended": "Te puede interesar",
+    "explora": "Explora",
+    "hero_title": "Eleva tu estilo de vida todos los días.",
+    "hero_desc": "Descubre colecciones seleccionadas de marcas globales. Compra rápido y seguro.",
+    "explore_now": "Explorar Ahora",
+    "partnership": "Emprenda con AZHON.",
+    "partnership_desc": "Llegue a millones de clientes. Nuestra plataforma proporciona las herramientas, logística y datos que necesita para escalar.",
+    "start_selling": "Comenzar a Vender",
+    "summer_campaign": "CAMPAÑA VERANO 2024",
+    "view_deals": "VER OFERTAS",
+    "best_sellers": "Más Vendidos",
+    "view_trending": "Ver Tendencias",
+    "just_for_you": "Solo para Ti",
+    "personalized_recs": "Recomendaciones personalizadas basadas en tu actividad",
+    "pick_of_the_day": "Selección del día",
+    "add_to_cart": "Agregar al Carrito",
+    "step_into_style": "Pisa con Estilo",
+    "sneaker_discount": "20% extra en todos los sneakers",
+    "boutique_collection": "La Colección Boutique",
+    "artisan_exclusives": "Descubre exclusivas artesanales",
+    "no_upfront_fees": "Sin tarifas iniciales",
+    "global_logistics": "Soporte logístico global",
+    "advanced_dashboard": "Dashboard avanzado"
+  },
+  "categories": {
+    "title": "Todas las Categorías",
+    "adult_warning_title": "Contenido para Adultos (+18)",
+    "adult_warning_desc": "Esta categoría contiene productos de bienestar íntimo. Debes ser mayor de 18 años para ingresar.",
+    "adult_warning_confirm": "Soy mayor de 18 años",
+    "adult_warning_cancel": "Volver",
+    "cell_phones": {
+      "title": "Celulares y Teléfonos",
+      "smartphones": "Smartphones",
+      "accessories": "Accesorios",
+      "smartwatches": "Smartwatches",
+      "spare_parts": "Repuestos",
+      "landline": "Teléfonos Fijos",
+      "radios": "Radios y Comunicación"
+    },
+    "electronics": {
+      "title": "Electrónica, Audio y Video",
+      "televisions": "Televisores",
+      "audio": "Audio",
+      "cameras": "Cámaras y Video",
+      "tv_accessories": "Accesorios TV",
+      "streaming": "Streaming",
+      "projectors": "Proyectores"
+    },
+    "computing": {
+      "title": "Computación",
+      "laptops": "Laptops",
+      "desktops": "PCs de Escritorio",
+      "components": "Componentes PC",
+      "peripherals": "Periféricos",
+      "networking": "Redes",
+      "storage": "Almacenamiento"
+    },
+    "home": {
+      "title": "Hogar y Electrodomésticos",
+      "appliances": "Electrodomésticos",
+      "furniture": "Muebles",
+      "kitchen": "Cocina",
+      "decoration": "Decoración",
+      "garden": "Jardín"
+    },
+    "clothing": {
+      "title": "Ropa, Calzado y Accesorios",
+      "men": "Hombres",
+      "women": "Mujeres",
+      "kids": "Niños",
+      "footwear": "Calzado",
+      "accessories": "Accesorios"
+    },
+    "beauty": {
+      "title": "Belleza y Cuidado Personal",
+      "makeup": "Maquillaje",
+      "personal_care": "Cuidado Personal",
+      "perfumes": "Perfumes"
+    },
+    "sports": {
+      "title": "Deportes y Fitness",
+      "fitness": "Fitness y Gimnasio",
+      "cycling": "Ciclismo",
+      "camping": "Camping y Exterior",
+      "team_sports": "Deportes de Equipo",
+      "fishing": "Pesca y Caza",
+      "swimming": "Natación"
+    },
+    "vehicles": {
+      "title": "Vehículos y Accesorios",
+      "cars": "Autos y Camionetas",
+      "motorcycles": "Motocicletas",
+      "parts": "Repuestos",
+      "accessories": "Accesorios"
+    },
+    "toys": {
+      "title": "Juguetes y Juegos",
+      "action_figures": "Figuras de Acción",
+      "board_games": "Juegos de Mesa",
+      "plush_toys": "Peluches"
+    },
+    "books": {
+      "title": "Libros, Revistas y Cómics",
+      "physical_books": "Libros Físicos",
+      "magazines": "Revistas",
+      "ebooks": "Ebooks"
+    },
+    "music_movies": {
+      "title": "Música y Películas",
+      "music": "Música",
+      "movies": "Películas",
+      "series": "Series"
+    },
+    "musical_instruments": {
+      "title": "Instrumentos Musicales",
+      "guitars": "Guitarras",
+      "keyboards": "Teclados",
+      "pro_audio": "Audio Profesional"
+    },
+    "pets": {
+      "title": "Mascotas",
+      "food": "Alimentos",
+      "accessories": "Accesorios",
+      "hygiene": "Higiene y Cuidado",
+      "beds_transport": "Camas y Transporte",
+      "toys": "Juguetes",
+      "health": "Salud Básica"
+    },
+    "intimate_wellness": {
+      "title": "Bienestar Íntimo",
+      "wellness": "Bienestar",
+      "care": "Cuidado",
+      "accessories": "Accesorios"
+    }
+  }
+}
