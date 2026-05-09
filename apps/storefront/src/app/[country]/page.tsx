@@ -29,8 +29,6 @@ export default async function Home({ params }: { params: { country: string } }) 
     return <div>Tenant not found for {countryCode}</div>;
   }
 
-
-
   const realProducts = await prisma.product.findMany({
     where: { 
       tenantId: tenant.id,
@@ -43,7 +41,7 @@ export default async function Home({ params }: { params: { country: string } }) 
       Metrics: true,
       Media: true,
     },
-    take: 12, // Max 12 for carousels
+    take: 24, // Increased to feed all home components
   });
 
   const tenantId = tenant.id;
@@ -62,14 +60,13 @@ export default async function Home({ params }: { params: { country: string } }) 
       </section>
 
       {/* 4. NEW ARRIVALS & TRENDING */}
-      {/* Oculto temporalmente: No hay Feed de Productos activado todavía y los mocks fueron removidos por honestidad visual */}
-      <FeaturedProductsGrid dict={dict} />
+      <FeaturedProductsGrid dict={dict} products={realProducts} tenantId={tenantId} currencyCode={tenant.currencyCode} country={country} />
 
       {/* 5. COMMERCIAL BANNERS */}
       <CommercialBanners dict={dict} />
 
       {/* 5.5 AMAZON-STYLE CATEGORY QUADS */}
-      <CategoryQuadGrid dict={dict} country={country} />
+      <CategoryQuadGrid dict={dict} country={country} products={realProducts} />
 
       {/* 6. PARTNERSHIP / SELLER CTA */}
       <SellerPartnershipCta dict={dict} country={country} />

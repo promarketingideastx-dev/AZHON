@@ -11,9 +11,42 @@ const jakarta = Plus_Jakarta_Sans({
   display: "swap",
 });
 
+import { getSiteUrl } from "@/utils/url";
+
 export const metadata: Metadata = {
-  title: "AZHON Marketplace",
-  description: "Marketplace by AZHON",
+  metadataBase: new URL(getSiteUrl()),
+  title: {
+    default: "AZHON Marketplace",
+    template: "%s | AZHON"
+  },
+  description: "Tu marketplace de confianza con soporte 24/7.",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/app-icon.png",
+  },
+  openGraph: {
+    title: "AZHON Marketplace",
+    description: "Tu marketplace de confianza con soporte 24/7.",
+    url: getSiteUrl(),
+    siteName: "AZHON",
+    images: [
+      {
+        url: "/logo-horizontal.png",
+        width: 1200,
+        height: 630,
+        alt: "AZHON Marketplace",
+      },
+    ],
+    locale: "es_HN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AZHON Marketplace",
+    description: "Tu marketplace de confianza con soporte 24/7.",
+    images: ["/logo-horizontal.png"],
+  },
 };
 
 import { Footer } from "@/components/Footer";

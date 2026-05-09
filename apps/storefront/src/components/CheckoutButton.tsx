@@ -60,9 +60,9 @@ export default function CheckoutButton({ tenantId, variantId }: CheckoutButtonPr
       <button 
         onClick={handleCheckout} 
         disabled={loading}
-        className={`w-full text-white px-5 py-3.5 rounded-full font-bold transition-all disabled:opacity-50 shadow-sm ${user ? 'bg-secondary hover:bg-black' : 'bg-primary hover:opacity-90'}`}
+        className={`w-full text-white py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-50 shadow-sm flex items-center justify-center h-full ${user ? 'bg-secondary hover:bg-black' : 'bg-primary hover:opacity-90'}`}
       >
-        {loading ? 'Añadiendo...' : (!user ? 'Inicia sesión para comprar' : 'Comprar Ahora')}
+        {loading ? 'Añadiendo...' : (!user ? 'Inicia Sesión' : 'Añadir')}
       </button>
 
       {result && (

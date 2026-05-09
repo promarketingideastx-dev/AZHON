@@ -35,8 +35,8 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
           <nav className="hidden lg:flex items-center gap-6">
             <Link href={`/${country}`} className="text-sm font-bold text-primary border-b-2 border-primary pb-1">{dict.header.home}</Link>
             <Link href={`/${country}/categorias`} className="text-sm font-medium text-neutral hover:text-secondary transition-colors">{dict.header.categories}</Link>
-            <Link href={`/${country}/ofertas`} className="text-sm font-medium text-neutral hover:text-secondary transition-colors">{dict.header.deals}</Link>
-            <Link href={`/${country}`} className="text-sm font-medium text-neutral hover:text-secondary transition-colors">{dict.header.sell}</Link>
+            <Link href={`/${country}/categorias`} className="text-sm font-medium text-neutral hover:text-secondary transition-colors">{dict.header.deals}</Link>
+            <Link href={`/${country}/vendedor`} className="text-sm font-medium text-neutral hover:text-secondary transition-colors">{dict.header.sell}</Link>
             <Link href={`/${country}/perfil/soporte`} className="text-sm font-medium text-neutral hover:text-secondary transition-colors">{dict.header.help}</Link>
           </nav>
 
@@ -66,10 +66,12 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
                   <span className="text-base sm:text-lg">👤</span>
                 </Link>
                 <button 
-                  onClick={() => console.log("Logout triggered")}
+                  onClick={() => {
+                    import('@/app/[country]/login/actions').then(m => m.logout())
+                  }}
                   className="text-[10px] sm:text-xs font-bold text-neutral hover:text-secondary transition-colors uppercase tracking-wider"
                 >
-                  Logout
+                  {dict.header.logout}
                 </button>
               </div>
             ) : (

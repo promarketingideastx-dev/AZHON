@@ -11,12 +11,14 @@ export default async function BuyerProfileLayout({
   const { country } = await params;
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      <div className="flex flex-col lg:flex-row gap-8">
-        <BuyerSidebar country={country} />
-        
-        <div className="flex-1 min-w-0">
-          {children}
+    <div className="w-full bg-[#FCF9F6] min-h-[calc(100vh-80px)]">
+      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 py-8">
+        <div className="flex flex-col lg:flex-row gap-8">
+          <BuyerSidebar country={country} />
+          
+          <div className="flex-1 min-w-0">
+            {children}
+          </div>
         </div>
       </div>
     </div>

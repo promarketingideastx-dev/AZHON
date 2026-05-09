@@ -25,7 +25,7 @@ export function ProductCard({ product, tenantId, currencyCode, country, dict, is
   };
   
   return (
-    <div className="w-[280px] min-w-[280px] bg-white rounded-2xl p-4 flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative group border border-gray-100 flex-shrink-0">
+    <div className="w-full bg-white rounded-2xl p-4 flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative group border border-gray-100">
       
       {/* Optional Flash Deal Badge */}
       {isFlashDeal && (

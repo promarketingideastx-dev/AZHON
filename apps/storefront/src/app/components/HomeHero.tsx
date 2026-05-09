@@ -3,9 +3,9 @@ import Link from 'next/link';
 export default function HomeHero({ dict, country, currencyCode = 'USD' }: { dict: any, country: string, currencyCode?: string }) {
   return (
     <section className="max-w-[1440px] mx-auto px-4 sm:px-6 py-6">
-      <div className="relative w-full rounded-3xl overflow-hidden bg-[#1A1816] min-h-[500px] flex items-center p-10 lg:p-20 shadow-xl">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#2D2824] via-[#1A1816] to-[#0A0A0A] z-0"></div>
-        <div className="absolute right-0 top-0 bottom-0 w-1/2 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop')] bg-cover bg-center mix-blend-overlay opacity-40 z-0"></div>
+      <div className="relative w-full rounded-3xl overflow-hidden bg-[#1A1816] min-h-[500px] flex items-center p-10 lg:p-20 shadow-xl border border-white/5">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1A1816] via-[#1A1816] to-transparent z-0"></div>
+        <div className="absolute right-0 top-0 bottom-0 w-2/3 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop')] bg-cover bg-center opacity-80 z-0" style={{ WebkitMaskImage: 'linear-gradient(to right, transparent, black 40%)', maskImage: 'linear-gradient(to right, transparent, black 40%)' }}></div>
         <div className="absolute inset-0 bg-gradient-to-r from-[#1A1816] via-[#1A1816]/80 to-transparent z-0"></div>
 
         <div className="relative z-10 max-w-2xl">
@@ -22,7 +22,7 @@ export default function HomeHero({ dict, country, currencyCode = 'USD' }: { dict
             <Link href={`/${country}/categorias`} className="bg-primary text-white font-bold px-8 py-4 rounded-full hover:bg-orange-600 transition-colors shadow-lg shadow-orange-500/20 text-sm">
               {dict.home.explore_now || 'EXPLORE NOW'}
             </Link>
-            <Link href={`/${country}/ofertas`} className="bg-transparent border border-white/20 text-white font-bold px-8 py-4 rounded-full hover:bg-white/10 transition-colors text-sm">
+            <Link href={`/${country}/#flash-deals`} className="bg-transparent border border-white/20 text-white font-bold px-8 py-4 rounded-full hover:bg-white/10 transition-colors text-sm">
               {dict.home.view_deals || 'VIEW DEALS'}
             </Link>
           </div>

@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
+import { getSiteUrl } from '@/utils/url';
 
 /**
  * Payment Handoff Page
@@ -57,7 +58,7 @@ export default async function PaymentHandoffPage({
             <input type="hidden" name="currency" value={cur} />
             <input type="hidden" name="timestamp" value={ts} />
             <input type="hidden" name="signature" value={sig} />
-            <input type="hidden" name="returnUrl" value={`${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/hn/checkout/return?tx=${tx}`} />
+            <input type="hidden" name="returnUrl" value={`${getSiteUrl()}/hn/checkout/return?tx=${tx}`} />
           </form>
 
           <script dangerouslySetInnerHTML={{

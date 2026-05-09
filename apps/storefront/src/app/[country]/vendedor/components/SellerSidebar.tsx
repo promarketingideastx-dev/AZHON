@@ -8,7 +8,8 @@ import {
   Package, 
   Tags, 
   Settings, 
-  LogOut 
+  LogOut,
+  Truck
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
@@ -26,6 +27,7 @@ export function SellerSidebar({ country }: { country: string }) {
   const navItems = [
     { name: dict?.sellerProfile?.menu?.dashboard || 'Dashboard', href: `/${country}/vendedor`, icon: LayoutDashboard, exact: true },
     { name: dict?.sellerProfile?.menu?.products || 'Productos', href: `/${country}/vendedor/productos`, icon: Package },
+    { name: dict?.sellerProfile?.menu?.inbounds || 'Ingresos', href: `/${country}/vendedor/ingresos`, icon: Truck },
     { name: dict?.sellerProfile?.menu?.variants || 'Variantes', href: `/${country}/vendedor/variantes`, icon: Tags }, // Future
     { name: dict?.sellerProfile?.menu?.settings || 'Configuración', href: `/${country}/vendedor/configuracion`, icon: Settings },
   ];
