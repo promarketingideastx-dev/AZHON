@@ -8,7 +8,7 @@ export default function CategoryQuadGrid({ dict, country }: { dict: any, country
   const quads = [
     {
       title: dict?.categories?.computing?.title || 'Computación y Tecnología',
-      link: `/${country}/categorias/computing`,
+      link: `/${country}/categorias`,
       linkText: `Explorar más en ${dict?.categories?.computing?.title || 'Computación'}`,
       items: [
         { name: dict?.categories?.computing?.laptops || 'Laptops', img: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=300&auto=format&fit=crop' },
@@ -19,7 +19,7 @@ export default function CategoryQuadGrid({ dict, country }: { dict: any, country
     },
     {
       title: dict?.categories?.beauty?.title || 'Belleza y Cuidado Personal',
-      link: `/${country}/categorias/beauty`,
+      link: `/${country}/categorias`,
       linkText: `Comprar en ${dict?.categories?.beauty?.title || 'Belleza'}`,
       items: [
         { name: dict?.categories?.beauty?.makeup || 'Maquillaje', img: 'https://images.unsplash.com/photo-1596462502278-27bf85033e5a?q=80&w=300&auto=format&fit=crop' },
@@ -30,7 +30,7 @@ export default function CategoryQuadGrid({ dict, country }: { dict: any, country
     },
     {
       title: dict?.categories?.home?.title || 'Todo para el Hogar',
-      link: `/${country}/categorias/home`,
+      link: `/${country}/categorias`,
       linkText: `Ver más en ${dict?.categories?.home?.title || 'Hogar'}`,
       items: [
         { name: dict?.categories?.home?.appliances || 'Electrodomésticos', img: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=300&auto=format&fit=crop' },
@@ -41,7 +41,7 @@ export default function CategoryQuadGrid({ dict, country }: { dict: any, country
     },
     {
       title: dict?.categories?.vehicles?.title || 'Vehículos y Accesorios',
-      link: `/${country}/categorias/vehicles`,
+      link: `/${country}/categorias`,
       linkText: `Explorar ${dict?.categories?.vehicles?.title || 'Vehículos'}`,
       items: [
         { name: dict?.categories?.vehicles?.cars || 'Autos', img: 'https://images.unsplash.com/photo-1502877338535-766e1452684a?q=80&w=300&auto=format&fit=crop' },
@@ -63,12 +63,16 @@ export default function CategoryQuadGrid({ dict, country }: { dict: any, country
               <div className="grid grid-cols-2 gap-4 flex-1">
                 {quad.items.map((item, idx) => (
                   <Link href={quad.link} key={idx} className="flex flex-col group cursor-pointer">
-                    <div className="aspect-square bg-gray-50 mb-2 overflow-hidden flex items-center justify-center">
-                      <img 
-                        src={item.img} 
-                        alt={item.name} 
-                        className="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-300"
-                      />
+                    <div className="aspect-square bg-gray-50 mb-2 overflow-hidden flex items-center justify-center border border-gray-100">
+                      {item.img ? (
+                        <img 
+                          src={item.img} 
+                          alt={item.name} 
+                          className="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-300"
+                        />
+                      ) : (
+                        <span className="text-[10px] text-neutral font-medium opacity-50">Sin imagen</span>
+                      )}
                     </div>
                     <span className="text-xs text-gray-700 font-medium group-hover:text-primary transition-colors line-clamp-1">
                       {item.name}

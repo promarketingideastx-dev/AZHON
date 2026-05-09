@@ -29,20 +29,21 @@ export default async function Home({ params }: { params: { country: string } }) 
     return <div>Tenant not found for {countryCode}</div>;
   }
 
-  const formatPrice = (amount: number) => {
-    return new Intl.NumberFormat(locale, {
-      style: 'currency',
-      currency: tenant.currencyCode,
-    }).format(amount / 100);
-  };
+
 
   const realProducts = await prisma.product.findMany({
-    where: { tenantId: tenant.id },
+    where: { 
+      tenantId: tenant.id,
+      Publication: { status: 'PUBLISHED' }
+    },
     include: {
       Store: true,
       Variants: true,
+      Category: true,
+      Metrics: true,
+      Media: true,
     },
-    take: 8, // Max 8 for carousels
+    take: 12, // Max 12 for carousels
   });
 
   const tenantId = tenant.id;
@@ -50,17 +51,18 @@ export default async function Home({ params }: { params: { country: string } }) 
   return (
     <div className="w-full bg-white">
       {/* 1. HERO SECTION */}
-      <HomeHero dict={dict} country={country} />
+      <HomeHero dict={dict} country={country} currencyCode={tenant.currencyCode} />
 
       {/* 2. CATEGORIES SECTION */}
       <ExploreCategories dict={dict} country={country} />
 
       {/* 3. FLASH DEALS (REAL DATA) */}
       <section className="max-w-[1440px] mx-auto px-4 sm:px-6 py-6">
-        <FlashDealsCarousel products={realProducts} tenantId={tenantId} />
+        <FlashDealsCarousel products={realProducts} tenantId={tenantId} currencyCode={tenant.currencyCode} country={country} dict={dict} />
       </section>
 
       {/* 4. NEW ARRIVALS & TRENDING */}
+      {/* Oculto temporalmente: No hay Feed de Productos activado todavía y los mocks fueron removidos por honestidad visual */}
       <FeaturedProductsGrid dict={dict} />
 
       {/* 5. COMMERCIAL BANNERS */}

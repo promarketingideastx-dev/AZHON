@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-export default function HomeHero({ dict, country }: { dict: any, country: string }) {
+export default function HomeHero({ dict, country, currencyCode = 'USD' }: { dict: any, country: string, currencyCode?: string }) {
   return (
     <section className="max-w-[1440px] mx-auto px-4 sm:px-6 py-6">
       <div className="relative w-full rounded-3xl overflow-hidden bg-[#1A1816] min-h-[500px] flex items-center p-10 lg:p-20 shadow-xl">
@@ -16,7 +16,7 @@ export default function HomeHero({ dict, country }: { dict: any, country: string
             {dict.home.hero_title || 'Elevate Your Lifestyle Every Day.'}
           </h1>
           <p className="text-lg text-gray-300 mb-10 max-w-lg leading-relaxed font-medium">
-            {dict.home.hero_desc || 'Discover curated collections from global brands. Free shipping on your first purchase over HNL 1,200. Ready. Set. Shop.'}
+            {dict.home.hero_desc || `Discover curated collections from global brands. Free shipping on your first purchase over ${currencyCode} 1,200. Ready. Set. Shop.`}
           </p>
           <div className="flex flex-wrap items-center gap-4">
             <Link href={`/${country}/categorias`} className="bg-primary text-white font-bold px-8 py-4 rounded-full hover:bg-orange-600 transition-colors shadow-lg shadow-orange-500/20 text-sm">

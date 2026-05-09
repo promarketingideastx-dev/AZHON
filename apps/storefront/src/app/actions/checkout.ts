@@ -385,7 +385,8 @@ export async function rebuildCartAndRedirect(orderId: string, countryCode: strin
       qty: ol.qty
     }));
 
-    cookies().set('azhon_cart', JSON.stringify(cartState), { path: '/' });
+    const cookieStore = await cookies();
+    cookieStore.set('azhon_cart', JSON.stringify(cartState), { path: '/' });
     
   } catch (error: any) {
     return { success: false, error: error.message };

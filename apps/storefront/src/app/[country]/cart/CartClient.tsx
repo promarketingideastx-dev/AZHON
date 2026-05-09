@@ -48,12 +48,9 @@ export default function CartClient({ initialItems, dict, user, country, currency
     );
   }
 
-  // Cálculos de totales
+  // Cálculos de totales (Frontend Truth Alignment)
+  // El backend es la única fuente de verdad transaccional final.
   const subtotal = items.reduce((acc, item) => acc + (item.variant.Product.basePrice * item.qty), 0);
-  // Supongamos un descuento ficticio para demostrar el mockup
-  const savings = subtotal * 0.10; 
-  const taxes = (subtotal - savings) * 0.15;
-  const grandTotal = subtotal - savings + taxes;
 
   return (
     <div className="flex flex-col lg:flex-row gap-8 items-start">
@@ -121,45 +118,7 @@ export default function CartClient({ initialItems, dict, user, country, currency
           );
         })}
 
-        {/* Sección de Upsell: Completa tu Estilo */}
-        <div className="pt-12 mt-12 border-t border-gray-200">
-          <h3 className="text-2xl font-bold text-secondary mb-8 text-center">{dict.cart.upsell_title}</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { title: "Funda de Cuero Premium", sub: "WORKSPACE ESSENTIALS", price: 45, old: 55, tag: "-20%", img: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=400" },
-              { title: "Earbuds Nano AZHON", sub: "AUDIO PORTABLE", price: 89, old: null, tag: null, img: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&q=80&w=400" },
-              { title: "Botella Térmica Elite", sub: "LIFESTYLE", price: 29, old: null, tag: null, img: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&q=80&w=400" },
-              { title: "Mochila Urbana Compact", sub: "ACCESORIOS", price: 112, old: null, tag: "NUEVO", img: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=400" },
-            ].map((p, i) => (
-              <div key={i} className="bg-white rounded-2xl p-4 border border-gray-100 hover:shadow-lg transition-all group cursor-pointer flex flex-col relative">
-                {p.tag && (
-                  <span className={`absolute top-3 left-3 z-10 px-2 py-1 rounded text-[10px] font-bold text-white ${p.tag === 'NUEVO' ? 'bg-black' : 'bg-red-500'}`}>
-                    {p.tag}
-                  </span>
-                )}
-                <div className="aspect-square bg-gray-50 rounded-xl overflow-hidden mb-4 relative">
-                  <img src={p.img} className="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500" />
-                  <button className="absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white text-neutral hover:text-red-500 transition-colors z-10 shadow-sm">
-                    ♡
-                  </button>
-                </div>
-                <div className="flex-1 flex flex-col">
-                  <h4 className="text-xs font-bold text-secondary leading-snug mb-1 line-clamp-2">{p.title}</h4>
-                  <p className="text-[10px] text-neutral mb-3 uppercase tracking-wider">{p.sub}</p>
-                  <div className="mt-auto flex items-end justify-between">
-                    <div>
-                      <div className="text-sm font-black text-secondary">{formatPrice(p.price * 100)}</div>
-                      {p.old && <div className="text-[10px] text-neutral line-through">{formatPrice(p.old * 100)}</div>}
-                    </div>
-                    <button className="w-8 h-8 rounded-full bg-gray-50 hover:bg-primary hover:text-white flex items-center justify-center transition-colors">
-                      🛒
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* Upsell section removed for honesty - pending real data implementation */}
       </div>
 
       {/* Columna Derecha: Resumen */}
@@ -178,26 +137,20 @@ export default function CartClient({ initialItems, dict, user, country, currency
               <span className="text-neutral flex items-center gap-1">
                 {dict.cart.estimated_shipping} <span className="text-gray-300">ⓘ</span>
               </span>
-              <span className="font-medium text-neutral italic">Por calcular en Checkout</span>
+              <span className="font-medium text-neutral italic">Calculado en Checkout</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-neutral">{dict.cart.taxes}</span>
-              <span className="font-medium text-secondary">{formatPrice(taxes)}</span>
-            </div>
-            
-            {/* Ahorro Total */}
-            <div className="flex justify-between items-center text-primary font-bold pt-2">
-              <span>{dict.cart.total_savings}</span>
-              <span>- {formatPrice(savings)}</span>
+              <span className="font-medium text-neutral italic">Calculado en Checkout</span>
             </div>
           </div>
 
           <div className="border-t border-gray-100 pt-6 mb-8">
             <div className="text-[10px] font-bold text-neutral uppercase tracking-widest mb-1">
-              {dict.cart.total_to_pay}
+              Subtotal Estimado
             </div>
             <div className="text-4xl font-black text-secondary">
-              {formatPrice(grandTotal)}
+              {formatPrice(subtotal)}
             </div>
           </div>
 

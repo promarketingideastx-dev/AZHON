@@ -36,8 +36,8 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
             <Link href={`/${country}`} className="text-sm font-bold text-primary border-b-2 border-primary pb-1">{dict.header.home}</Link>
             <Link href={`/${country}/categorias`} className="text-sm font-medium text-neutral hover:text-secondary transition-colors">{dict.header.categories}</Link>
             <Link href={`/${country}/ofertas`} className="text-sm font-medium text-neutral hover:text-secondary transition-colors">{dict.header.deals}</Link>
-            <Link href={`/${country}/seller-hub`} className="text-sm font-medium text-neutral hover:text-secondary transition-colors">{dict.header.sell}</Link>
-            <Link href={`/${country}/ayuda`} className="text-sm font-medium text-neutral hover:text-secondary transition-colors">{dict.header.help}</Link>
+            <Link href={`/${country}`} className="text-sm font-medium text-neutral hover:text-secondary transition-colors">{dict.header.sell}</Link>
+            <Link href={`/${country}/perfil/soporte`} className="text-sm font-medium text-neutral hover:text-secondary transition-colors">{dict.header.help}</Link>
           </nav>
 
           {/* Search Bar (Desktop) */}
@@ -62,7 +62,7 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
             {/* User Account / Auth */}
             {user ? (
               <div className="flex items-center gap-2 sm:gap-4">
-                <Link href={`/${country}/perfil/ordenes`} className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors relative cursor-pointer" title="Mis Órdenes">
+                <Link href={`/${country}/perfil`} className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors relative cursor-pointer" title="Ver Perfil">
                   <span className="text-base sm:text-lg">👤</span>
                 </Link>
                 <button 

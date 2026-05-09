@@ -1,4 +1,6 @@
-export function Footer() {
+import Link from 'next/link';
+
+export function Footer({ country = 'hn' }: { country?: string }) {
   return (
     <footer className="bg-white border-t border-gray-200 mt-20">
       <div className="max-w-7xl mx-auto px-6 py-16">
@@ -37,7 +39,7 @@ export function Footer() {
             <h3 className="font-bold text-secondary mb-6">Support</h3>
             <ul className="space-y-4">
               <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">Contact Support</a></li>
-              <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">Help Center</a></li>
+              <li><Link href={`/${country}/perfil/soporte`} className="text-sm text-neutral hover:text-primary transition-colors">Help Center</Link></li>
               <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">Shipping & Delivery</a></li>
               <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">Returns & Refunds</a></li>
             </ul>

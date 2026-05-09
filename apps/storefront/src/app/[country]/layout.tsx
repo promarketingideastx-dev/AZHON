@@ -48,7 +48,7 @@ export default async function RootLayout({
             <main className="flex-1 flex flex-col bg-warm">
               {children}
             </main>
-            <Footer />
+            <Footer country={country} />
           </AuthProvider>
         </DictionaryProvider>
       </body>

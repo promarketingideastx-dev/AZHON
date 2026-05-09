@@ -25,10 +25,10 @@ export default function CheckoutClient({ initialItems, user, country, currencyCo
     }).format(amount / 100);
   };
 
+  // Cálculos de totales (Frontend Truth Alignment)
+  // El backend calculará los impuestos reales al crear la orden.
   const subtotal = initialItems.reduce((acc: number, item: any) => acc + (item.variant.Product.basePrice * item.qty), 0);
-  const taxes = subtotal * 0.15; // TODO: read from tenant.taxRate
   const shipping = 0; // TODO: Delivery Intelligence
-  const grandTotal = subtotal + taxes + shipping;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -227,16 +227,16 @@ export default function CheckoutClient({ initialItems, user, country, currencyCo
             </div>
             <div className="flex justify-between items-center">
               <span className="text-neutral">Impuestos</span>
-              <span className="font-medium text-secondary">{formatPrice(taxes)}</span>
+              <span className="font-medium text-neutral italic">Calculado al procesar</span>
             </div>
           </div>
 
           <div className="border-t border-gray-100 pt-6 mb-8">
             <div className="text-[10px] font-bold text-neutral uppercase tracking-widest mb-1">
-              Total a Pagar
+              Subtotal Estimado (Sin Impuestos/Envío)
             </div>
             <div className="text-3xl font-black text-secondary">
-              {formatPrice(grandTotal)}
+              {formatPrice(subtotal)}
             </div>
           </div>
 

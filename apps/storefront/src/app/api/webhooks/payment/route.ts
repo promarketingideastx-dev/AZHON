@@ -84,7 +84,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ 
         success: true, 
         message: "Payment confirmed, order finalized",
-        orderId: confirmationResult.orderId
+        orderId: 'orderId' in confirmationResult ? confirmationResult.orderId : undefined
       });
 
     } else if (status === 'FAILED' || status === 'EXPIRED') {

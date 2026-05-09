@@ -54,7 +54,8 @@ export async function getOrderPaymentTimeline(orderId: string) {
 
       timeline.push({
         status: `INTENT_${tx.status}`,
-        timestamp: tx.updatedAt,
+        // Temporal fallback a createdAt porque updatedAt no existe en schema de Transaction
+        timestamp: tx.createdAt,
         actor,
         note: `Provider Reference: ${(tx.payload as any)?.externalId || 'Unknown'}. Reason: ${(tx.payload as any)?.note || 'N/A'}`
       });
@@ -65,7 +66,8 @@ export async function getOrderPaymentTimeline(orderId: string) {
   if (order.status !== 'AWAITING_PAYMENT') {
     timeline.push({
       status: `ORDER_FINALIZED_${order.status}`,
-      timestamp: order.updatedAt,
+      // Temporal fallback a createdAt porque updatedAt no existe en schema de Order
+      timestamp: order.createdAt,
       actor: 'SYSTEM',
       note: `Final truth state applied to Order`
     });
