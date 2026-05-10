@@ -26,7 +26,7 @@ export default async function SupportPage({ params }: { params: Promise<{ countr
   const dict = getDictionary(locale);
   const bp = dict.buyerProfile;
 
-  const displayName = user.user_metadata?.full_name?.split(' ')[0] || user.email?.split('@')[0] || '';
+  const displayName = user?.user_metadata?.full_name?.split(' ')[0] || user?.email?.split('@')[0] || '';
 
   return (
     <div className="w-full max-w-5xl mx-auto pb-12 pt-4">
