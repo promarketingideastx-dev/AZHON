@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
 import { BuyerSidebar } from './components/BuyerSidebar';
+import { createClient } from '@/utils/supabase/server';
+import { redirect } from 'next/navigation';
 
 export default async function BuyerProfileLayout({
   children,
@@ -9,6 +11,14 @@ export default async function BuyerProfileLayout({
   params: Promise<{ country: string }>;
 }) {
   const { country } = await params;
+  
+  // Early Auth Guard to prevent layout flicker
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect(`/${country}/login`);
+  }
 
   return (
     <div className="w-full bg-[#FCF9F6] min-h-[calc(100vh-80px)]">
