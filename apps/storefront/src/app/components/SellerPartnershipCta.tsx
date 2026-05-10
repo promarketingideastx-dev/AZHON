@@ -25,7 +25,7 @@ export default function SellerPartnershipCta({ dict, country }: { dict: any, cou
               <span className="text-primary text-lg">✓</span> {dict.home.advanced_dashboard || 'Advanced seller dashboard'}
             </li>
           </ul>
-          <Link href={`/${country}/seller-hub`} className="inline-block bg-black text-white font-bold px-8 py-4 rounded-full hover:bg-gray-800 transition-colors shadow-xl text-sm">
+          <Link href={`/${country}/vendedor`} className="inline-block bg-black text-white font-bold px-8 py-4 rounded-full hover:bg-gray-800 transition-colors shadow-xl text-sm">
             {dict.home.start_selling || 'Start Selling Today'}
           </Link>
         </div>
