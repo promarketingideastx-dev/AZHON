@@ -35,7 +35,7 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
           <nav className="hidden lg:flex items-center gap-6">
             <Link href={`/${country}`} className="text-sm font-bold text-primary border-b-2 border-primary pb-1">{dict.header.home}</Link>
             <Link href={`/${country}/categorias`} className="text-sm font-medium text-neutral hover:text-secondary transition-colors">{dict.header.categories}</Link>
-            <Link href={`/${country}/categorias`} className="text-sm font-medium text-neutral hover:text-secondary transition-colors">{dict.header.deals}</Link>
+            <Link href={`/${country}/ofertas`} className="text-sm font-medium text-neutral hover:text-secondary transition-colors">{dict.header.deals}</Link>
             <Link href={`/${country}/vendedor`} className="text-sm font-medium text-neutral hover:text-secondary transition-colors">{dict.header.sell}</Link>
             <Link href={`/${country}/perfil/soporte`} className="text-sm font-medium text-neutral hover:text-secondary transition-colors">{dict.header.help}</Link>
           </nav>
@@ -60,11 +60,14 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
             <LanguageSelector currentLocale={locale} />
 
             {/* User Account / Auth */}
-            {user ? (
-              <div className="flex items-center gap-2 sm:gap-4">
-                <Link href={`/${country}/perfil`} className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors relative cursor-pointer" title="Ver Perfil">
-                  <span className="text-base sm:text-lg">👤</span>
-                </Link>
+            <div className="flex items-center gap-2 sm:gap-4">
+              <Link 
+                href={`/${country}/perfil`} 
+                className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors relative cursor-pointer" title="Ver Perfil"
+              >
+                <span className="text-base sm:text-lg">👤</span>
+              </Link>
+              {user && (
                 <button 
                   onClick={() => {
                     import('@/app/[country]/login/actions').then(m => m.logout())
@@ -73,15 +76,8 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
                 >
                   {dict.header.logout}
                 </button>
-              </div>
-            ) : (
-              <Link 
-                href={`/${country}/login`} 
-                className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors relative cursor-pointer"
-              >
-                <span className="text-base sm:text-lg">👤</span>
-              </Link>
-            )}
+              )}
+            </div>
 
             {/* Cart Dummy */}
             <Link href={`/${country}/cart`} className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors relative cursor-pointer">
