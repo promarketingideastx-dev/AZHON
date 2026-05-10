@@ -17,10 +17,8 @@ import Link from 'next/link';
 export default async function SupportPage({ params }: { params: Promise<{ country: string }> }) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect('/login');
-  }
+  
+  // Soporte es público por ahora para evitar el rebote de login
 
   const { country } = await params;
   const cookieStore = await cookies();
