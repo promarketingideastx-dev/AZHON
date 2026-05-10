@@ -5,12 +5,13 @@ import { getDictionary, defaultLocale } from '@/i18n';
 import { MapPin } from 'lucide-react';
 import { ProfileEmptyState } from '@/components/ui/ProfileEmptyState';
 
-export default async function AddressesPage() {
+export default async function AddressesPage({ params }: { params: Promise<{ country: string }> }) {
+  const { country } = await params;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect('/login');
+    redirect(`/${country}/login`);
   }
 
   const cookieStore = await cookies();

@@ -16,7 +16,7 @@ export default async function OrderHistoryPage({
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect('/login');
+    redirect(`/${country}/login`);
   }
 
   const cookieStore = await cookies();

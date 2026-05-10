@@ -2,12 +2,13 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { DashboardCard } from '@/components/ui/DashboardCard';
 
-export default async function BuyerProfileOverviewPage() {
+export default async function BuyerProfileOverviewPage({ params }: { params: Promise<{ country: string }> }) {
+  const { country } = await params;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect('/login');
+    redirect(`/${country}/login`);
   }
 
   return (
