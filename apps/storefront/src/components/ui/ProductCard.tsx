@@ -82,7 +82,7 @@ export function ProductCard({ product, tenantId, currencyCode, country, dict, is
 
         {/* Price & Variants */}
         <div className="flex items-end justify-between mb-4">
-          <span className="text-primary font-black text-xl tracking-tight">
+          <span className="text-gray-900 font-black text-2xl tracking-tighter">
             {currencyCode} {(product.basePrice / 100).toLocaleString('en-US', { minimumFractionDigits: 2 })}
           </span>
           {product.Variants && product.Variants.length > 1 && (
@@ -95,7 +95,7 @@ export function ProductCard({ product, tenantId, currencyCode, country, dict, is
         {/* CTAs */}
         {product.Variants && product.Variants.length > 0 ? (
           <div className="flex gap-2 mt-auto">
-            <Link href={`/${country}/producto/${product.id}`} onClick={handleCardClick} className="flex-1 bg-gray-50 border border-gray-200 text-secondary text-center font-bold py-2 rounded-xl text-xs hover:bg-gray-100 transition-colors flex items-center justify-center">
+            <Link href={`/${country}/producto/${product.id}`} onClick={handleCardClick} className="flex-1 bg-orange-50 border border-orange-100 text-orange-600 text-center font-bold py-2.5 rounded-xl text-xs hover:bg-orange-600 hover:text-white transition-all shadow-sm flex items-center justify-center">
               {dict?.density?.viewProduct || 'Ver Producto'}
             </Link>
             <div className="flex-1">

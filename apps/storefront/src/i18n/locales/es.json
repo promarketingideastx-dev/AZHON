@@ -98,7 +98,10 @@
     "benefits_free_shipping": "Envío Global",
     "benefits_secure_payments": "Pagos 100% Seguros",
     "benefits_global_logistics": "Logística Acelerada",
-    "benefits_buyer_protection": "Protección al Comprador"
+    "benefits_buyer_protection": "Protección al Comprador",
+    "view_collection": "Ver Colección",
+    "azhon_selection": "Selección AZHON",
+    "limited_quantities": "Cantidades Limitadas"
   },
   "categories": {
     "title": "Todas las Categorías",

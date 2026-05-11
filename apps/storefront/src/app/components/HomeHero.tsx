@@ -4,8 +4,8 @@ import ActiveSeasonBadge from './ActiveSeasonBadge';
 
 export default function HomeHero({ dict, country, currencyCode = 'USD' }: { dict: any, country: string, currencyCode?: string }) {
   return (
-    <section className="max-w-[1440px] mx-auto px-4 sm:px-6 py-6">
-      <div className="relative w-full rounded-3xl overflow-hidden bg-[#1A1816] min-h-[500px] flex items-center p-10 lg:p-20 shadow-xl border border-white/5">
+    <section className="max-w-[1440px] mx-auto px-4 sm:px-6 pt-6 pb-2">
+      <div className="relative w-full rounded-3xl overflow-hidden bg-[#1A1816] min-h-[500px] flex items-center p-10 lg:p-20 shadow-[0_20px_50px_-15px_rgba(255,85,0,0.15)] border border-[#FF5500]/10">
         <div className="absolute inset-0 bg-gradient-to-br from-[#1A1816] via-[#1A1816] to-transparent z-0"></div>
         <div className="absolute right-0 top-0 bottom-0 w-2/3 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop')] bg-cover bg-center opacity-80 z-0" style={{ WebkitMaskImage: 'linear-gradient(to right, transparent, black 40%)', maskImage: 'linear-gradient(to right, transparent, black 40%)' }}></div>
         <div className="absolute inset-0 bg-gradient-to-r from-[#1A1816] via-[#1A1816]/80 to-transparent z-0"></div>

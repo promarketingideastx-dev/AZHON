@@ -7,7 +7,8 @@ export default function DiscoveryBlock({
   tenantId, 
   currencyCode, 
   country, 
-  dict 
+  dict,
+  badgeText
 }: { 
   title: string, 
   subtitle?: string, 
@@ -15,18 +16,24 @@ export default function DiscoveryBlock({
   tenantId: string, 
   currencyCode: string, 
   country: string, 
-  dict: any 
+  dict: any,
+  badgeText?: string
 }) {
   if (!products || products.length === 0) return null;
 
   return (
-    <section className="max-w-[1440px] mx-auto px-4 sm:px-6 py-8">
-      <div className="mb-6">
-        <h2 className="text-xl md:text-2xl font-black text-gray-900 tracking-tight">{title}</h2>
-        {subtitle && <p className="text-gray-500 text-sm mt-1">{subtitle}</p>}
+    <section className="max-w-[1440px] mx-auto px-4 sm:px-6 py-10 md:py-12">
+      <div className="mb-8">
+        {badgeText && (
+          <span className="inline-block bg-black text-white text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-sm mb-3">
+            {badgeText}
+          </span>
+        )}
+        <h2 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tight leading-none">{title}</h2>
+        {subtitle && <p className="text-gray-500 text-sm mt-2 font-medium">{subtitle}</p>}
       </div>
 
-      <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory hide-scrollbar pb-6 pt-2">
+      <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory hide-scrollbar pb-8 pt-2 -mx-4 px-4 sm:mx-0 sm:px-0">
         {products.map((product, index) => (
           <div key={`${product.id}-${index}`} className="min-w-[240px] md:min-w-[280px] snap-start">
             <ProductCard 

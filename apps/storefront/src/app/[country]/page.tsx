@@ -99,18 +99,21 @@ export default async function Home({ params }: { params: { country: string } }) 
           {/* CATEGORIES - Moved after Flash Deals */}
           <ExploreCategories dict={dict} country={country} />
 
-          {/* FIRST DISCOVERY BLOCK: Por si te interesa */}
-          <DiscoveryBlock 
-            title={dict?.home?.just_for_you || 'Por si te interesa'} 
-            products={safeProducts2} 
-            tenantId={tenantId} 
-            currencyCode={tenant.currencyCode} 
-            country={country} 
-            dict={dict} 
-          />
+          {/* FIRST DISCOVERY BLOCK: Por si te interesa (Cálido suave) */}
+          <div className="bg-[#FAF8F5] border-y border-[#F0EBE1]">
+            <DiscoveryBlock 
+              title={dict?.home?.just_for_you || 'Por si te interesa'} 
+              badgeText={dict?.home?.azhon_selection || 'Selección AZHON'}
+              products={safeProducts2} 
+              tenantId={tenantId} 
+              currencyCode={tenant.currencyCode} 
+              country={country} 
+              dict={dict} 
+            />
+          </div>
 
-          {/* SECOND DISCOVERY BLOCK: Relacionado a últimas compras */}
-          <div className="bg-gray-50 border-y border-gray-100">
+          {/* SECOND DISCOVERY BLOCK: Relacionado a últimas compras (Neutro frío suave) */}
+          <div className="bg-[#F8F9FA] border-b border-gray-100 shadow-inner">
             <DiscoveryBlock 
               title={dict?.home?.related_purchases || 'Relacionado a tus últimas compras'} 
               products={safeProducts3} 

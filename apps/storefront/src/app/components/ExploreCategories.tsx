@@ -14,24 +14,31 @@ export default function ExploreCategories({ dict, country }: { dict: any, countr
   };
 
   return (
-    <section className="max-w-[1440px] mx-auto w-full px-4 sm:px-8 lg:px-12 2xl:px-16 py-12">
+    <section className="max-w-[1440px] mx-auto w-full px-4 sm:px-8 lg:px-12 2xl:px-16 py-10">
       <div className="flex items-end justify-between mb-8">
-        <div>
-          <h2 className="text-2xl font-black text-secondary tracking-tight">{dict.home.explore_categories}</h2>
-          <p className="text-neutral text-sm mt-1">{dict.home.browse_department}</p>
+        <div className="flex items-center gap-4">
+          <div className="w-1.5 h-8 bg-orange-500 rounded-full"></div>
+          <div>
+            <h2 className="text-2xl font-black text-gray-900 tracking-tight">{dict.home.explore_categories}</h2>
+            <p className="text-gray-500 text-sm mt-1">{dict.home.browse_department}</p>
+          </div>
         </div>
-        <Link href={`/${country}/categorias`} className="text-primary font-bold text-sm hover:underline">{dict.home.see_all} {'>'}</Link>
+        <Link href={`/${country}/categorias`} className="text-orange-600 font-bold text-sm hover:underline flex items-center gap-1">
+          {dict.home.see_all} <span aria-hidden="true">&rarr;</span>
+        </Link>
       </div>
 
-      <div className="flex overflow-x-auto pb-4 gap-4 hide-scrollbar">
+      <div className="flex overflow-x-auto pb-6 gap-4 hide-scrollbar snap-x snap-mandatory">
         {topCategories.map((cat, i) => {
           const catName = resolvePath(dict, cat.i18nKey) || cat.id;
           return (
-            <Link href={`/${country}/categorias/${cat.id}`} key={i} className="min-w-[160px] bg-white border border-gray-100 rounded-3xl p-6 flex flex-col items-center justify-center gap-4 hover:border-primary hover:shadow-lg transition-all cursor-pointer group">
-              <div className="w-20 h-20 rounded-full bg-gray-50 flex items-center justify-center text-4xl group-hover:bg-orange-50 transition-colors shadow-inner">
-                {cat.icon}
+            <Link href={`/${country}/categorias/${cat.id}`} key={i} className="snap-start min-w-[130px] w-[130px] flex flex-col items-center justify-start gap-3 group">
+              <div className="w-[100px] h-[100px] rounded-full bg-gray-50 flex items-center justify-center text-4xl group-hover:bg-orange-50 group-hover:-translate-y-1 group-hover:shadow-[0_8px_20px_-4px_rgba(255,85,0,0.15)] group-hover:scale-105 transition-all duration-300 border border-gray-100 group-hover:border-orange-200">
+                <span className="group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">{cat.icon}</span>
               </div>
-              <span className="text-xs font-bold text-secondary text-center line-clamp-2">{catName}</span>
+              <span className="text-xs font-bold text-gray-700 text-center line-clamp-2 leading-tight group-hover:text-orange-600 transition-colors px-1">
+                {catName}
+              </span>
             </Link>
           );
         })}
