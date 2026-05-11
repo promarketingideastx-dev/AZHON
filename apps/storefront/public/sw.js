@@ -2,14 +2,14 @@
 // Implements a strict Network-First for documents, and Cache-First for static assets.
 // NO FAKE OFFLINE CHECKOUT. NO FAKE DATA.
 
-const CACHE_NAME = 'azhon-pwa-cache-v3';
+const CACHE_NAME = 'azhon-pwa-cache-v4';
 
 // Assets to cache immediately on install
 const STATIC_ASSETS = [
   '/', // Fallback, though we use network-first for documents
   '/logo-v2.png',
-  '/icon-192.png',
-  '/icon-512.png',
+  '/icon-pwa-192.png',
+  '/icon-pwa-512.png',
   '/manifest.json',
   '/favicon.ico'
 ];

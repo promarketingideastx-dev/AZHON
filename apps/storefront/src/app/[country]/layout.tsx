@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
-    apple: "/icon-192.png",
+    apple: "/icon-pwa-192.png",
   },
   openGraph: {
     title: "AZHON Marketplace",
