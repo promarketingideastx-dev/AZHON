@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-// import { ProductCard } from '@/components/ui/ProductCard';
 
 export default function FlashDealsCarousel({ products, tenantId, currencyCode = 'USD', country, dict }: { products: any[], tenantId: string, currencyCode?: string, country: string, dict: any }) {
   // =========================================================================
@@ -57,7 +56,7 @@ export default function FlashDealsCarousel({ products, tenantId, currencyCode = 
 
   return (
     <div id="flash-deals" className="bg-gradient-to-r from-[#FF5500] to-[#FF3300] rounded-2xl p-6 md:p-8 shadow-xl relative overflow-hidden mt-8">
-      {/* Header Flash Deals *\/}
+      {/* Header Flash Deals */}
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4 border-b border-white/10 pb-4">
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
           <div className="flex items-center gap-3">
@@ -66,7 +65,7 @@ export default function FlashDealsCarousel({ products, tenantId, currencyCode = 
             </h2>
           </div>
           
-          {/* Trust/Urgency Pill *\/}
+          {/* Trust/Urgency Pill */}
           <div className="flex items-center gap-2 bg-black/20 px-3 py-1.5 rounded-full border border-white/10 w-fit backdrop-blur-sm">
              <span className="text-white/80 text-xs font-bold uppercase tracking-wider">Ends In:</span>
              <span className="text-white font-mono font-bold tracking-widest">{hrs}:{mins}:{secs}</span>
@@ -77,7 +76,7 @@ export default function FlashDealsCarousel({ products, tenantId, currencyCode = 
         </Link>
       </div>
 
-      {/* Carousel Container *\/}
+      {/* Carousel Container */}
       <div 
         className="relative z-10 -mx-6 md:-mx-8 px-6 md:px-8"
         onMouseEnter={() => setIsHovered(true)}
@@ -92,7 +91,6 @@ export default function FlashDealsCarousel({ products, tenantId, currencyCode = 
             // DO NOT use the bloated general ProductCard here to avoid breaking the premium mother structure.
             <div key={`${product.id}-${index}`} className="min-w-[280px] bg-white rounded-xl overflow-hidden shadow-sm flex flex-col">
               <div className="relative h-[200px] bg-gray-100 flex items-center justify-center p-4">
-                <span className="absolute top-3 left-3 bg-black text-white text-[10px] font-bold px-2 py-1 rounded-sm uppercase tracking-wider z-10">
                 <img src={product?.Media?.[0]?.url || "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500"} className="max-h-full object-contain drop-shadow-md mix-blend-multiply" alt={product.title} />
               </div>
               <div className="p-5 flex flex-col flex-1 border-t border-gray-100">
