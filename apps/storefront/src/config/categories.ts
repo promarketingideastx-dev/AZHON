@@ -188,8 +188,8 @@ export const CATALOG_CATEGORIES: Category[] = [
   {
     id: 'intimate_wellness',
     i18nKey: 'categories.intimate_wellness.title',
-    icon: '🔞',
-    image: 'https://images.unsplash.com/photo-1518085250893-ec9cf43f550d?q=80&w=800&auto=format&fit=crop',
+    icon: '🌸',
+    image: '/intimate_wellness.png',
     requires18Plus: true,
     subcategories: [
       { id: 'wellness', i18nKey: 'categories.intimate_wellness.wellness' },
