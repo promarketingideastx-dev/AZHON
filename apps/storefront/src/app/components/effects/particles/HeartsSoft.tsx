@@ -12,8 +12,8 @@ export default function HeartsSoft({ config }: { config: SeasonEffectConfig }) {
       <style>{`
         .effect-heart {
           position: absolute;
-          width: 16px;
-          height: 16px;
+          width: 80px;
+          height: 80px;
           opacity: 0;
           animation: floatHeart 8s ease-in infinite;
         }
@@ -45,7 +45,7 @@ export default function HeartsSoft({ config }: { config: SeasonEffectConfig }) {
           const left = Math.random() * 100;
           const delay = Math.random() * 8;
           const duration = 6 + Math.random() * 6;
-          const size = 0.5 + Math.random() * 1;
+          const size = 0.8 + Math.random() * 1.2;
 
           return (
             <svg
