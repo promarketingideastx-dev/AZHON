@@ -3,6 +3,9 @@ import { getDictionary, defaultLocale } from "@/i18n";
 import { CATALOG_CATEGORIES } from "@/config/categories";
 import { AdultWarning } from "@/components/AdultWarning";
 import Link from "next/link";
+import { prisma } from "@/lib/prisma";
+import FlashDealsCarousel from "@/app/components/FlashDealsCarousel";
+import DiscoveryBlock from "@/app/components/DiscoveryBlock";
 
 // Helper para resolver paths tipo "categories.cell_phones.title" en el objeto dict
 function resolvePath(obj: any, path: string) {
@@ -16,6 +19,29 @@ export default async function CategoriesPage({ params }: { params: Promise<{ cou
   const cookieStore = await cookies();
   const locale = cookieStore.get('NEXT_LOCALE')?.value || defaultLocale;
   const dict = getDictionary(locale);
+  const countryCode = country.toUpperCase();
+
+  // Resolve tenant
+  const tenant = await prisma.tenant.findUnique({
+    where: { countryCode }
+  });
+
+  // Fetch products for mobile commercial continuity
+  let safeProducts1: any[] = [];
+  let safeProducts2: any[] = [];
+  
+  if (tenant) {
+    const realProducts = await prisma.product.findMany({
+      where: { 
+        tenantId: tenant.id,
+        Publication: { status: 'PUBLISHED' }
+      },
+      include: { Store: true, Variants: true, Category: true, Metrics: true, Media: true },
+      take: 16,
+    });
+    safeProducts1 = realProducts.slice(0, 8);
+    safeProducts2 = realProducts.length > 8 ? realProducts.slice(8, 16) : realProducts;
+  }
 
   return (
     <div className="w-full bg-warm min-h-screen pb-20">
@@ -93,6 +119,36 @@ export default async function CategoriesPage({ params }: { params: Promise<{ cou
           })}
         </div>
       </div>
+
+      {/* ==================================================== */}
+      {/* MOBILE ONLY: COMMERCIAL CONTINUITY BLOCKS            */}
+      {/* (Injected to prevent dead-end browsing on mobile)    */}
+      {/* ==================================================== */}
+      {tenant && (
+        <div className="md:hidden flex flex-col gap-2 pb-10">
+          <section className="px-4 py-2">
+            <FlashDealsCarousel 
+              products={safeProducts1} 
+              tenantId={tenant.id} 
+              currencyCode={tenant.currencyCode} 
+              country={country} 
+              dict={dict} 
+            />
+          </section>
+
+          <div className="bg-[#FAF8F5] border-y border-[#F0EBE1] mt-4">
+            <DiscoveryBlock 
+              title={dict?.home?.just_for_you || 'Por si te interesa'} 
+              badgeText={dict?.home?.azhon_selection || 'Selección AZHON'}
+              products={safeProducts2} 
+              tenantId={tenant.id} 
+              currencyCode={tenant.currencyCode} 
+              country={country} 
+              dict={dict} 
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
