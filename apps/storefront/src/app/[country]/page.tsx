@@ -6,7 +6,10 @@ import FeaturedProductsGrid from '@/app/components/FeaturedProductsGrid';
 import CommercialBanners from '@/app/components/CommercialBanners';
 import CategoryQuadGrid from '@/app/components/CategoryQuadGrid';
 import SellerPartnershipCta from '@/app/components/SellerPartnershipCta';
+import BenefitStrip from '@/app/components/BenefitStrip';
+import DiscoveryBlock from '@/app/components/DiscoveryBlock';
 
+import { GLOBAL_HOME_CONFIG } from '@/config/home';
 import { cookies } from 'next/headers';
 import { getDictionary, defaultLocale } from '@/i18n';
 
@@ -25,10 +28,11 @@ export default async function Home({ params }: { params: { country: string } }) 
   });
 
   if (!tenant) {
-    // Basic fallback or error state if tenant not found
     return <div>Tenant not found for {countryCode}</div>;
   }
 
+  // Fetch products for all blocks
+  // In a real scenario, different blocks would have different targeted queries (e.g., related, popular, new)
   const realProducts = await prisma.product.findMany({
     where: { 
       tenantId: tenant.id,
@@ -41,36 +45,83 @@ export default async function Home({ params }: { params: { country: string } }) 
       Metrics: true,
       Media: true,
     },
-    take: 24, // Increased to feed all home components
+    take: 36, // Enough data to feed multiple blocks without exhausting immediately
   });
 
   const tenantId = tenant.id;
+  const activeMode = GLOBAL_HOME_CONFIG.activeMode;
 
   return (
     <div className="w-full bg-white">
-      {/* 1. HERO SECTION */}
+      {/* 1. HERO SECTION (Always Top) */}
       <HomeHero dict={dict} country={country} currencyCode={tenant.currencyCode} />
 
-      {/* 2. CATEGORIES SECTION */}
-      <ExploreCategories dict={dict} country={country} />
+      {/* 2. BENEFIT STRIP (Always under Hero) */}
+      <BenefitStrip dict={dict} />
 
-      {/* 3. FLASH DEALS (REAL DATA) */}
-      <section className="max-w-[1440px] mx-auto px-4 sm:px-6 py-6">
-        <FlashDealsCarousel products={realProducts} tenantId={tenantId} currencyCode={tenant.currencyCode} country={country} dict={dict} />
-      </section>
+      {/* CONDITIONAL ARCHITECTURE ROUTING */}
+      {activeMode === 'HOME_NORMAL' ? (
+        <>
+          {/* CATEGORIES UP TOP FOR TRADITIONAL MARKETPLACE */}
+          <ExploreCategories dict={dict} country={country} />
 
-      {/* 4. NEW ARRIVALS & TRENDING */}
-      <FeaturedProductsGrid dict={dict} products={realProducts} tenantId={tenantId} currencyCode={tenant.currencyCode} country={country} />
+          {/* FLASH DEALS */}
+          <section className="max-w-[1440px] mx-auto px-4 sm:px-6 py-6">
+            <FlashDealsCarousel products={realProducts.slice(0, 8)} tenantId={tenantId} currencyCode={tenant.currencyCode} country={country} dict={dict} />
+          </section>
 
-      {/* 5. COMMERCIAL BANNERS */}
-      <CommercialBanners dict={dict} />
+          {/* AMAZON-STYLE CATEGORY QUADS */}
+          <CategoryQuadGrid dict={dict} country={country} products={realProducts.slice(8, 20)} />
 
-      {/* 5.5 AMAZON-STYLE CATEGORY QUADS */}
-      <CategoryQuadGrid dict={dict} country={country} products={realProducts} />
+          {/* TOP DEALS / NEW ARRIVALS */}
+          <FeaturedProductsGrid dict={dict} products={realProducts.slice(20)} tenantId={tenantId} currencyCode={tenant.currencyCode} country={country} />
 
-      {/* 6. PARTNERSHIP / SELLER CTA */}
+          {/* COMMERCIAL BANNERS */}
+          <CommercialBanners dict={dict} />
+        </>
+      ) : (
+        <>
+          {/* HOME_PRODUCT_FEED MODE - Discovery First */}
+          {/* FLASH DEALS - Urgency drives discovery */}
+          <section className="max-w-[1440px] mx-auto px-4 sm:px-6 py-6">
+            <FlashDealsCarousel products={realProducts.slice(0, 8)} tenantId={tenantId} currencyCode={tenant.currencyCode} country={country} dict={dict} />
+          </section>
+
+          {/* FIRST DISCOVERY BLOCK: Por si te interesa */}
+          <DiscoveryBlock 
+            title={dict?.home?.just_for_you || 'Por si te interesa'} 
+            products={realProducts.slice(8, 16)} 
+            tenantId={tenantId} 
+            currencyCode={tenant.currencyCode} 
+            country={country} 
+            dict={dict} 
+          />
+
+          {/* SECOND DISCOVERY BLOCK: Relacionado a últimas compras */}
+          <div className="bg-gray-50 border-y border-gray-100">
+            <DiscoveryBlock 
+              title={dict?.home?.related_purchases || 'Relacionado a tus últimas compras'} 
+              products={realProducts.slice(16, 24)} 
+              tenantId={tenantId} 
+              currencyCode={tenant.currencyCode} 
+              country={country} 
+              dict={dict} 
+            />
+          </div>
+
+          {/* COMMERCIAL BANNERS / SEASONAL */}
+          <CommercialBanners dict={dict} />
+
+          {/* CATEGORIES PUSHED DOWN */}
+          <ExploreCategories dict={dict} country={country} />
+
+          {/* FEED CONTINUATION */}
+          <FeaturedProductsGrid dict={dict} products={realProducts.slice(24)} tenantId={tenantId} currencyCode={tenant.currencyCode} country={country} />
+        </>
+      )}
+
+      {/* SELLER CTA (Always Bottom) */}
       <SellerPartnershipCta dict={dict} country={country} />
     </div>
   );
 }
-

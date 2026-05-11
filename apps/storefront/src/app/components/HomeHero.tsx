@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import SeasonEffectRenderer from './effects/SeasonEffectRenderer';
+import ActiveSeasonBadge from './ActiveSeasonBadge';
 
 export default function HomeHero({ dict, country, currencyCode = 'USD' }: { dict: any, country: string, currencyCode?: string }) {
   return (
@@ -13,9 +14,7 @@ export default function HomeHero({ dict, country, currencyCode = 'USD' }: { dict
         <SeasonEffectRenderer zone="homeHero" />
 
         <div className="relative z-10 max-w-2xl">
-          <span className="inline-block bg-white text-orange-500 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full mb-6 shadow-sm">
-            {dict.home.summer_campaign || 'SUMMER CAMPAIGN 2024'}
-          </span>
+          <ActiveSeasonBadge dict={dict} />
           <h1 className="text-5xl lg:text-7xl font-black text-white leading-[1.1] mb-6 tracking-tight">
             {dict.home.hero_title || 'Elevate Your Lifestyle Every Day.'}
           </h1>

@@ -91,7 +91,14 @@
     "artisan_exclusives": "Descubre exclusivas artesanales",
     "no_upfront_fees": "Sin tarifas iniciales",
     "global_logistics": "Soporte logístico global",
-    "advanced_dashboard": "Dashboard avanzado"
+    "advanced_dashboard": "Dashboard avanzado",
+    "normal_badge": "Descubre AZHON",
+    "just_for_you": "Por si te interesa",
+    "related_purchases": "Relacionado a tus últimas compras",
+    "benefits_free_shipping": "Envío Global",
+    "benefits_secure_payments": "Pagos 100% Seguros",
+    "benefits_global_logistics": "Logística Acelerada",
+    "benefits_buyer_protection": "Protección al Comprador"
   },
   "categories": {
     "title": "Todas las Categorías",

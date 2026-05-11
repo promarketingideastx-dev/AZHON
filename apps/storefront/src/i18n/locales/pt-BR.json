@@ -73,7 +73,14 @@
     "explora": "Explorar",
     "partnership": "Empreenda com a AZHON.",
     "partnership_desc": "Alcance milhões de clientes. Nossa plataforma fornece as ferramentas, logística e dados para crescer.",
-    "start_selling": "Começar a Vender"
+    "start_selling": "Começar a Vender",
+    "normal_badge": "Descubra a AZHON",
+    "just_for_you": "Por se te interessar",
+    "related_purchases": "Relacionado às suas compras recentes",
+    "benefits_free_shipping": "Frete Global",
+    "benefits_secure_payments": "Pagamentos 100% Seguros",
+    "benefits_global_logistics": "Logística Acelerada",
+    "benefits_buyer_protection": "Proteção ao Comprador"
   },
   "categories": {
     "title": "Todas as Categorias",

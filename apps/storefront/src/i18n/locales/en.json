@@ -76,7 +76,14 @@
     "explore_now": "Explore Now",
     "partnership": "Partner with AZHON.",
     "partnership_desc": "Reach millions of customers. Our platform provides the tools, logistics and data you need to scale.",
-    "start_selling": "Start Selling"
+    "start_selling": "Start Selling",
+    "normal_badge": "Discover AZHON",
+    "just_for_you": "Just for you",
+    "related_purchases": "Related to your recent purchases",
+    "benefits_free_shipping": "Global Shipping",
+    "benefits_secure_payments": "100% Secure Payments",
+    "benefits_global_logistics": "Accelerated Logistics",
+    "benefits_buyer_protection": "Buyer Protection"
   },
   "categories": {
     "title": "All Categories",
