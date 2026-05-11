@@ -25,7 +25,7 @@ export function ProductCard({ product, tenantId, currencyCode, country, dict, is
   };
   
   return (
-    <div className="w-full bg-white rounded-2xl p-3 flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative group border border-gray-100">
+    <div className="w-full bg-white rounded-2xl p-2 md:p-3 flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative group border border-gray-100">
       
       {/* Optional Flash Deal Badge */}
       {isFlashDeal && (
@@ -36,7 +36,7 @@ export function ProductCard({ product, tenantId, currencyCode, country, dict, is
 
       {/* Image Area */}
       <Link href={`/${country}/producto/${product.id}`} className="block relative" onClick={handleCardClick}>
-        <div className="aspect-square bg-gray-50 rounded-xl overflow-hidden mb-2.5 p-1.5 flex items-center justify-center mt-1 group-hover:bg-gray-100 transition-colors">
+        <div className="aspect-square bg-gray-50 rounded-xl overflow-hidden mb-2 md:mb-2.5 p-1 md:p-1.5 flex items-center justify-center mt-1 group-hover:bg-gray-100 transition-colors">
           {primaryMedia ? (
             <img src={primaryMedia} alt={product.title} className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500" />
           ) : (
@@ -75,14 +75,14 @@ export function ProductCard({ product, tenantId, currencyCode, country, dict, is
 
         {/* Title */}
         <Link href={`/${country}/producto/${product.id}`} className="hover:underline mt-0.5" onClick={handleCardClick}>
-          <h3 className="font-bold text-secondary text-sm line-clamp-2 leading-tight mb-1.5 group-hover:text-primary transition-colors">
+          <h3 className="font-bold text-secondary text-xs md:text-sm line-clamp-2 leading-tight mb-1.5 group-hover:text-primary transition-colors">
             {product.title}
           </h3>
         </Link>
 
         {/* Price & Variants */}
         <div className="flex items-end justify-between mt-auto mb-2.5">
-          <span className="text-gray-900 font-black text-2xl tracking-tighter leading-none">
+          <span className="text-gray-900 font-black text-lg md:text-2xl tracking-tighter leading-none">
             {currencyCode} {(product.basePrice / 100).toLocaleString('en-US', { minimumFractionDigits: 2 })}
           </span>
           {product.Variants && product.Variants.length > 1 && (
@@ -95,7 +95,7 @@ export function ProductCard({ product, tenantId, currencyCode, country, dict, is
         {/* CTAs */}
         {product.Variants && product.Variants.length > 0 ? (
           <div className="flex gap-1.5 mt-auto">
-            <Link href={`/${country}/producto/${product.id}`} onClick={handleCardClick} className="flex-1 bg-orange-50/50 border border-orange-100 text-orange-600 text-center font-bold py-2 rounded-xl text-xs hover:bg-orange-600 hover:text-white transition-all flex items-center justify-center">
+            <Link href={`/${country}/producto/${product.id}`} onClick={handleCardClick} className="flex-1 bg-orange-50/50 border border-orange-100 text-orange-600 text-center font-bold py-1.5 md:py-2 rounded-xl text-[10px] md:text-xs hover:bg-orange-600 hover:text-white transition-all flex items-center justify-center">
               {dict?.density?.viewProduct || 'Ver'}
             </Link>
             <div className="flex-1">
@@ -106,7 +106,7 @@ export function ProductCard({ product, tenantId, currencyCode, country, dict, is
             </div>
           </div>
         ) : (
-          <button disabled className="w-full mt-auto bg-gray-50 text-gray-400 font-bold py-2 rounded-xl text-xs cursor-not-allowed border border-gray-100">
+          <button disabled className="w-full mt-auto bg-gray-50 text-gray-400 font-bold py-1.5 md:py-2 rounded-xl text-[10px] md:text-xs cursor-not-allowed border border-gray-100">
             {dict?.pdp?.outOfStock || 'Agotado'}
           </button>
         )}

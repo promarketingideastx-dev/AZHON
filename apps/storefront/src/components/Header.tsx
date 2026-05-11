@@ -1,16 +1,17 @@
 'use client';
 
+import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
 import { LanguageSelector } from './LanguageSelector';
 import { useDictionary } from '@/context/DictionaryContext';
-
 import { usePathname } from 'next/navigation';
 
 export function Header({ locale = 'es', country = 'hn' }: { locale?: string, country?: string }) {
   const { user } = useAuth();
   const dict = useDictionary();
   const pathname = usePathname() || `/${country}`;
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const isActive = (path: string, exact = false) => {
     if (exact) return pathname === path || pathname === `${path}/`;
@@ -30,9 +31,12 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
         <div className="flex items-center justify-between gap-6 lg:gap-12">
           
           {/* Logo Zone */}
-          <div className="flex items-center gap-4 flex-shrink-0">
+          <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
             {/* Hamburger Menu (Mobile Only) */}
-            <button className="lg:hidden text-2xl text-secondary p-1">
+            <button 
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="lg:hidden text-3xl text-secondary p-1 -ml-2"
+            >
               ☰
             </button>
 
@@ -41,7 +45,7 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
               <img 
                 src="/logo-v2.png" 
                 alt="AZHON" 
-                className="h-9 w-auto object-contain scale-[1.4] origin-left"
+                className="h-8 sm:h-9 md:scale-[1.4] md:origin-left w-auto object-contain"
               />
             </Link>
           </div>
@@ -120,6 +124,71 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
         </div>
 
       </div>
+
+      {/* ========================================= */}
+      {/* MOBILE FULLSCREEN MENU OVERLAY            */}
+      {/* ========================================= */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 z-[100] bg-white flex flex-col h-[100dvh] overflow-hidden lg:hidden animate-in slide-in-from-left-4 duration-200">
+          <div className="flex items-center justify-between p-4 border-b border-gray-100">
+             <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center">
+                <img src="/logo-v2.png" alt="AZHON" className="h-8 w-auto object-contain" />
+             </Link>
+             <button 
+               onClick={() => setIsMobileMenuOpen(false)}
+               className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-50 text-2xl"
+             >
+               ✕
+             </button>
+          </div>
+          
+          <div className="flex-1 overflow-y-auto px-6 py-8 flex flex-col gap-8">
+             <nav className="flex flex-col gap-6">
+                <Link href={`/${country}`} onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-black text-gray-900">{dict.header.home}</Link>
+                <Link href={`/${country}/categorias`} onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-black text-gray-900">{dict.header.categories}</Link>
+                <Link href={`/${country}/ofertas`} onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-black text-[#FF4400] flex items-center gap-2">
+                  {dict.header.deals} <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                </Link>
+             </nav>
+             
+             <div className="h-px w-full bg-gray-100 my-2"></div>
+
+             <nav className="flex flex-col gap-5">
+                <Link href={`/${country}/perfil`} onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-bold text-gray-700 flex items-center gap-3">
+                  👤 {dict?.header?.profile || 'Mi Cuenta'}
+                </Link>
+                <Link href={`/${country}/vendedor`} onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-bold text-gray-700 flex items-center gap-3">
+                  🏪 {dict.header.sell}
+                </Link>
+                <Link href={`/${country}/perfil/soporte`} onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-bold text-gray-700 flex items-center gap-3">
+                  ❓ {dict.header.help}
+                </Link>
+             </nav>
+          </div>
+
+          <div className="p-6 border-t border-gray-100 bg-gray-50 flex flex-col gap-4 pb-[calc(env(safe-area-inset-bottom)+1.5rem)]">
+             <div className="flex justify-between items-center">
+               <span className="text-sm font-bold text-gray-500">Idioma</span>
+               <LanguageSelector currentLocale={locale} />
+             </div>
+             {user ? (
+                <button 
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    import('@/app/[country]/login/actions').then(m => m.logout());
+                  }}
+                  className="w-full bg-black text-white font-bold py-4 rounded-xl text-center uppercase tracking-widest text-sm mt-2"
+                >
+                  {dict.header.logout}
+                </button>
+             ) : (
+                <Link href={`/${country}/login`} onClick={() => setIsMobileMenuOpen(false)} className="w-full bg-[#FF4400] text-white font-bold py-4 rounded-xl text-center uppercase tracking-widest text-sm mt-2 shadow-lg shadow-orange-500/20">
+                  Iniciar Sesión
+                </Link>
+             )}
+          </div>
+        </div>
+      )}
     </header>
   );
 }
