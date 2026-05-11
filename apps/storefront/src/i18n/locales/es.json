@@ -95,8 +95,9 @@
   },
   "categories": {
     "title": "Todas las Categorías",
-    "adult_warning_title": "Contenido para Adultos (+18)",
-    "adult_warning_desc": "Esta categoría contiene productos de bienestar íntimo. Debes ser mayor de 18 años para ingresar.",
+    "adult_warning_title": "Acceso para mayores de 18 años",
+    "adult_warning_desc": "Esta categoría puede incluir productos de bienestar íntimo y cuidado personal dirigidos a personas adultas. Al continuar, confirmas que eres mayor de 18 años y que el acceso a estos productos está permitido en tu jurisdicción.",
+    "adult_warning_legal": "AZHON se reserva el derecho de restringir productos según normativa local, políticas de plataforma y criterios comerciales.",
     "adult_warning_confirm": "Soy mayor de 18 años",
     "adult_warning_cancel": "Volver",
     "cell_phones": {
@@ -198,10 +199,10 @@
       "health": "Salud Básica"
     },
     "intimate_wellness": {
-      "title": "Bienestar Íntimo",
-      "wellness": "Bienestar",
-      "care": "Cuidado",
-      "accessories": "Accesorios"
+      "title": "Bienestar Íntimo y Cuidado Personal",
+      "wellness": "Bienestar Sexual",
+      "care": "Cuidado Íntimo",
+      "accessories": "Accesorios y Lencería"
     }
   },
   "buyerProfile": {

@@ -80,8 +80,9 @@
   },
   "categories": {
     "title": "All Categories",
-    "adult_warning_title": "Adult Content (18+)",
-    "adult_warning_desc": "This category contains intimate wellness products. You must be at least 18 years old to enter.",
+    "adult_warning_title": "Access for 18+ only",
+    "adult_warning_desc": "This category may include intimate wellness and personal care products for adults. By proceeding, you confirm you are over 18 and access is permitted in your jurisdiction.",
+    "adult_warning_legal": "AZHON reserves the right to restrict products based on local regulations, platform policies, and commercial criteria.",
     "adult_warning_confirm": "I am 18 or older",
     "adult_warning_cancel": "Go back",
     "cell_phones": {
@@ -183,10 +184,10 @@
       "health": "Health & Wellness"
     },
     "intimate_wellness": {
-      "title": "Intimate Wellness",
-      "wellness": "Wellness",
-      "care": "Care",
-      "accessories": "Accessories"
+      "title": "Intimate Wellness & Personal Care",
+      "wellness": "Sexual Wellness",
+      "care": "Intimate Care",
+      "accessories": "Accessories & Lingerie"
     }
   },
   "buyerProfile": {
