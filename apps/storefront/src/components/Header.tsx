@@ -21,7 +21,7 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
   const inactiveClass = "text-sm font-medium text-neutral hover:text-secondary transition-colors";
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm w-full">
+    <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm w-full pt-[env(safe-area-inset-top)]">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 py-2 lg:py-3 flex flex-col gap-2 lg:gap-3">
         
         {/* ========================================= */}

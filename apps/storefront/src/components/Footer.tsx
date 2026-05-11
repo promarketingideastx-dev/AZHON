@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export function Footer({ country = 'hn' }: { country?: string }) {
   return (
-    <footer className="bg-white border-t border-gray-200 mt-20">
+    <footer className="bg-white border-t border-gray-200 mt-20 pb-[env(safe-area-inset-bottom)]">
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
           {/* Logo & Description */}

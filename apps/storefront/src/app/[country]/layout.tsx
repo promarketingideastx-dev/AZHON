@@ -12,6 +12,15 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 import { getSiteUrl } from "@/utils/url";
+import type { Viewport } from "next";
+
+export const viewport: Viewport = {
+  themeColor: "#FF4400",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
@@ -20,6 +29,12 @@ export const metadata: Metadata = {
     template: "%s | AZHON"
   },
   description: "Tu marketplace de confianza con soporte 24/7.",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "AZHON",
+  },
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
@@ -53,6 +68,7 @@ import { Footer } from "@/components/Footer";
 import { cookies } from "next/headers";
 import { getDictionary, defaultLocale } from "@/i18n";
 import { DictionaryProvider } from "@/context/DictionaryContext";
+import PwaRegistry from "@/components/PwaRegistry";
 
 export default async function RootLayout({
   children,
@@ -75,6 +91,7 @@ export default async function RootLayout({
       className={`${jakarta.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
+        <PwaRegistry />
         <DictionaryProvider dictionary={dictionary}>
           <AuthProvider user={user}>
             <Header locale={locale} country={country} />
