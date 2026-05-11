@@ -3,7 +3,8 @@ export type EffectType =
   | 'hearts_soft' 
   | 'confetti_soft' 
   | 'snow_light' 
-  | 'sparkles_warm';
+  | 'sparkles_warm'
+  | 'tech_streaks_soft';
 
 export type EffectZone = 
   | 'homeHero' 
@@ -35,12 +36,12 @@ export interface SeasonConfig {
 // Master Active Configuration
 // Can be swapped out by changing 'active' or modifying the zones.
 export const GLOBAL_SEASON_CONFIG: SeasonConfig = {
-  id: 'San_Valentin', // Example active season
+  id: 'AZHON_DEFAULT', // Normal AZHON mode
   active: true,
   effects: {
     homeHero: {
       enabled: true,
-      type: 'hearts_soft',
+      type: 'tech_streaks_soft',
       intensity: 'medium',
       density: 50,
       mobileEnabled: true,
