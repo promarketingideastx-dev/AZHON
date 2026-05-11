@@ -32,14 +32,22 @@ export default async function CategoriesPage({ params }: { params: Promise<{ cou
       </div>
 
       {/* Categories Grid */}
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8">
           {CATALOG_CATEGORIES.map((cat) => {
             const title = resolvePath(dict, cat.i18nKey) || cat.id;
             
             const content = (
-              <div className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col group">
-                <div className="h-48 w-full relative overflow-hidden bg-gray-100">
+              <div className="bg-white rounded-xl md:rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col group relative">
+                
+                {/* Mobile Compact View (Icon + Bg Only) */}
+                <div className="md:hidden h-24 w-full relative bg-gray-50 flex flex-col items-center justify-center p-2 group-hover:bg-orange-50 transition-colors">
+                   <div className="text-3xl mb-1 group-hover:scale-110 transition-transform">{cat.icon}</div>
+                   <h2 className="text-[11px] font-bold text-center text-secondary leading-tight line-clamp-2 px-1">{title}</h2>
+                </div>
+
+                {/* Desktop Rich Editorial View */}
+                <div className="hidden md:block h-48 w-full relative overflow-hidden bg-gray-100">
                   <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors z-10"></div>
                   <img src={cat.image} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                   <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-3 rounded-full text-2xl shadow-lg z-20">
@@ -47,7 +55,8 @@ export default async function CategoriesPage({ params }: { params: Promise<{ cou
                   </div>
                 </div>
                 
-                <div className="p-6 md:p-8 flex-1 flex flex-col">
+                {/* Desktop Info Area */}
+                <div className="hidden md:flex p-6 md:p-8 flex-1 flex-col">
                   <h2 className="text-2xl font-black text-secondary tracking-tight mb-6">
                     {title}
                   </h2>
@@ -67,19 +76,19 @@ export default async function CategoriesPage({ params }: { params: Promise<{ cou
                   </ul>
                   
                   <div className="mt-8 pt-6 border-t border-gray-100">
-                    <Link href={`/${country}/categorias/${cat.id}`} className="text-primary font-bold hover:text-orange-700 flex items-center gap-2 group/link">
+                    <span className="text-primary font-bold hover:text-orange-700 flex items-center gap-2 group-hover:text-orange-600">
                       {dict.home.see_all} {title}
-                      <span className="group-hover/link:translate-x-1 transition-transform">→</span>
-                    </Link>
+                      <span className="group-hover:translate-x-1 transition-transform">→</span>
+                    </span>
                   </div>
                 </div>
               </div>
             );
 
             return (
-              <div key={cat.id}>
+              <Link href={`/${country}/categorias/${cat.id}`} key={cat.id} className="block h-full outline-none">
                 {content}
-              </div>
+              </Link>
             );
           })}
         </div>

@@ -22,15 +22,15 @@ export default function DiscoveryBlock({
   if (!products || products.length === 0) return null;
 
   return (
-    <section className="max-w-[1440px] mx-auto px-4 sm:px-6 py-10 md:py-12">
-      <div className="mb-8">
+    <section className="max-w-[1440px] mx-auto px-4 sm:px-6 py-6 md:py-12">
+      <div className="mb-4 md:mb-8">
         {badgeText && (
-          <span className="inline-block bg-black text-white text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-sm mb-3">
+          <span className="inline-block bg-black text-white text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-sm mb-2 md:mb-3">
             {badgeText}
           </span>
         )}
-        <h2 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tight leading-none">{title}</h2>
-        {subtitle && <p className="text-gray-500 text-sm mt-2 font-medium">{subtitle}</p>}
+        <h2 className="text-xl md:text-3xl font-black text-gray-900 tracking-tight leading-none">{title}</h2>
+        {subtitle && <p className="text-gray-500 text-xs md:text-sm mt-1 md:mt-2 font-medium">{subtitle}</p>}
       </div>
 
       <div className="flex overflow-x-auto gap-3 md:gap-4 snap-x snap-mandatory hide-scrollbar pb-8 pt-2 -mx-4 px-4 sm:mx-0 sm:px-0">

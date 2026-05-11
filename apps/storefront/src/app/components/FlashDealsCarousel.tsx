@@ -55,34 +55,38 @@ export default function FlashDealsCarousel({ products, tenantId, currencyCode = 
   const secs = (timeLeft % 60).toString().padStart(2, '0');
 
   return (
-    <div id="flash-deals" className="bg-gradient-to-r from-[#FF5500] via-[#FF4400] to-[#FF2200] rounded-[2rem] p-4 sm:p-6 md:p-10 shadow-2xl shadow-orange-500/20 relative overflow-hidden mt-8 border border-orange-400/30">
+    <div id="flash-deals" className="bg-gradient-to-r from-[#FF5500] via-[#FF4400] to-[#FF2200] rounded-[2rem] px-4 py-4 sm:p-6 md:p-10 shadow-2xl shadow-orange-500/20 relative overflow-hidden mt-6 md:mt-8 border border-orange-400/30">
       {/* Dynamic Background Accents */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-white opacity-5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
       
       {/* Header Flash Deals */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 md:mb-8 gap-4 md:gap-6 border-b border-white/15 pb-4 md:pb-6">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-10">
-          <div className="flex items-center gap-3">
-            <h2 className="text-3xl md:text-6xl font-black text-white italic tracking-tighter uppercase drop-shadow-lg">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 md:mb-8 gap-3 md:gap-6 border-b border-white/15 pb-3 md:pb-6">
+        <div className="flex flex-row items-center justify-between sm:justify-start gap-3 sm:gap-10 w-full md:w-auto">
+          <div className="flex items-center gap-2 md:gap-3">
+            <h2 className="text-xl sm:text-3xl md:text-6xl font-black text-white italic tracking-tighter uppercase drop-shadow-lg">
               FLASH DEALS
             </h2>
           </div>
           
           {/* Giant Honest Urgency Timer */}
-          <div className="flex flex-col bg-black/40 px-4 md:px-6 py-2.5 md:py-3 rounded-2xl border border-white/20 backdrop-blur-md shadow-2xl relative overflow-hidden">
+          <div className="flex items-center bg-black/40 px-3 md:px-6 py-1.5 md:py-3 rounded-xl md:rounded-2xl border border-white/20 backdrop-blur-md shadow-2xl relative overflow-hidden shrink-0">
              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-600 via-orange-500 to-red-600"></div>
-             <div className="flex items-center gap-2 mb-1">
+             <div className="hidden md:flex items-center gap-2 mb-1 mr-3">
                <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse shadow-[0_0_10px_rgba(239,68,68,1)]"></span>
                <span className="text-white/90 text-xs md:text-sm font-black uppercase tracking-widest">{dict?.home?.ends_today || 'Termina Hoy'}</span>
              </div>
-             <div className="flex items-baseline gap-1 text-white">
-                <span className="font-mono font-black tracking-tight text-2xl md:text-4xl">{hrs}</span><span className="text-white/50 text-lg md:text-xl font-black">:</span>
-                <span className="font-mono font-black tracking-tight text-2xl md:text-4xl">{mins}</span><span className="text-white/50 text-lg md:text-xl font-black">:</span>
-                <span className="font-mono font-black tracking-tight text-2xl md:text-4xl">{secs}</span>
+             {/* Mobile pulse dot only */}
+             <div className="md:hidden flex items-center mr-2">
+               <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse shadow-[0_0_8px_rgba(239,68,68,1)]"></span>
+             </div>
+             <div className="flex items-baseline gap-0.5 md:gap-1 text-white">
+                <span className="font-mono font-black tracking-tight text-lg md:text-4xl">{hrs}</span><span className="text-white/50 text-sm md:text-xl font-black">:</span>
+                <span className="font-mono font-black tracking-tight text-lg md:text-4xl">{mins}</span><span className="text-white/50 text-sm md:text-xl font-black">:</span>
+                <span className="font-mono font-black tracking-tight text-lg md:text-4xl">{secs}</span>
              </div>
           </div>
         </div>
-        <Link href={`/${country}/ofertas`} className="bg-white text-[#FF4400] hover:bg-gray-50 px-6 md:px-8 py-3 md:py-3.5 rounded-full text-xs md:text-sm font-black transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 uppercase tracking-wide flex items-center justify-center gap-2">
+        <Link href={`/${country}/ofertas`} className="hidden md:flex bg-white text-[#FF4400] hover:bg-gray-50 px-6 md:px-8 py-3 md:py-3.5 rounded-full text-xs md:text-sm font-black transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 uppercase tracking-wide items-center justify-center gap-2">
           Shop All Deals
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
         </Link>

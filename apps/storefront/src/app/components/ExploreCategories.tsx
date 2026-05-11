@@ -32,11 +32,11 @@ export default function ExploreCategories({ dict, country }: { dict: any, countr
         {topCategories.map((cat, i) => {
           const catName = resolvePath(dict, cat.i18nKey) || cat.id;
           return (
-            <Link href={`/${country}/categorias/${cat.id}`} key={i} className="snap-start min-w-[90px] md:min-w-[130px] flex flex-col items-center justify-start gap-2 md:gap-3 group shrink-0">
-              <div className="w-[80px] h-[80px] md:w-[100px] md:h-[100px] rounded-full bg-gray-50 flex items-center justify-center text-3xl md:text-4xl group-hover:bg-orange-50 group-hover:-translate-y-1 group-hover:shadow-[0_8px_20px_-4px_rgba(255,85,0,0.15)] group-hover:scale-105 transition-all duration-300 border border-gray-100 group-hover:border-orange-200">
+            <Link href={`/${country}/categorias/${cat.id}`} key={i} className="snap-start min-w-[72px] md:min-w-[130px] flex flex-col items-center justify-start gap-1.5 md:gap-3 group shrink-0">
+              <div className="w-[64px] h-[64px] md:w-[100px] md:h-[100px] rounded-full bg-gray-50 flex items-center justify-center text-2xl md:text-4xl group-hover:bg-orange-50 group-hover:-translate-y-1 group-hover:shadow-[0_8px_20px_-4px_rgba(255,85,0,0.15)] group-hover:scale-105 transition-all duration-300 border border-gray-100 group-hover:border-orange-200">
                 <span className="group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">{cat.icon}</span>
               </div>
-              <span className="text-xs font-bold text-gray-700 text-center line-clamp-2 leading-tight group-hover:text-orange-600 transition-colors px-1">
+              <span className="text-[10px] md:text-xs font-bold text-gray-700 text-center line-clamp-2 leading-tight group-hover:text-orange-600 transition-colors px-0.5 md:px-1">
                 {catName}
               </span>
             </Link>
