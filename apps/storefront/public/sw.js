@@ -2,7 +2,7 @@
 // Implements a strict Network-First for documents, and Cache-First for static assets.
 // NO FAKE OFFLINE CHECKOUT. NO FAKE DATA.
 
-const CACHE_NAME = 'azhon-pwa-cache-v2';
+const CACHE_NAME = 'azhon-pwa-cache-v3';
 
 // Assets to cache immediately on install
 const STATIC_ASSETS = [
@@ -80,7 +80,8 @@ self.addEventListener('fetch', (event) => {
 
   // 3. HTML DOCUMENTS / APP ROUTES: Network-First
   // This ensures users always see the latest products, but gives a basic fallback if offline.
-  if (event.request.mode === 'navigate' || event.request.headers.get('accept').includes('text/html')) {
+  const acceptHeader = event.request.headers.get('accept');
+  if (event.request.mode === 'navigate' || (acceptHeader && acceptHeader.includes('text/html'))) {
     event.respondWith(
       fetch(event.request)
         .then((networkResponse) => {
