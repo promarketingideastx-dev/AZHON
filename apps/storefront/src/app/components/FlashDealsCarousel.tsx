@@ -7,15 +7,13 @@ import Link from 'next/link';
 export default function FlashDealsCarousel({ products, tenantId, currencyCode = 'USD', country, dict }: { products: any[], tenantId: string, currencyCode?: string, country: string, dict: any }) {
   // =========================================================================
   // FLASH DEALS COMMERCIAL RULE (DNA):
-  // DO NOT SHOW Flash Deals if there is no real discount data (ProductDiscount, Campaign).
-  // Currently, the DB only has `basePrice`. Showing base prices as Flash Deals is Fake Urgency.
-  // We return null to hide this section entirely until the engine is built.
+  // The structure must remain visible per AZHON Home rules.
+  // We are removing fake urgency (fake 85% discounts) and using an honest fallback
+  // until the real promotion engine is connected.
   // =========================================================================
-  return null;
 
-  /*
   // --- MOTHER STRUCTURE SHELL (PREMIUM ORANGE) ---
-  // Restore this UI structure when real deals are available.
+  // Restored UI structure with honest pricing.
   
   const [timeLeft, setTimeLeft] = useState(15959); // 04:25:59
   const [isHovered, setIsHovered] = useState(false);
@@ -95,21 +93,15 @@ export default function FlashDealsCarousel({ products, tenantId, currencyCode = 
             <div key={`${product.id}-${index}`} className="min-w-[280px] bg-white rounded-xl overflow-hidden shadow-sm flex flex-col">
               <div className="relative h-[200px] bg-gray-100 flex items-center justify-center p-4">
                 <span className="absolute top-3 left-3 bg-black text-white text-[10px] font-bold px-2 py-1 rounded-sm uppercase tracking-wider z-10">
-                  -15% OFF
-                </span>
                 <img src={product?.Media?.[0]?.url || "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500"} className="max-h-full object-contain drop-shadow-md mix-blend-multiply" alt={product.title} />
               </div>
               <div className="p-5 flex flex-col flex-1 border-t border-gray-100">
                 <h3 className="font-bold text-gray-900 text-sm line-clamp-1 mb-2">{product.title}</h3>
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="text-lg font-black text-orange-600">{currencyCode} {product.basePrice * 0.85}</span>
-                  <span className="text-xs text-gray-400 line-through">{currencyCode} {product.basePrice}</span>
+                  <span className="text-lg font-black text-orange-600">{currencyCode} {product.basePrice}</span>
                 </div>
                 <div className="mt-auto">
-                  <div className="w-full bg-gray-100 rounded-full h-1.5 mb-2 overflow-hidden">
-                    <div className="bg-orange-500 h-1.5 rounded-full" style={{ width: '85%' }}></div>
-                  </div>
-                  <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">85% claimed</span>
+                  <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Cantidades Limitadas</span>
                 </div>
               </div>
             </div>
@@ -118,5 +110,4 @@ export default function FlashDealsCarousel({ products, tenantId, currencyCode = 
       </div>
     </div>
   );
-  */
 }
