@@ -5,6 +5,13 @@ export async function GET(request: Request) {
   const requestUrl = new URL(request.url)
   const code = requestUrl.searchParams.get('code')
   const next = requestUrl.searchParams.get('next') || '/'
+  const authError = requestUrl.searchParams.get('error')
+  const errorDescription = requestUrl.searchParams.get('error_description')
+
+  if (authError || errorDescription) {
+    console.error(`[AUTH AUDIT] event: confirmation_error, error: ${authError}, desc: ${errorDescription}, date: ${new Date().toISOString()}`)
+    return NextResponse.redirect(new URL(`/login?error=err_generic&msg=${encodeURIComponent('Enlace inválido o expirado. Intenta de nuevo.')}`, request.url))
+  }
 
   if (code) {
     const supabase = await createClient()
@@ -16,6 +23,7 @@ export async function GET(request: Request) {
       let redirectUrl = next
       
       if (authData?.user && next === '/') {
+        console.log(`[AUTH AUDIT] event: email_confirmed_or_session_started, user_id: ${authData.user.id}, date: ${new Date().toISOString()}`)
         const { data: dbUser } = await supabase
           .from('User')
           .select('role')

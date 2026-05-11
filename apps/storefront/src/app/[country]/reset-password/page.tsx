@@ -1,8 +1,8 @@
 import { getDictionary, defaultLocale } from '@/i18n';
-import AuthClient from './AuthClient';
+import ResetPasswordClient from './ResetPasswordClient';
 import { cookies } from 'next/headers';
 
-export default async function LoginPage({
+export default async function ResetPasswordPage({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
@@ -10,8 +10,6 @@ export default async function LoginPage({
   const params = await searchParams;
   const errorKey = params?.error as string;
   const msgKey = params?.msg as string;
-  const intent = params?.intent as string;
-  const email = params?.email as string;
   
   const cookieStore = await cookies();
   const locale = cookieStore.get('NEXT_LOCALE')?.value || defaultLocale;
@@ -19,7 +17,7 @@ export default async function LoginPage({
 
   return (
     <div className="min-h-screen bg-warm flex flex-col justify-center items-center p-4">
-      <AuthClient dict={dict} errorKey={errorKey} msgKey={msgKey} intent={intent} defaultEmail={email} />
+      <ResetPasswordClient dict={dict} errorKey={errorKey} msgKey={msgKey} />
     </div>
   )
 }

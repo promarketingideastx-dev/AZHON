@@ -17,8 +17,17 @@ export default async function SellerLayout({
     redirect(`/${country}/login`);
   }
 
-  // TODO: Check if user.role === 'SELLER' or 'SUPER_ADMIN', otherwise redirect to /perfil
-  // For this foundation, we just ensure auth.
+  const { data: dbUser } = await supabase
+    .from('User')
+    .select('role')
+    .eq('id', user.id)
+    .single();
+
+  if (!dbUser || (dbUser.role !== 'SELLER' && dbUser.role !== 'SUPER_ADMIN')) {
+    // AuthAudit Base: unauthorized_seller_access_attempt
+    console.log(`[AUTH AUDIT] event: unauthorized_seller_access_attempt, user_id: ${user.id}, date: ${new Date().toISOString()}`)
+    redirect(`/${country}/perfil`);
+  }
 
   return (
     <div className="w-full bg-gray-50 min-h-screen pb-12">

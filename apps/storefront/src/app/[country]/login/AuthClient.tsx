@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { login, signup, resetPassword, signInWithGoogle } from './actions';
+import { login, signup, resetPassword, signInWithGoogle, resendConfirmation } from './actions';
 
-export default function AuthClient({ dict, errorKey, msgKey }: { dict: any, errorKey?: string, msgKey?: string }) {
-  const [view, setView] = useState<'login' | 'signup' | 'forgot' | 'verify'>('login');
+export default function AuthClient({ dict, errorKey, msgKey, intent, defaultEmail }: { dict: any, errorKey?: string, msgKey?: string, intent?: string, defaultEmail?: string }) {
+  const [view, setView] = useState<'login' | 'signup' | 'forgot' | 'verify'>(defaultEmail && msgKey === 'msg_check_email' ? 'verify' : 'login');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -32,7 +32,7 @@ export default function AuthClient({ dict, errorKey, msgKey }: { dict: any, erro
       <p className="text-sm text-neutral text-center mb-8">
         {view === 'login' ? (t.subtitle_login || 'Ingresa a tu cuenta para continuar') :
          view === 'signup' ? (t.subtitle_signup || 'Únete a AZHON hoy mismo') :
-         view === 'verify' ? (t.verification_desc || 'Ingresa el código que enviamos a tu correo.') :
+         view === 'verify' ? (t.verification_desc || 'Hemos enviado un enlace de confirmación a tu correo.') :
          (t.subtitle_reset || 'Ingresa tu correo para recibir instrucciones')}
       </p>
 
@@ -49,23 +49,36 @@ export default function AuthClient({ dict, errorKey, msgKey }: { dict: any, erro
       )}
 
       {view === 'verify' ? (
-        <form className="flex flex-col gap-5" onSubmit={handleSubmit} action={login}>
-           <div>
-            <label className="block text-xs font-bold text-neutral mb-1.5 uppercase tracking-wide">Código de Verificación</label>
-            <input name="token" type="text" required className="w-full border border-gray-200 rounded-lg px-4 py-3 text-center tracking-[0.5em] font-mono text-lg text-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" placeholder="000000" />
-            {/* Oculto email para pasarlo a la acción si es OTP */}
+        <div className="flex flex-col gap-5 items-center text-center py-4">
+          <div className="w-16 h-16 bg-green-50 text-green-600 rounded-full flex items-center justify-center mb-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+            </svg>
           </div>
-          <button type="submit" className="w-full bg-secondary text-white rounded-full py-3.5 font-bold hover:bg-black transition-colors shadow-sm disabled:opacity-50 mt-4">
-            {loading ? '...' : (t.btn_verify || 'Verificar')}
-          </button>
-          <div className="text-center mt-2">
-            <button type="button" onClick={() => setView('login')} className="text-sm text-primary font-bold hover:underline">
-              {t.btn_back_login || 'Volver al inicio'}
+          <h2 className="text-lg font-bold text-secondary">
+            {t.msg_check_email || 'Revisa tu bandeja de entrada para confirmar tu cuenta.'}
+          </h2>
+          <p className="text-sm text-neutral mt-2">
+            {t.verification_note || 'Haz clic en el enlace seguro que te enviamos para activar tu cuenta de AZHON.'}
+          </p>
+          <div className="w-full mt-6">
+            <button type="button" onClick={() => setView('login')} className="w-full bg-white text-secondary border border-gray-200 rounded-full py-3.5 font-bold hover:bg-gray-50 transition-colors mb-3">
+              {t.btn_back_login || 'Volver a iniciar sesión'}
             </button>
+            {defaultEmail && (
+              <form action={resendConfirmation}>
+                <input type="hidden" name="email" value={defaultEmail} />
+                {intent && <input type="hidden" name="intent" value={intent} />}
+                <button type="submit" className="text-sm text-primary font-bold hover:underline">
+                  {t.btn_resend || 'Reenviar enlace de confirmación'}
+                </button>
+              </form>
+            )}
           </div>
-        </form>
+        </div>
       ) : (
         <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
+          {intent && <input type="hidden" name="intent" value={intent} />}
           <div>
             <label className="block text-xs font-bold text-neutral mb-1.5 uppercase tracking-wide" htmlFor="email">
               {t.email_label || 'Correo Electrónico'}
