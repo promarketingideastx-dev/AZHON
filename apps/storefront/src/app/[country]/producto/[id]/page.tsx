@@ -125,7 +125,7 @@ export default async function ProductDetailPage({
           <span className="text-gray-400 truncate max-w-[200px] sm:max-w-xs">{product.title}</span>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-8 lg:gap-12 mb-16">
+        <div className="flex flex-col md:flex-row gap-6 lg:gap-12 mb-12 lg:mb-16">
           
           {/* Image Section */}
           <div className="w-full md:w-1/2">
@@ -145,13 +145,13 @@ export default async function ProductDetailPage({
               </span>
             </div>
             
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-secondary leading-tight mb-4 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-secondary leading-tight mb-3 md:mb-4 tracking-tight">
               {product.title}
             </h1>
 
             {/* Real Metrics Surface */}
             {(product.Metrics?.views || product.Metrics?.salesCount) ? (
-              <div className="flex flex-wrap items-center gap-3 mb-4 text-sm font-bold">
+              <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-4 text-xs md:text-sm font-bold">
                 {product.Metrics.salesCount > 0 && (
                   <span className="bg-orange-50 text-orange-700 px-2 py-1 rounded-md border border-orange-100">
                     {dict?.pdp?.soldCount?.replace('{count}', product.Metrics.salesCount.toString()) || `🔥 ${product.Metrics.salesCount} vendidos`}
@@ -165,7 +165,7 @@ export default async function ProductDetailPage({
               </div>
             ) : null}
 
-            <div className="text-3xl font-black text-primary mb-8 drop-shadow-sm">
+            <div className="text-3xl md:text-4xl font-black text-primary mb-6 md:mb-8 drop-shadow-sm tracking-tighter">
               {formatPrice(product.basePrice)}
             </div>
 
@@ -225,12 +225,12 @@ export default async function ProductDetailPage({
                 </div>
               </div>
 
-              <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-xl shadow-gray-200/50">
-                <div className="flex items-start gap-3 mb-6 bg-blue-50/50 p-3 rounded-xl border border-blue-100/50">
-                  <Truck className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+              <div className="bg-white rounded-2xl p-4 md:p-6 border border-gray-200 shadow-xl shadow-gray-200/50">
+                <div className="flex items-start gap-3 mb-4 md:mb-6 bg-blue-50/50 p-3 rounded-xl border border-blue-100/50">
+                  <Truck className="w-4 h-4 md:w-5 md:h-5 text-blue-600 shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-sm font-bold text-secondary">{dict?.density?.deliveryTrust || 'Entrega y Confianza'}</p>
-                    <p className="text-xs text-neutral mt-0.5">{dict?.density?.deliveryDisclaimer || 'Envío/retiro según disponibilidad y ubicación'}</p>
+                    <p className="text-xs md:text-sm font-bold text-secondary">{dict?.density?.deliveryTrust || 'Entrega y Confianza'}</p>
+                    <p className="text-[10px] md:text-xs text-neutral mt-0.5">{dict?.density?.deliveryDisclaimer || 'Envío/retiro según disponibilidad y ubicación'}</p>
                   </div>
                 </div>
                 {product.Variants && product.Variants.length > 0 ? (
@@ -239,7 +239,7 @@ export default async function ProductDetailPage({
                     variantId={product.Variants[0].id}
                   />
                 ) : (
-                  <button disabled className="w-full bg-gray-200 text-gray-500 font-bold py-4 rounded-xl text-lg cursor-not-allowed">
+                  <button disabled className="w-full bg-gray-200 text-gray-500 font-bold py-3 md:py-4 rounded-xl text-base md:text-lg cursor-not-allowed">
                     {dict?.pdp?.outOfStock || 'Agotado'}
                   </button>
                 )}

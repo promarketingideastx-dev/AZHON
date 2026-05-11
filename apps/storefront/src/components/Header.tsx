@@ -45,7 +45,7 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
               <img 
                 src="/logo-v2.png" 
                 alt="AZHON" 
-                className="h-8 sm:h-9 md:scale-[1.4] md:origin-left w-auto object-contain"
+                className="h-10 sm:h-11 md:h-14 w-auto object-contain"
               />
             </Link>
           </div>

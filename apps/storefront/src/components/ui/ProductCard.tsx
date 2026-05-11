@@ -36,7 +36,7 @@ export function ProductCard({ product, tenantId, currencyCode, country, dict, is
 
       {/* Image Area */}
       <Link href={`/${country}/producto/${product.id}`} className="block relative" onClick={handleCardClick}>
-        <div className="aspect-square bg-gray-50 rounded-xl overflow-hidden mb-2 md:mb-2.5 p-1 md:p-1.5 flex items-center justify-center mt-1 group-hover:bg-gray-100 transition-colors">
+        <div className="aspect-square w-full bg-gray-50 rounded-xl overflow-hidden mb-2 md:mb-2.5 p-1.5 flex items-center justify-center mt-1 group-hover:bg-gray-100 transition-colors">
           {primaryMedia ? (
             <img src={primaryMedia} alt={product.title} className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500" />
           ) : (

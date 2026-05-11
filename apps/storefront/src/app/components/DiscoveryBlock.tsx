@@ -35,7 +35,7 @@ export default function DiscoveryBlock({
 
       <div className="flex overflow-x-auto gap-3 md:gap-4 snap-x snap-mandatory hide-scrollbar pb-8 pt-2 -mx-4 px-4 sm:mx-0 sm:px-0">
         {products.map((product, index) => (
-          <div key={`${product.id}-${index}`} className="min-w-[150px] sm:min-w-[240px] md:min-w-[280px] snap-start">
+          <div key={`${product.id}-${index}`} className="min-w-[150px] w-[150px] sm:min-w-[240px] sm:w-[240px] md:min-w-[280px] md:w-[280px] snap-start shrink-0">
             <ProductCard 
               product={product}
               tenantId={tenantId}

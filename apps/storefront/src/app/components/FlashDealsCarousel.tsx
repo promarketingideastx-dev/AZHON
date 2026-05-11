@@ -100,7 +100,7 @@ export default function FlashDealsCarousel({ products, tenantId, currencyCode = 
         >
           {displayProducts.map((product, index) => (
             // Sleek card for deals
-            <Link href={`/${country}/producto/${product.id}`} key={`${product.id}-${index}`} className="min-w-[160px] sm:min-w-[250px] bg-white rounded-2xl overflow-hidden shadow-lg flex flex-col group hover:-translate-y-1 transition-transform duration-300 border border-transparent hover:border-orange-200 relative snap-start">
+            <Link href={`/${country}/producto/${product.id}`} key={`${product.id}-${index}`} className="min-w-[150px] w-[150px] sm:min-w-[200px] sm:w-[200px] md:min-w-[250px] md:w-[250px] bg-white rounded-2xl overflow-hidden shadow-lg flex flex-col group hover:-translate-y-1 transition-transform duration-300 border border-transparent hover:border-orange-200 relative snap-start shrink-0">
               
               {/* Honest Offer Badge */}
               <div className="absolute top-0 left-0 z-10 bg-red-600 text-white text-[9px] md:text-[10px] font-black px-2 md:px-3 py-1 md:py-1.5 rounded-br-xl shadow-sm tracking-widest uppercase">
@@ -108,16 +108,16 @@ export default function FlashDealsCarousel({ products, tenantId, currencyCode = 
               </div>
 
               {/* Tighter, more dominant image area */}
-              <div className="relative h-[160px] sm:h-[240px] bg-gray-50 flex items-center justify-center p-2 group-hover:bg-gray-100 transition-colors">
+              <div className="relative aspect-square w-full bg-gray-50 flex items-center justify-center p-2 group-hover:bg-gray-100 transition-colors">
                 <img src={product?.Media?.[0]?.url || "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500"} className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500" alt={product.title} />
               </div>
               
               {/* Compressed Info Area */}
-              <div className="p-3 md:p-4 flex flex-col flex-1 border-t border-gray-100">
+              <div className="p-2.5 md:p-4 flex flex-col flex-1 border-t border-gray-100">
                 <h3 className="font-bold text-gray-900 text-xs md:text-sm line-clamp-2 leading-tight mb-2 group-hover:text-[#FF4400] transition-colors">{product.title}</h3>
                 
                 {/* Price block strictly honest */}
-                <div className="flex flex-col mb-2 md:mb-3">
+                <div className="flex flex-col mb-2 md:mb-3 mt-auto">
                   <span className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">{dict?.home?.flash_selection || 'Selección Relámpago'}</span>
                   <span className="text-xl md:text-2xl font-black text-[#FF4400] tracking-tighter leading-none">
                     {currencyCode} {(product.basePrice / 100).toLocaleString('en-US', { minimumFractionDigits: 2 })}
@@ -125,14 +125,14 @@ export default function FlashDealsCarousel({ products, tenantId, currencyCode = 
                 </div>
 
                 {/* Urgency Footer */}
-                <div className="mt-auto pt-2 border-t border-gray-50 flex items-center justify-between">
+                <div className="pt-2 border-t border-gray-50 flex items-center justify-between">
                   <span className="bg-red-50 text-red-600 text-[8px] md:text-[9px] font-black uppercase tracking-widest px-1.5 md:px-2 py-1 rounded-md border border-red-100 flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
                     <span className="hidden sm:inline">{dict?.home?.limited_quantities || 'Cantidades Limitadas'}</span>
                     <span className="sm:hidden">Limitado</span>
                   </span>
-                  <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-orange-50 flex items-center justify-center text-orange-500 group-hover:bg-[#FF4400] group-hover:text-white transition-colors shadow-sm flex-shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-orange-50 flex items-center justify-center text-orange-500 group-hover:bg-[#FF4400] group-hover:text-white transition-colors shadow-sm flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                   </div>
                 </div>
               </div>
