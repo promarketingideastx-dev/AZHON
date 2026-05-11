@@ -46,12 +46,12 @@ export default function SparklesWarm({ config }: { config: SeasonEffectConfig })
               key={i}
               className="effect-sparkle"
               style={{
-                left: \`\${left}%\`,
-                top: \`\${top}%\`,
-                width: \`\${size}px\`,
-                height: \`\${size}px\`,
-                animationDelay: \`\${delay}s\`,
-                animationDuration: \`\${duration}s\`,
+                left: `${left}%`,
+                top: `${top}%`,
+                width: `${size}px`,
+                height: `${size}px`,
+                animationDelay: `${delay}s`,
+                animationDuration: `${duration}s`,
               }}
             />
           );

@@ -51,13 +51,13 @@ export default function SnowLight({ config }: { config: SeasonEffectConfig }) {
               key={i}
               className="effect-snow shadow-sm"
               style={{
-                left: \`\${left}%\`,
+                left: `${left}%`,
                 top: '-20px',
-                width: \`\${size}px\`,
-                height: \`\${size}px\`,
-                animationDelay: \`-\${delay}s\`,
-                animationDuration: \`\${duration}s\`,
-                filter: \`blur(\${Math.random() * 2}px)\`
+                width: `${size}px`,
+                height: `${size}px`,
+                animationDelay: `-${delay}s`,
+                animationDuration: `${duration}s`,
+                filter: `blur(${Math.random() * 2}px)`
               }}
             />
           );

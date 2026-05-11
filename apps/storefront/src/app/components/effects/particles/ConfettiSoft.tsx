@@ -52,13 +52,13 @@ export default function ConfettiSoft({ config }: { config: SeasonEffectConfig })
               key={i}
               className="effect-confetti"
               style={{
-                left: \`\${left}%\`,
+                left: `${left}%`,
                 top: '-20px',
-                width: \`\${width}px\`,
-                height: \`\${height}px\`,
+                width: `${width}px`,
+                height: `${height}px`,
                 backgroundColor: color,
-                animationDelay: \`-\${delay}s\`,
-                animationDuration: \`\${duration}s\`,
+                animationDelay: `-${delay}s`,
+                animationDuration: `${duration}s`,
                 borderRadius: Math.random() > 0.5 ? '50%' : '2px'
               }}
             />

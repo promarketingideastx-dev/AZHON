@@ -52,11 +52,11 @@ export default function HeartsSoft({ config }: { config: SeasonEffectConfig }) {
               key={i}
               className="effect-heart text-red-500/40"
               style={{
-                left: \`\${left}%\`,
+                left: `${left}%`,
                 bottom: '-20px',
-                animationDelay: \`\${delay}s\`,
-                animationDuration: \`\${duration}s\`,
-                transform: \`scale(\${size})\`,
+                animationDelay: `${delay}s`,
+                animationDuration: `${duration}s`,
+                transform: `scale(${size})`,
                 fill: 'currentColor',
               }}
               viewBox="0 0 24 24"
