@@ -3,7 +3,7 @@
 import React from 'react';
 import { SeasonEffectConfig } from '@/config/season';
 
-const PRODUCT_EMOJIS = ['🎁', '⌚', '📱', '💻', '🛍️', '🎧', '📸', '👟'];
+const PRODUCT_EMOJIS = ['🎁', '⌚', '📱', '💻', '🛍️', '🎧', '📸', '👟', '💍', '💎', '🧴', '🔋', '🔌', '🧸', '🚗', '🎮', '💄', '💅', '🕶️', '🎒', '⚽', '🎸'];
 
 export default function ProductRain({ config }: { config: SeasonEffectConfig }) {
   // Use a healthy amount of products raining to create an impact
