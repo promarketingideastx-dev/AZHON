@@ -86,7 +86,10 @@
     "benefits_buyer_protection": "Buyer Protection",
     "view_collection": "View Collection",
     "azhon_selection": "AZHON Selection",
-    "limited_quantities": "Limited Quantities"
+    "limited_quantities": "Limited Quantities",
+    "flash_offer_active": "Active Offer",
+    "ends_today": "Ends Today",
+    "flash_selection": "Flash Selection"
   },
   "categories": {
     "title": "All Categories",

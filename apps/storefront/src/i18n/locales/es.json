@@ -101,7 +101,10 @@
     "benefits_buyer_protection": "Protección al Comprador",
     "view_collection": "Ver Colección",
     "azhon_selection": "Selección AZHON",
-    "limited_quantities": "Cantidades Limitadas"
+    "limited_quantities": "Cantidades Limitadas",
+    "flash_offer_active": "Oferta Activa",
+    "ends_today": "Termina Hoy",
+    "flash_selection": "Selección Relámpago"
   },
   "categories": {
     "title": "Todas las Categorías",

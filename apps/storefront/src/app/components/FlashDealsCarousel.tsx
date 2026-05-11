@@ -60,25 +60,31 @@ export default function FlashDealsCarousel({ products, tenantId, currencyCode = 
       <div className="absolute top-0 right-0 w-96 h-96 bg-white opacity-5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
       
       {/* Header Flash Deals */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4 border-b border-white/15 pb-6">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6 border-b border-white/15 pb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-10">
           <div className="flex items-center gap-3">
-            <h2 className="text-3xl md:text-5xl font-black text-white italic tracking-tighter uppercase drop-shadow-md">
+            <h2 className="text-4xl md:text-6xl font-black text-white italic tracking-tighter uppercase drop-shadow-lg">
               FLASH DEALS
             </h2>
           </div>
           
-          {/* Trust/Urgency Pill */}
-          <div className="flex items-center gap-3 bg-black/30 px-4 py-2 rounded-full border border-white/20 w-fit backdrop-blur-md shadow-inner">
-             <div className="flex items-center gap-2">
-               <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span>
-               <span className="text-white/90 text-xs font-black uppercase tracking-widest">Termina En:</span>
+          {/* Giant Honest Urgency Timer */}
+          <div className="flex flex-col bg-black/40 px-6 py-3 rounded-2xl border border-white/20 backdrop-blur-md shadow-2xl relative overflow-hidden">
+             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-600 via-orange-500 to-red-600"></div>
+             <div className="flex items-center gap-2 mb-1">
+               <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse shadow-[0_0_10px_rgba(239,68,68,1)]"></span>
+               <span className="text-white/90 text-xs md:text-sm font-black uppercase tracking-widest">{dict?.home?.ends_today || 'Termina Hoy'}</span>
              </div>
-             <span className="text-white font-mono font-bold tracking-widest text-lg">{hrs}:{mins}:{secs}</span>
+             <div className="flex items-baseline gap-1 text-white">
+                <span className="font-mono font-black tracking-tight text-3xl md:text-4xl">{hrs}</span><span className="text-white/50 text-xl font-black">:</span>
+                <span className="font-mono font-black tracking-tight text-3xl md:text-4xl">{mins}</span><span className="text-white/50 text-xl font-black">:</span>
+                <span className="font-mono font-black tracking-tight text-3xl md:text-4xl">{secs}</span>
+             </div>
           </div>
         </div>
-        <Link href={`/${country}/ofertas`} className="bg-white text-[#FF4400] hover:bg-gray-50 px-8 py-3 rounded-full text-sm font-black transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 uppercase tracking-wide">
+        <Link href={`/${country}/ofertas`} className="bg-white text-[#FF4400] hover:bg-gray-50 px-8 py-3.5 rounded-full text-sm font-black transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 uppercase tracking-wide flex items-center gap-2">
           Shop All Deals
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
         </Link>
       </div>
 
@@ -94,21 +100,38 @@ export default function FlashDealsCarousel({ products, tenantId, currencyCode = 
         >
           {displayProducts.map((product, index) => (
             // Sleek card for deals
-            <Link href={`/${country}/producto/${product.id}`} key={`${product.id}-${index}`} className="min-w-[240px] md:min-w-[260px] bg-white rounded-2xl overflow-hidden shadow-lg flex flex-col group hover:-translate-y-1 transition-transform duration-300 border border-transparent hover:border-orange-200">
-              <div className="relative h-[220px] bg-gray-50 flex items-center justify-center p-6 group-hover:bg-gray-100 transition-colors">
-                <img src={product?.Media?.[0]?.url || "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500"} className="max-h-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500" alt={product.title} />
+            <Link href={`/${country}/producto/${product.id}`} key={`${product.id}-${index}`} className="min-w-[240px] md:min-w-[250px] bg-white rounded-2xl overflow-hidden shadow-lg flex flex-col group hover:-translate-y-1 transition-transform duration-300 border border-transparent hover:border-orange-200 relative">
+              
+              {/* Honest Offer Badge */}
+              <div className="absolute top-0 left-0 z-10 bg-red-600 text-white text-[10px] font-black px-3 py-1.5 rounded-br-xl shadow-sm tracking-widest uppercase">
+                {dict?.home?.flash_offer_active || 'OFERTA ACTIVA'}
               </div>
-              <div className="p-5 flex flex-col flex-1 border-t border-gray-100">
-                <h3 className="font-bold text-gray-900 text-sm line-clamp-2 leading-tight mb-3 group-hover:text-[#FF4400] transition-colors">{product.title}</h3>
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="text-2xl font-black text-[#FF4400] tracking-tight">{currencyCode} {(product.basePrice / 100).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+
+              {/* Tighter, more dominant image area */}
+              <div className="relative h-[240px] bg-gray-50 flex items-center justify-center p-2 group-hover:bg-gray-100 transition-colors">
+                <img src={product?.Media?.[0]?.url || "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500"} className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500" alt={product.title} />
+              </div>
+              
+              {/* Compressed Info Area */}
+              <div className="p-4 flex flex-col flex-1 border-t border-gray-100">
+                <h3 className="font-bold text-gray-900 text-sm line-clamp-2 leading-tight mb-2 group-hover:text-[#FF4400] transition-colors">{product.title}</h3>
+                
+                {/* Price block strictly honest */}
+                <div className="flex flex-col mb-3">
+                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">{dict?.home?.flash_selection || 'Selección Relámpago'}</span>
+                  <span className="text-2xl font-black text-[#FF4400] tracking-tighter leading-none">
+                    {currencyCode} {(product.basePrice / 100).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                  </span>
                 </div>
-                <div className="mt-auto flex items-center justify-between">
-                  <span className="bg-red-50 text-red-600 text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-md border border-red-100">
+
+                {/* Urgency Footer */}
+                <div className="mt-auto pt-2 border-t border-gray-50 flex items-center justify-between">
+                  <span className="bg-red-50 text-red-600 text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-md border border-red-100 flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
                     {dict?.home?.limited_quantities || 'Cantidades Limitadas'}
                   </span>
-                  <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-[#FF4400] group-hover:text-white transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                  <div className="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center text-orange-500 group-hover:bg-[#FF4400] group-hover:text-white transition-colors shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                   </div>
                 </div>
               </div>

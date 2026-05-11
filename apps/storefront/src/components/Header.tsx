@@ -22,7 +22,7 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm w-full">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 py-3 lg:py-4 flex flex-col gap-3 lg:gap-4">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 py-2 lg:py-3 flex flex-col gap-2 lg:gap-3">
         
         {/* ========================================= */}
         {/* ROW 1: Logo + Huge Search + Account/Cart */}
@@ -41,7 +41,7 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
               <img 
                 src="/logo-v2.png" 
                 alt="AZHON" 
-                className="h-8 w-auto object-contain scale-[1.3] origin-left"
+                className="h-9 w-auto object-contain scale-[1.4] origin-left"
               />
             </Link>
           </div>
@@ -97,7 +97,7 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
         {/* ========================================= */}
         {/* ROW 2: Navigation Links (Desktop Only)    */}
         {/* ========================================= */}
-        <nav className="hidden lg:flex items-center gap-8 pl-1 pb-1">
+        <nav className="hidden lg:flex items-center gap-6 pl-0 pb-1">
           <Link href={`/${country}`} className={isActive(`/${country}`, true) ? activeClass : inactiveClass}>{dict.header.home}</Link>
           <Link href={`/${country}/categorias`} className={isActive(`/${country}/categorias`) ? activeClass : inactiveClass}>{dict.header.categories}</Link>
           <Link href={`/${country}/ofertas`} className={isActive(`/${country}/ofertas`) ? activeClass : inactiveClass}>{dict.header.deals}</Link>
