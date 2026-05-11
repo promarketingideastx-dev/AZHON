@@ -4,6 +4,7 @@ import { getDictionary, defaultLocale } from '@/i18n';
 import FeaturedProductsGrid from '@/app/components/FeaturedProductsGrid';
 import { CATALOG_CATEGORIES } from '@/config/categories';
 import { notFound } from 'next/navigation';
+import { AdultWarning } from '@/components/AdultWarning';
 
 export const dynamic = 'force-dynamic';
 
@@ -54,7 +55,7 @@ export default async function CategoryPage({ params }: { params: { country: stri
     take: 48,
   });
 
-  return (
+  const pageContent = (
     <div className="w-full bg-white min-h-screen">
       <div className="bg-secondary text-white py-12 px-4">
         <div className="max-w-[1440px] mx-auto">
@@ -80,4 +81,10 @@ export default async function CategoryPage({ params }: { params: { country: stri
       </div>
     </div>
   );
+
+  if (staticCategory?.requires18Plus) {
+    return <AdultWarning>{pageContent}</AdultWarning>;
+  }
+
+  return pageContent;
 }

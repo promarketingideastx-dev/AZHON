@@ -78,11 +78,7 @@ export default async function CategoriesPage({ params }: { params: Promise<{ cou
 
             return (
               <div key={cat.id}>
-                {cat.requires18Plus ? (
-                  <AdultWarning>{content}</AdultWarning>
-                ) : (
-                  content
-                )}
+                {content}
               </div>
             );
           })}

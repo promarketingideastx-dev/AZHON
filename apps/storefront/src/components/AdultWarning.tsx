@@ -15,11 +15,9 @@ export function AdultWarning({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="relative w-full h-full min-h-[400px] flex items-center justify-center bg-gray-50 rounded-3xl overflow-hidden border border-gray-200">
-      {/* Soft blurred background preview to avoid looking like a heavy block */}
-      <div className="absolute inset-0 filter blur-2xl opacity-20 pointer-events-none transition-opacity duration-1000">
-        {children}
-      </div>
+    <div className="relative w-full h-full min-h-[600px] flex items-center justify-center bg-gray-50 rounded-3xl overflow-hidden border border-gray-200">
+      {/* Secure solid background instead of blurred DOM to prevent data leakage */}
+      <div className="absolute inset-0 bg-gray-100 pointer-events-none"></div>
       
       {/* Verification Dialog */}
       <div className="relative z-10 bg-white p-8 md:p-10 rounded-2xl shadow-2xl max-w-md text-center border border-gray-100 m-4">
