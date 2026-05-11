@@ -5,9 +5,20 @@ import Link from 'next/link';
 import { LanguageSelector } from './LanguageSelector';
 import { useDictionary } from '@/context/DictionaryContext';
 
+import { usePathname } from 'next/navigation';
+
 export function Header({ locale = 'es', country = 'hn' }: { locale?: string, country?: string }) {
   const { user } = useAuth();
   const dict = useDictionary();
+  const pathname = usePathname() || `/${country}`;
+
+  const isActive = (path: string, exact = false) => {
+    if (exact) return pathname === path || pathname === `${path}/`;
+    return pathname.startsWith(path);
+  };
+
+  const activeClass = "text-sm font-bold text-primary border-b-2 border-primary pb-1";
+  const inactiveClass = "text-sm font-medium text-neutral hover:text-secondary transition-colors";
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm w-full">
@@ -33,11 +44,11 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
 
           {/* Navigation Links */}
           <nav className="hidden lg:flex items-center gap-6">
-            <Link href={`/${country}`} className="text-sm font-bold text-primary border-b-2 border-primary pb-1">{dict.header.home}</Link>
-            <Link href={`/${country}/categorias`} className="text-sm font-medium text-neutral hover:text-secondary transition-colors">{dict.header.categories}</Link>
-            <Link href={`/${country}/ofertas`} className="text-sm font-medium text-neutral hover:text-secondary transition-colors">{dict.header.deals}</Link>
-            <Link href={`/${country}/vendedor`} className="text-sm font-medium text-neutral hover:text-secondary transition-colors">{dict.header.sell}</Link>
-            <Link href={`/${country}/perfil/soporte`} className="text-sm font-medium text-neutral hover:text-secondary transition-colors">{dict.header.help}</Link>
+            <Link href={`/${country}`} className={isActive(`/${country}`, true) ? activeClass : inactiveClass}>{dict.header.home}</Link>
+            <Link href={`/${country}/categorias`} className={isActive(`/${country}/categorias`) ? activeClass : inactiveClass}>{dict.header.categories}</Link>
+            <Link href={`/${country}/ofertas`} className={isActive(`/${country}/ofertas`) ? activeClass : inactiveClass}>{dict.header.deals}</Link>
+            <Link href={`/${country}/vendedor`} className={isActive(`/${country}/vendedor`) ? activeClass : inactiveClass}>{dict.header.sell}</Link>
+            <Link href={`/${country}/perfil/soporte`} className={isActive(`/${country}/perfil/soporte`) ? activeClass : inactiveClass}>{dict.header.help}</Link>
           </nav>
 
           {/* Search Bar (Desktop) */}

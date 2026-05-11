@@ -11,7 +11,8 @@ function resolvePath(obj: any, path: string) {
   }, obj);
 }
 
-export default async function CategoriesPage() {
+export default async function CategoriesPage({ params }: { params: Promise<{ country: string }> }) {
+  const { country } = await params;
   const cookieStore = await cookies();
   const locale = cookieStore.get('NEXT_LOCALE')?.value || defaultLocale;
   const dict = getDictionary(locale);
@@ -56,7 +57,7 @@ export default async function CategoriesPage() {
                       const subTitle = resolvePath(dict, sub.i18nKey) || sub.id;
                       return (
                         <li key={sub.id}>
-                          <Link href={`#`} className="text-neutral font-medium hover:text-primary hover:underline flex items-center gap-2 transition-colors">
+                          <Link href={`/${country}/categorias/${cat.id}?sub=${sub.id}`} className="text-neutral font-medium hover:text-primary hover:underline flex items-center gap-2 transition-colors">
                             <span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
                             {subTitle}
                           </Link>
@@ -66,7 +67,7 @@ export default async function CategoriesPage() {
                   </ul>
                   
                   <div className="mt-8 pt-6 border-t border-gray-100">
-                    <Link href={`#`} className="text-primary font-bold hover:text-orange-700 flex items-center gap-2 group/link">
+                    <Link href={`/${country}/categorias/${cat.id}`} className="text-primary font-bold hover:text-orange-700 flex items-center gap-2 group/link">
                       {dict.home.see_all} {title}
                       <span className="group-hover/link:translate-x-1 transition-transform">→</span>
                     </Link>
