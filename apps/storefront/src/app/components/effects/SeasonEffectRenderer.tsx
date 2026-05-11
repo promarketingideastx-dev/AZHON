@@ -7,6 +7,7 @@ import SnowLight from './particles/SnowLight';
 import SparklesWarm from './particles/SparklesWarm';
 import ConfettiSoft from './particles/ConfettiSoft';
 import TechStreaksSoft from './particles/TechStreaksSoft';
+import ProductRain from './particles/ProductRain';
 
 const EffectMap = {
   none: () => null,
@@ -15,6 +16,7 @@ const EffectMap = {
   sparkles_warm: SparklesWarm,
   confetti_soft: ConfettiSoft,
   tech_streaks_soft: TechStreaksSoft,
+  product_rain: ProductRain,
 };
 
 export default function SeasonEffectRenderer({ zone }: { zone: EffectZone }) {

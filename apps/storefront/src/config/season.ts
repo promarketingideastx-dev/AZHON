@@ -4,7 +4,8 @@ export type EffectType =
   | 'confetti_soft' 
   | 'snow_light' 
   | 'sparkles_warm'
-  | 'tech_streaks_soft';
+  | 'tech_streaks_soft'
+  | 'product_rain';
 
 export type EffectZone = 
   | 'homeHero' 
@@ -41,7 +42,7 @@ export const GLOBAL_SEASON_CONFIG: SeasonConfig = {
   effects: {
     homeHero: {
       enabled: true,
-      type: 'tech_streaks_soft',
+      type: 'product_rain',
       intensity: 'medium',
       density: 50,
       mobileEnabled: true,
