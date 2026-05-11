@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import SeasonEffectRenderer from './effects/SeasonEffectRenderer';
 
 export default function HomeHero({ dict, country, currencyCode = 'USD' }: { dict: any, country: string, currencyCode?: string }) {
   return (
@@ -7,6 +8,9 @@ export default function HomeHero({ dict, country, currencyCode = 'USD' }: { dict
         <div className="absolute inset-0 bg-gradient-to-br from-[#1A1816] via-[#1A1816] to-transparent z-0"></div>
         <div className="absolute right-0 top-0 bottom-0 w-2/3 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop')] bg-cover bg-center opacity-80 z-0" style={{ WebkitMaskImage: 'linear-gradient(to right, transparent, black 40%)', maskImage: 'linear-gradient(to right, transparent, black 40%)' }}></div>
         <div className="absolute inset-0 bg-gradient-to-r from-[#1A1816] via-[#1A1816]/80 to-transparent z-0"></div>
+
+        {/* Global Season Effect Renderer */}
+        <SeasonEffectRenderer zone="homeHero" />
 
         <div className="relative z-10 max-w-2xl">
           <span className="inline-block bg-white text-orange-500 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full mb-6 shadow-sm">
