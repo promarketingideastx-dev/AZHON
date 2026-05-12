@@ -1,6 +1,10 @@
 import Link from 'next/link';
+import { createClient } from '@/utils/supabase/server';
 
-export default function SellerPartnershipCta({ dict, country }: { dict: any, country: string }) {
+export default async function SellerPartnershipCta({ dict, country }: { dict: any, country: string }) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
   return (
     <section className="max-w-[1440px] mx-auto px-4 sm:px-6 py-12 mb-12">
       <div className="bg-[#FAF8F5] rounded-3xl p-8 md:p-16 flex flex-col md:flex-row items-center gap-12 border border-[#E5E0D8]">
@@ -25,7 +29,10 @@ export default function SellerPartnershipCta({ dict, country }: { dict: any, cou
               <span className="text-primary text-lg">✓</span> {dict.home.advanced_dashboard || 'Advanced seller dashboard'}
             </li>
           </ul>
-          <Link href={`/${country}/vendedor`} className="inline-block bg-black text-white font-bold px-8 py-4 rounded-full hover:bg-gray-800 transition-colors shadow-xl text-sm">
+          <Link 
+            href={user ? `/${country}/vendedor` : `/${country}/login?intent=seller&next=/${country}/vendedor`} 
+            className="inline-block bg-black text-white font-bold px-8 py-4 rounded-full hover:bg-gray-800 transition-colors shadow-xl text-sm"
+          >
             {dict.home.start_selling || 'Start Selling Today'}
           </Link>
         </div>

@@ -20,7 +20,7 @@ export default function CheckoutButton({ tenantId, variantId }: CheckoutButtonPr
 
   const handleCheckout = () => {
     if (!user) {
-      router.push(`/${country || 'hn'}/login`);
+      router.push(`/${country || 'hn'}/login?intent=buyer&next=/${country || 'hn'}/cart`);
       return;
     }
 
