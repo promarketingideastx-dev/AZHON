@@ -57,7 +57,7 @@ export async function sendTransactionalEmail({ to, event, locale, payload }: Sen
 
     const { data, error } = await resend.emails.send({
       from: EMAIL_FROM,
-      reply_to: EMAIL_REPLY_TO,
+      replyTo: EMAIL_REPLY_TO,
       to: [to],
       subject,
       html,
