@@ -175,7 +175,7 @@ export async function signInWithGoogle(formData: FormData) {
   }
 
   if (data.url) {
-    redirect(data.url)
+    return { url: data.url }
   }
 }
 

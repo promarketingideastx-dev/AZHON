@@ -209,8 +209,12 @@ export default function AuthClient({ dict, errorKey, msgKey, intent, defaultEmai
                     const fd = new FormData();
                     fd.append('intent', currentIntent);
                     if (nextParam) fd.append('next', nextParam);
-                    await signInWithGoogle(fd);
-                    setLoading(false);
+                    const result = await signInWithGoogle(fd);
+                    if (result?.url) {
+                      window.location.href = result.url;
+                    } else {
+                      setLoading(false);
+                    }
                   }}
                   className="w-full bg-white text-secondary border border-gray-200 rounded-full py-3.5 font-bold hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
                 >
