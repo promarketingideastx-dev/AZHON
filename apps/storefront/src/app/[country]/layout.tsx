@@ -69,7 +69,7 @@ import { cookies } from "next/headers";
 import { getDictionary, defaultLocale } from "@/i18n";
 import { DictionaryProvider } from "@/context/DictionaryContext";
 import PwaRegistry from "@/components/PwaRegistry";
-import { ClientLogger } from "@/components/ClientLogger";
+import { ShellWrapper } from "./ShellWrapper";
 
 export default async function RootLayout({
   children,
@@ -92,15 +92,15 @@ export default async function RootLayout({
       className={`${jakarta.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
-        <ClientLogger componentName="GLOBAL_LAYOUT" />
         <PwaRegistry />
         <DictionaryProvider dictionary={dictionary}>
           <AuthProvider user={user}>
-            <Header locale={locale} country={country} />
-            <main className="flex-1 flex flex-col bg-warm" id="global-main-container">
+            <ShellWrapper
+              header={<Header locale={locale} country={country} />}
+              footer={<Footer country={country} />}
+            >
               {children}
-            </main>
-            <Footer country={country} />
+            </ShellWrapper>
           </AuthProvider>
         </DictionaryProvider>
       </body>
