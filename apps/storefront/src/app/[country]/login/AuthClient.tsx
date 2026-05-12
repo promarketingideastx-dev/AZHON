@@ -28,10 +28,6 @@ export default function AuthClient({ dict, errorKey, msgKey, intent, defaultEmai
   const selectIntent = (selectedIntent: 'buyer' | 'seller') => {
     setCurrentIntent(selectedIntent);
     setView('login');
-    // Persist intent to URL so it's not lost on reloads or redirects
-    const params = new URLSearchParams(searchParams.toString());
-    params.set('intent', selectedIntent);
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   return (
@@ -248,9 +244,6 @@ export default function AuthClient({ dict, errorKey, msgKey, intent, defaultEmai
                       onClick={() => { 
                         setView('intent_selector'); 
                         setCurrentIntent('buyer');
-                        const params = new URLSearchParams(searchParams.toString());
-                        params.delete('intent');
-                        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
                       }} 
                       className="text-xs text-neutral hover:text-secondary font-medium transition-colors flex items-center justify-center gap-1 mx-auto"
                     >
