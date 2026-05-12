@@ -1,15 +1,14 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 
-export default function ShopLayout({
+export default async function ShopLayout({
   children,
   params,
 }: Readonly<{
   children: React.ReactNode;
-  params: { country: string };
+  params: Promise<{ country: string }>;
 }>) {
-  // Access params if needed, but since it's just passing it along, we can just use it
-  const country = params?.country || 'hn';
+  const { country } = await params;
 
   return (
     <>

@@ -6,7 +6,8 @@ import { render } from '@react-email/components';
 import React from 'react';
 
 const resend = new Resend(process.env.RESEND_API_KEY || 're_mock_key');
-const EMAIL_FROM = process.env.EMAIL_FROM || 'AZHON <no-reply@azhon.com>';
+const EMAIL_FROM = process.env.EMAIL_FROM || 'AZHON <no-reply@mail.azhon.shop>';
+const EMAIL_REPLY_TO = process.env.EMAIL_REPLY_TO || 'soporte@azhon.shop';
 
 export type EmailEvent = 
   | 'welcome_buyer'
@@ -56,6 +57,7 @@ export async function sendTransactionalEmail({ to, event, locale, payload }: Sen
 
     const { data, error } = await resend.emails.send({
       from: EMAIL_FROM,
+      reply_to: EMAIL_REPLY_TO,
       to: [to],
       subject,
       html,
