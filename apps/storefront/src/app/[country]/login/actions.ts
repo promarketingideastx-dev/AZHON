@@ -24,7 +24,8 @@ export async function login(formData: FormData) {
 
   if (error) {
     console.error("LOGIN ERROR:", error.message)
-    redirect(`/login?error=${getErrorKey(error.message)}`)
+    const intentParam = intent ? `&intent=${intent}` : ''
+    redirect(`/login?error=${getErrorKey(error.message)}${intentParam}`)
   }
 
   // Safe routing after auth based on Role
@@ -58,7 +59,8 @@ export async function signup(formData: FormData) {
   const passwordConfirm = formData.get('passwordConfirm') as string
 
   if (passwordConfirm && password !== passwordConfirm) {
-    redirect(`/login?error=err_pass_mismatch`)
+    const intentParam = formData.get('intent') as string ? `&intent=${formData.get('intent')}` : ''
+    redirect(`/login?error=err_pass_mismatch${intentParam}`)
   }
 
   const data = {
@@ -85,7 +87,8 @@ export async function signup(formData: FormData) {
 
   if (error) {
     console.error("SIGNUP ERROR:", error.message)
-    redirect(`/login?error=${getErrorKey(error.message)}`)
+    const intentParam = intent ? `&intent=${intent}` : ''
+    redirect(`/login?error=${getErrorKey(error.message)}${intentParam}`)
   }
 
   // AuthAudit Base: account_created
@@ -124,31 +127,38 @@ export async function signup(formData: FormData) {
 export async function resetPassword(formData: FormData) {
   const supabase = await createClient()
   const email = formData.get('email') as string
+  const intent = formData.get('intent') as string
 
   // We assume the user wants to reset their password
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${getSiteUrl()}/api/auth/callback?next=/reset-password`,
   })
 
+  const intentParam = intent ? `&intent=${intent}` : ''
+
   if (error) {
-    redirect(`/login?error=${getErrorKey(error.message)}`)
+    redirect(`/login?error=${getErrorKey(error.message)}${intentParam}`)
   }
 
-  redirect(`/login?msg=msg_check_email_reset`)
+  redirect(`/login?msg=msg_check_email_reset${intentParam}`)
 }
 
-export async function signInWithGoogle() {
+export async function signInWithGoogle(formData: FormData) {
   const supabase = await createClient()
+  const intent = formData.get('intent') as string
+
+  const nextPath = intent === 'seller' ? '/vendedor/onboarding' : '/'
+  const intentParam = intent ? `&intent=${intent}` : ''
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${getSiteUrl()}/api/auth/callback`,
+      redirectTo: `${getSiteUrl()}/api/auth/callback?next=${nextPath}`,
     },
   })
 
   if (error) {
-    redirect(`/login?error=${getErrorKey(error.message)}`)
+    redirect(`/login?error=${getErrorKey(error.message)}${intentParam}`)
   }
 
   if (data.url) {
@@ -197,7 +207,8 @@ export async function resendConfirmation(formData: FormData) {
   console.log(`[AUTH AUDIT] event: confirmation_resent, email: ${email}, date: ${new Date().toISOString()}`)
 
   if (error) {
-    redirect(`/login?error=${getErrorKey(error.message)}`)
+    const intentParam = intent ? `&intent=${intent}` : ''
+    redirect(`/login?error=${getErrorKey(error.message)}${intentParam}`)
   }
 
   redirect(`/login?msg=msg_check_email&view=verify&email=${encodeURIComponent(email)}`)

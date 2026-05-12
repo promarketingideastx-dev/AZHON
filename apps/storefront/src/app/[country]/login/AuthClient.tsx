@@ -1,9 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { login, signup, resetPassword, signInWithGoogle, resendConfirmation } from './actions';
 
 export default function AuthClient({ dict, errorKey, msgKey, intent, defaultEmail }: { dict: any, errorKey?: string, msgKey?: string, intent?: string, defaultEmail?: string }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [view, setView] = useState<'intent_selector' | 'login' | 'signup' | 'forgot' | 'verify'>(
     defaultEmail && msgKey === 'msg_check_email' ? 'verify' : (!intent ? 'intent_selector' : 'login')
   );
@@ -14,12 +18,20 @@ export default function AuthClient({ dict, errorKey, msgKey, intent, defaultEmai
   const t = dict?.auth || {};
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    // If the browser submits it directly without a Server Action trigger, we prevent it.
+    // However, Server Actions (formAction) bypass onSubmit if triggered by a button.
+    // e.preventDefault() here stops GET requests from autofill enter keys that don't trigger the formAction button.
+    e.preventDefault();
     setLoading(true);
   };
 
   const selectIntent = (selectedIntent: 'buyer' | 'seller') => {
     setCurrentIntent(selectedIntent);
     setView('login');
+    // Persist intent to URL so it's not lost on reloads or redirects
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('intent', selectedIntent);
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   return (
@@ -38,7 +50,8 @@ export default function AuthClient({ dict, errorKey, msgKey, intent, defaultEmai
           </p>
           
           <button 
-            onClick={() => selectIntent('buyer')}
+            type="button"
+            onClick={(e) => { e.preventDefault(); selectIntent('buyer'); }}
             className="w-full bg-secondary text-white rounded-xl py-4 px-6 font-bold hover:bg-black transition-all shadow-sm flex flex-col items-center gap-1 border-2 border-transparent hover:border-gray-800"
           >
             <span className="text-lg">Quiero comprar</span>
@@ -46,7 +59,8 @@ export default function AuthClient({ dict, errorKey, msgKey, intent, defaultEmai
           </button>
 
           <button 
-            onClick={() => selectIntent('seller')}
+            type="button"
+            onClick={(e) => { e.preventDefault(); selectIntent('seller'); }}
             className="w-full bg-primary text-white rounded-xl py-4 px-6 font-bold hover:bg-orange-600 transition-all shadow-sm flex flex-col items-center gap-1 border-2 border-transparent hover:border-orange-700 mt-2"
           >
             <span className="text-lg">Quiero vender en AZHON</span>
@@ -95,7 +109,13 @@ export default function AuthClient({ dict, errorKey, msgKey, intent, defaultEmai
                 {t.verification_note || 'Haz clic en el enlace seguro que te enviamos para activar tu cuenta de AZHON.'}
               </p>
               <div className="w-full mt-6">
-                <button type="button" onClick={() => setView('login')} className="w-full bg-white text-secondary border border-gray-200 rounded-full py-3.5 font-bold hover:bg-gray-50 transition-colors mb-3">
+                <button type="button" onClick={() => {
+                  setView('login');
+                  const params = new URLSearchParams(searchParams.toString());
+                  params.delete('msg');
+                  params.delete('view');
+                  router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+                }} className="w-full bg-white text-secondary border border-gray-200 rounded-full py-3.5 font-bold hover:bg-gray-50 transition-colors mb-3">
                   {t.btn_back_login || 'Volver a iniciar sesión'}
                 </button>
                 {defaultEmail && (
@@ -225,7 +245,13 @@ export default function AuthClient({ dict, errorKey, msgKey, intent, defaultEmai
                   <div className="text-center mt-4 pt-4 border-t border-gray-100">
                     <button 
                       type="button" 
-                      onClick={() => { setView('intent_selector'); setCurrentIntent('buyer'); }} 
+                      onClick={() => { 
+                        setView('intent_selector'); 
+                        setCurrentIntent('buyer');
+                        const params = new URLSearchParams(searchParams.toString());
+                        params.delete('intent');
+                        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+                      }} 
                       className="text-xs text-neutral hover:text-secondary font-medium transition-colors flex items-center justify-center gap-1 mx-auto"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3 h-3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" /></svg>
