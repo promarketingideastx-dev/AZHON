@@ -131,5 +131,16 @@ export async function submitOnboardingAction(country: string) {
     }
   });
 
+  try {
+    const { sendTransactionalEmail } = await import('@/lib/email');
+    await sendTransactionalEmail({
+      to: user.email || '',
+      event: 'seller_under_review',
+      locale: country === 'br' ? 'pt-BR' : (country === 'us' ? 'en' : 'es'),
+    });
+  } catch (e) {
+    console.error("Failed to send seller_under_review email:", e);
+  }
+
   redirect(`/${country}/vendedor`);
 }

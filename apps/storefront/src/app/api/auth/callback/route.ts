@@ -22,7 +22,7 @@ export async function GET(request: Request) {
       const { data: authData } = await supabase.auth.getUser()
       let redirectUrl = next
       
-      if (authData?.user && next === '/') {
+      if (authData?.user) {
         console.log(`[AUTH AUDIT] event: email_confirmed_or_session_started, user_id: ${authData.user.id}, date: ${new Date().toISOString()}`)
         const { data: dbUser } = await supabase
           .from('User')
@@ -30,6 +30,22 @@ export async function GET(request: Request) {
           .eq('id', authData.user.id)
           .single()
           
+        // Fetch locale from cookies or default to 'es'
+        const locale = request.cookies.get('NEXT_LOCALE')?.value || 'es';
+
+        // Check if welcome email was already sent (optional safeguard, but for now we send on first verification)
+        // Since callback exchanges code, it's typically the first time.
+        try {
+          const { sendTransactionalEmail } = await import('@/lib/email');
+          await sendTransactionalEmail({
+            to: authData.user.email || '',
+            event: 'welcome_buyer',
+            locale,
+          });
+        } catch (e) {
+          console.error("Failed to send welcome email:", e);
+        }
+
         if (dbUser) {
           if (dbUser.role === 'SUPER_ADMIN') redirectUrl = '/admin'
           else if (dbUser.role === 'SELLER') redirectUrl = '/vendedor'

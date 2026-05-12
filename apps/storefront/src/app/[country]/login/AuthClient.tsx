@@ -28,50 +28,19 @@ export default function AuthClient({ dict, errorKey, msgKey, intent, defaultEmai
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // === DIAGNOSTIC INSTRUMENTATION ===
-  const mountTime = useRef(Date.now());
-  
-  useEffect(() => {
-    console.log(`[🔍 AZHON-AUDIT] [AuthClient] 🟢 MOUNTED | Intent: ${intent} | CurrentIntent: ${currentIntent} | View: ${view}`);
-    
-    // OVERLAP DETECTOR: Run slightly after mount to let the DOM settle
-    const overlapTimer = setTimeout(() => {
-      const mainContainer = document.getElementById('global-main-container');
-      if (mainContainer) {
-        console.log(`[🔍 AZHON-AUDIT] [DOM-CHECK] Total top-level nodes in <main>: ${mainContainer.children.length}`);
-        
-        if (mainContainer.children.length > 1) {
-          console.error(`🚨 [CRITICAL OVERLAP DETECTED] <main> has ${mainContainer.children.length} children!`);
-          Array.from(mainContainer.children).forEach((child, i) => {
-            console.error(`  - Child ${i}: ${child.tagName} | classes: ${child.className}`);
-          });
-        } else {
-          console.log(`[🔍 AZHON-AUDIT] [DOM-CHECK] DOM is clean. Only 1 child in <main>.`);
-        }
-      }
-    }, 150);
-
-    return () => {
-      console.log(`[🔍 AZHON-AUDIT] [AuthClient] 🔴 UNMOUNTED | Lifetime: ${Date.now() - mountTime.current}ms`);
-      clearTimeout(overlapTimer);
-    };
-  }, []);
-
-  useEffect(() => {
-    console.log(`[🔍 AZHON-AUDIT] [AuthClient] 🔄 STATE CHANGED | View -> ${view} | Intent -> ${currentIntent}`);
-  }, [view, currentIntent]);
-  // === END DIAGNOSTIC INSTRUMENTATION ===
+  // Extract next param to preserve destination
+  const nextParam = searchParams.get('next');
 
   const t = dict?.auth || {};
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    console.log(`[🔍 AZHON-AUDIT] [AuthClient] ⚠️ SUBMIT TRIGGERED ON FORM | Preventing Default. View: ${view}`);
+    // If the browser submits it directly without a Server Action trigger, we prevent it.
+    // However, Server Actions (formAction) bypass onSubmit if triggered by a button.
     e.preventDefault();
     setLoading(true);
   };
 
   const selectIntent = (selectedIntent: 'buyer' | 'seller') => {
-    console.log(`[🔍 AZHON-AUDIT] [AuthClient] 🖱️ CLICK: INTENT SELECTED -> ${selectedIntent}`);
     setCurrentIntent(selectedIntent);
     setView('login');
     if (typeof window !== 'undefined') {
@@ -181,6 +150,7 @@ export default function AuthClient({ dict, errorKey, msgKey, intent, defaultEmai
         ) : (
           <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
             <input type="hidden" name="intent" value={currentIntent} />
+            {nextParam && <input type="hidden" name="next" value={nextParam} />}
             
             <div>
               <label className="block text-xs font-bold text-neutral mb-1.5 uppercase tracking-wide" htmlFor="email">
