@@ -37,7 +37,9 @@ model User {
   id        String    @id // UUID de Supabase Auth
   tenantId  String
   email     String
+  phone     String?
   role      String    @default("BUYER") // BUYER, SELLER, SUPER_ADMIN
+  status    String    @default("PENDING_VERIFICATION") // PENDING_VERIFICATION, ACTIVE, RESTRICTED, SUSPENDED
   createdAt DateTime  @default(now())
   deletedAt DateTime?
 
@@ -46,6 +48,13 @@ model User {
   Orders                 Order[]
   ReceiptsReceived       WarehouseReceipt[]     @relation("ReceiptReceiver")
   DiscrepanciesValidated WarehouseDiscrepancy[] @relation("DiscrepancyValidator")
+
+  BuyerProfile      BuyerProfile?
+  SellerProfile     SellerProfile?
+  Verifications     AccountVerification[]
+  Addresses         UserAddress[]
+  Preferences       UserPreference?
+  Events            AccountEvent[]
 
   @@unique([tenantId, email])
 }
@@ -401,4 +410,130 @@ model StockReservation {
 
   Variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Restrict)
   Order   Order?         @relation(fields: [orderId], references: [id], onDelete: SetNull)
+}
+
+// ==========================================
+// IDENTITY, ACCOUNTS, ONBOARDING & CRM
+// ==========================================
+
+model BuyerProfile {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  fullName  String?
+  status    String   @default("DRAFT") // DRAFT, ACTIVE
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model SellerProfile {
+  id               String   @id @default(uuid())
+  userId           String   @unique
+  status           String   @default("DRAFT") // DRAFT, IN_PREPARATION, PENDING_DOCUMENTS, UNDER_REVIEW, ACTIVE, RESTRICTED
+  sellerType       String   @default("FORMAL") // FORMAL, REGULARIZATION, INTERNATIONAL_WAITLIST
+  
+  commercialName   String?
+  businessType     String?
+  targetCountries  String[] // Ej. ['HN', 'MX']
+  targetCategories String[]
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  User               User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  OnboardingSessions SellerOnboardingSession[]
+  ComplianceRecords  SellerComplianceRecord[]
+}
+
+model SellerOnboardingSession {
+  id               String    @id @default(uuid())
+  sellerProfileId  String
+  currentStep      String    @default("INTENT") // INTENT, RESIDENCE, TARGET, BUSINESS_TYPE, COMMERCIAL, CATEGORIES, ADDRESS, PAYOUT, DOCUMENTS, SECURITY, COMPLETED
+  progressData     Json      // Datos en borrador
+  completedAt      DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  SellerProfile SellerProfile @relation(fields: [sellerProfileId], references: [id], onDelete: Cascade)
+}
+
+model SellerComplianceRecord {
+  id               String    @id @default(uuid())
+  sellerProfileId  String
+  documentType     String    // ID, TAX, BANK, INCORPORATION
+  documentUrl      String
+  status           String    @default("PENDING") // PENDING, APPROVED, REJECTED
+  reviewerNotes    String?
+  reviewedAt       DateTime?
+  createdAt        DateTime  @default(now())
+
+  SellerProfile SellerProfile @relation(fields: [sellerProfileId], references: [id], onDelete: Cascade)
+}
+
+model AccountVerification {
+  id          String    @id @default(uuid())
+  userId      String
+  type        String    // EMAIL, PHONE, TWO_FACTOR
+  status      String    @default("PENDING") // PENDING, VERIFIED, DISABLED
+  verifiedAt  DateTime?
+  createdAt   DateTime  @default(now())
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model UserAddress {
+  id             String   @id @default(uuid())
+  userId         String
+  countryCode    String
+  state          String
+  city           String
+  zone           String?
+  addressLine1   String
+  reference      String?
+  latitude       Float?
+  longitude      Float?
+  isPinManual    Boolean  @default(false)
+  status         String   @default("UNVERIFIED") // UNVERIFIED, VERIFIED, PARTIAL, MANUAL_REVIEW
+  isDefault      Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  User          User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Verifications AddressVerification[]
+}
+
+model AddressVerification {
+  id             String   @id @default(uuid())
+  addressId      String
+  status         String   // VERIFIED, FAILED, REVIEW_REQUIRED
+  provider       String?  // Ej. Google Maps, Internal
+  rawResponse    Json?
+  createdAt      DateTime @default(now())
+
+  Address UserAddress @relation(fields: [addressId], references: [id], onDelete: Cascade)
+}
+
+model UserPreference {
+  id                   String   @id @default(uuid())
+  userId               String   @unique
+  language             String   @default("es")
+  currency             String   @default("HNL")
+  marketingOptIn       Boolean  @default(false)
+  categoriesOfInterest String[]
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model AccountEvent {
+  id          String   @id @default(uuid())
+  userId      String
+  eventType   String   // account_created, seller_onboarding_started, etc
+  payload     Json?
+  ipAddress   String?
+  createdAt   DateTime @default(now())
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
