@@ -8,10 +8,23 @@ export default function AuthClient({ dict, errorKey, msgKey, intent, defaultEmai
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [view, setView] = useState<'intent_selector' | 'login' | 'signup' | 'forgot' | 'verify'>(
-    defaultEmail && msgKey === 'msg_check_email' ? 'verify' : (!intent ? 'intent_selector' : 'login')
-  );
-  const [currentIntent, setCurrentIntent] = useState<string>(intent || 'buyer');
+  const [view, setView] = useState<'intent_selector' | 'login' | 'signup' | 'forgot' | 'verify'>(() => {
+    const defaultView = defaultEmail && msgKey === 'msg_check_email' ? 'verify' : (!intent ? 'intent_selector' : 'login');
+    if (typeof window !== 'undefined') {
+      const savedView = sessionStorage.getItem('azhon_auth_view');
+      // Only restore if intent wasn't explicitly provided in URL
+      if (savedView && !intent) return savedView as any;
+    }
+    return defaultView;
+  });
+
+  const [currentIntent, setCurrentIntent] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      const savedIntent = sessionStorage.getItem('azhon_auth_intent');
+      if (savedIntent && !intent) return savedIntent;
+    }
+    return intent || 'buyer';
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -28,6 +41,10 @@ export default function AuthClient({ dict, errorKey, msgKey, intent, defaultEmai
   const selectIntent = (selectedIntent: 'buyer' | 'seller') => {
     setCurrentIntent(selectedIntent);
     setView('login');
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('azhon_auth_intent', selectedIntent);
+      sessionStorage.setItem('azhon_auth_view', 'login');
+    }
   };
 
   return (
@@ -39,10 +56,10 @@ export default function AuthClient({ dict, errorKey, msgKey, intent, defaultEmai
       {view === 'intent_selector' ? (
         <div className="flex flex-col gap-4 animate-fade-in text-center">
           <h1 className="text-2xl font-bold mb-2 text-secondary tracking-tight">
-            ¿Cómo deseas ingresar?
+            {t.intent_title || '¿Cómo deseas ingresar?'}
           </h1>
           <p className="text-sm text-neutral mb-6">
-            Selecciona el tipo de cuenta para continuar.
+            {t.intent_subtitle || 'Selecciona el tipo de cuenta para continuar.'}
           </p>
           
           <button 
@@ -50,8 +67,8 @@ export default function AuthClient({ dict, errorKey, msgKey, intent, defaultEmai
             onClick={(e) => { e.preventDefault(); selectIntent('buyer'); }}
             className="w-full bg-secondary text-white rounded-xl py-4 px-6 font-bold hover:bg-black transition-all shadow-sm flex flex-col items-center gap-1 border-2 border-transparent hover:border-gray-800"
           >
-            <span className="text-lg">Quiero comprar</span>
-            <span className="text-xs font-normal text-gray-300">Explorar productos y ofertas</span>
+            <span className="text-lg">{t.intent_buyer || 'Quiero comprar'}</span>
+            <span className="text-xs font-normal text-gray-300">{t.intent_buyer_desc || 'Explorar productos y ofertas'}</span>
           </button>
 
           <button 
@@ -59,22 +76,22 @@ export default function AuthClient({ dict, errorKey, msgKey, intent, defaultEmai
             onClick={(e) => { e.preventDefault(); selectIntent('seller'); }}
             className="w-full bg-primary text-white rounded-xl py-4 px-6 font-bold hover:bg-orange-600 transition-all shadow-sm flex flex-col items-center gap-1 border-2 border-transparent hover:border-orange-700 mt-2"
           >
-            <span className="text-lg">Quiero vender en AZHON</span>
-            <span className="text-xs font-normal text-orange-200">Gestionar mi tienda y catálogo</span>
+            <span className="text-lg">{t.intent_seller || 'Quiero vender en AZHON'}</span>
+            <span className="text-xs font-normal text-orange-200">{t.intent_seller_desc || 'Gestionar mi tienda y catálogo'}</span>
           </button>
         </div>
       ) : (
         <>
           <h1 className="text-2xl font-bold mb-2 text-center text-secondary tracking-tight">
-            {view === 'login' ? (currentIntent === 'seller' ? 'Acceso a Vendedores' : (t.title_login || 'Bienvenido a AZHON')) :
-             view === 'signup' ? (currentIntent === 'seller' ? 'Registro de Vendedor' : (t.title_signup || 'Crear una cuenta')) :
+            {view === 'login' ? (currentIntent === 'seller' ? (t.title_login_seller || 'Acceso a Vendedores') : (t.title_login || 'Bienvenido a AZHON')) :
+             view === 'signup' ? (currentIntent === 'seller' ? (t.title_signup_seller || 'Registro de Vendedor') : (t.title_signup || 'Crear una cuenta')) :
              view === 'verify' ? (t.verification_title || 'Verifica tu correo') :
              (t.title_reset || 'Restablecer contraseña')}
           </h1>
           
           <p className="text-sm text-neutral text-center mb-8">
-            {view === 'login' ? (currentIntent === 'seller' ? 'Ingresa para gestionar tu operación' : (t.subtitle_login || 'Ingresa a tu cuenta para continuar')) :
-             view === 'signup' ? (currentIntent === 'seller' ? 'Únete como comercio aliado' : (t.subtitle_signup || 'Únete a AZHON hoy mismo')) :
+            {view === 'login' ? (currentIntent === 'seller' ? (t.subtitle_login_seller || 'Ingresa para gestionar tu operación') : (t.subtitle_login || 'Ingresa a tu cuenta para continuar')) :
+             view === 'signup' ? (currentIntent === 'seller' ? (t.subtitle_signup_seller || 'Únete como comercio aliado') : (t.subtitle_signup || 'Únete a AZHON hoy mismo')) :
              view === 'verify' ? (t.verification_desc || 'Hemos enviado un enlace de confirmación a tu correo.') :
              (t.subtitle_reset || 'Ingresa tu correo para recibir instrucciones')}
           </p>
@@ -244,11 +261,15 @@ export default function AuthClient({ dict, errorKey, msgKey, intent, defaultEmai
                       onClick={() => { 
                         setView('intent_selector'); 
                         setCurrentIntent('buyer');
+                        if (typeof window !== 'undefined') {
+                          sessionStorage.removeItem('azhon_auth_view');
+                          sessionStorage.removeItem('azhon_auth_intent');
+                        }
                       }} 
                       className="text-xs text-neutral hover:text-secondary font-medium transition-colors flex items-center justify-center gap-1 mx-auto"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3 h-3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" /></svg>
-                      Cambiar tipo de cuenta
+                      {t.btn_change_intent || 'Cambiar tipo de cuenta'}
                     </button>
                   </div>
                 )}

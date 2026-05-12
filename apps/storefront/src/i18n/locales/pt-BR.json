@@ -1,6 +1,17 @@
 {
   "auth": {
-    "title_login": "Bem-vindo a AZHON",
+    "intent_title": "Como você deseja entrar?",
+    "intent_subtitle": "Selecione o tipo de conta para continuar.",
+    "intent_buyer": "Quero comprar",
+    "intent_buyer_desc": "Explorar produtos e ofertas",
+    "intent_seller": "Quero vender na AZHON",
+    "intent_seller_desc": "Gerenciar minha loja e catálogo",
+    "title_login_seller": "Acesso a Vendedores",
+    "title_signup_seller": "Registro de Vendedor",
+    "subtitle_login_seller": "Entre para gerenciar sua operação",
+    "subtitle_signup_seller": "Junte-se a nós como parceiro de negócios",
+    "btn_change_intent": "Alterar tipo de conta",
+    "title_login": "Bem-vindo à AZHON",
     "subtitle_login": "Entre na sua conta para continuar",
     "title_signup": "Criar uma conta",
     "subtitle_signup": "Junte-se a AZHON hoje",

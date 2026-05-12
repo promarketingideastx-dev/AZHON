@@ -1,5 +1,16 @@
 {
   "auth": {
+    "intent_title": "How would you like to sign in?",
+    "intent_subtitle": "Select your account type to continue.",
+    "intent_buyer": "I want to buy",
+    "intent_buyer_desc": "Explore products and offers",
+    "intent_seller": "I want to sell on AZHON",
+    "intent_seller_desc": "Manage my store and catalog",
+    "title_login_seller": "Seller Access",
+    "title_signup_seller": "Seller Registration",
+    "subtitle_login_seller": "Sign in to manage your operation",
+    "subtitle_signup_seller": "Join us as a business partner",
+    "btn_change_intent": "Change account type",
     "title_login": "Welcome to AZHON",
     "subtitle_login": "Sign in to your account to continue",
     "title_signup": "Create an account",
