@@ -171,11 +171,35 @@ export async function signInWithGoogle(formData: FormData) {
   })
 
   if (error) {
+    const intentParam = intent ? `&intent=${intent}` : ''
     redirect(`/login?error=${getErrorKey(error.message)}${intentParam}`)
   }
 
-  if (data.url) {
-    return { url: data.url }
+  if (data?.url) {
+    let finalUrl = data.url;
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    
+    if (supabaseUrl) {
+      if (!finalUrl.startsWith('http')) {
+        finalUrl = `${supabaseUrl}${finalUrl.startsWith('/') ? '' : '/'}${finalUrl}`;
+      } else {
+        try {
+          const urlObj = new URL(finalUrl);
+          const supabaseObj = new URL(supabaseUrl);
+          if (urlObj.hostname !== supabaseObj.hostname) {
+            console.warn(`[OAUTH WARN] Fixing incorrect OAuth hostname: ${urlObj.hostname} -> ${supabaseObj.hostname}`);
+            urlObj.hostname = supabaseObj.hostname;
+            urlObj.protocol = supabaseObj.protocol;
+            urlObj.port = supabaseObj.port;
+            finalUrl = urlObj.toString();
+          }
+        } catch (e) {
+          console.error("[OAUTH ERROR] Failed to parse URL", e);
+        }
+      }
+    }
+    
+    return { url: finalUrl };
   }
 }
 
