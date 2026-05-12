@@ -30,6 +30,8 @@ export async function login(formData: FormData) {
 
   // Safe routing after auth based on Role
   let redirectUrl = '/'
+  const next = formData.get('next') as string
+  
   if (authData?.user) {
     const { data: dbUser } = await supabase
       .from('User')
@@ -44,9 +46,13 @@ export async function login(formData: FormData) {
     }
   }
 
+  // If there's an explicit next parameter and it's a valid relative path, honor it over the default role-based routing
+  if (next && next.startsWith('/') && !next.startsWith('//')) {
+    redirectUrl = next
+  }
+
   // AuthAudit Base: signin_success
   console.log(`[AUTH AUDIT] event: signin_success, user_id: ${authData.user?.id}, date: ${new Date().toISOString()}`)
-
 
   revalidatePath('/', 'layout')
   redirect(redirectUrl)
@@ -104,6 +110,8 @@ export async function signup(formData: FormData) {
 
   // If auto-login happened
   let redirectUrl = '/'
+  const next = formData.get('next') as string
+
   if (authData?.user) {
     // AuthAudit Base: signup_completed
     console.log(`[AUTH AUDIT] event: signup_completed, user_id: ${authData.user.id}, date: ${new Date().toISOString()}`)
@@ -118,6 +126,11 @@ export async function signup(formData: FormData) {
       else if (dbUser.role === 'SELLER') redirectUrl = '/vendedor'
       else if (intent === 'seller') redirectUrl = '/vendedor/onboarding'
     }
+  }
+
+  // If there's an explicit next parameter and it's a valid relative path, honor it over the default role-based routing
+  if (next && next.startsWith('/') && !next.startsWith('//')) {
+    redirectUrl = next
   }
 
   revalidatePath('/', 'layout')

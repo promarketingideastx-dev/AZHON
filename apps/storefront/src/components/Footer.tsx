@@ -1,6 +1,11 @@
 import Link from 'next/link';
+import { createClient } from '@/utils/supabase/server';
+import { getProtectedHref } from '@/lib/auth/accessBuilder';
 
-export function Footer({ country = 'hn' }: { country?: string }) {
+export async function Footer({ country = 'hn' }: { country?: string }) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
   return (
     <footer className="bg-white border-t border-gray-200 mt-20 pb-[env(safe-area-inset-bottom)]">
       <div className="max-w-7xl mx-auto px-6 py-16">
@@ -39,7 +44,7 @@ export function Footer({ country = 'hn' }: { country?: string }) {
             <h3 className="font-bold text-secondary mb-6">Support</h3>
             <ul className="space-y-4">
               <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">Contact Support</a></li>
-              <li><Link href={`/${country}/perfil/soporte`} className="text-sm text-neutral hover:text-primary transition-colors">Help Center</Link></li>
+              <li><Link href={getProtectedHref({ targetPath: `/${country}/perfil/soporte`, intent: 'buyer', user, country })} className="text-sm text-neutral hover:text-primary transition-colors">Help Center</Link></li>
               <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">Shipping & Delivery</a></li>
               <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">Returns & Refunds</a></li>
             </ul>

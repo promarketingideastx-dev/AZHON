@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { LanguageSelector } from './LanguageSelector';
 import { useDictionary } from '@/context/DictionaryContext';
 import { usePathname } from 'next/navigation';
+import { getProtectedHref } from '@/lib/auth/accessBuilder';
 
 export function Header({ locale = 'es', country = 'hn' }: { locale?: string, country?: string }) {
   const { user } = useAuth();
@@ -72,7 +73,7 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
             {/* User Account / Auth */}
             <div className="flex items-center gap-2 sm:gap-4">
               <Link 
-                href={`/${country}/perfil`} 
+                href={getProtectedHref({ targetPath: `/${country}/perfil`, intent: 'buyer', user, country })}
                 className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-50 hover:bg-gray-100 border border-gray-200 transition-colors relative cursor-pointer" title="Ver Perfil"
               >
                 <span className="text-base sm:text-lg">👤</span>
@@ -90,7 +91,7 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
             </div>
 
             {/* Cart Dummy */}
-            <Link href={`/${country}/cart`} className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-50 hover:bg-gray-100 border border-gray-200 transition-colors relative cursor-pointer">
+            <Link href={getProtectedHref({ targetPath: `/${country}/cart`, intent: 'buyer', user, country })} className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-50 hover:bg-gray-100 border border-gray-200 transition-colors relative cursor-pointer">
               <span className="text-base sm:text-lg text-gray-700">🛒</span>
               {/* Optional: Add a subtle badge if there are items */}
               {/* <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">2</span> */}
@@ -105,8 +106,8 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
           <Link href={`/${country}`} className={isActive(`/${country}`, true) ? activeClass : inactiveClass}>{dict.header.home}</Link>
           <Link href={`/${country}/categorias`} className={isActive(`/${country}/categorias`) ? activeClass : inactiveClass}>{dict.header.categories}</Link>
           <Link href={`/${country}/ofertas`} className={isActive(`/${country}/ofertas`) ? activeClass : inactiveClass}>{dict.header.deals}</Link>
-          <Link href={`/${country}/vendedor`} className={isActive(`/${country}/vendedor`) ? activeClass : inactiveClass}>{dict.header.sell}</Link>
-          <Link href={`/${country}/perfil/soporte`} className={isActive(`/${country}/perfil/soporte`) ? activeClass : inactiveClass}>{dict.header.help}</Link>
+          <Link href={getProtectedHref({ targetPath: `/${country}/vendedor`, intent: 'seller', user, country })} className={isActive(`/${country}/vendedor`) ? activeClass : inactiveClass}>{dict.header.sell}</Link>
+          <Link href={getProtectedHref({ targetPath: `/${country}/perfil/soporte`, intent: 'buyer', user, country })} className={isActive(`/${country}/perfil/soporte`) ? activeClass : inactiveClass}>{dict.header.help}</Link>
         </nav>
 
         {/* ========================================= */}
@@ -154,13 +155,13 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
              <div className="h-px w-full bg-gray-100 my-2"></div>
 
              <nav className="flex flex-col gap-5">
-                <Link href={`/${country}/perfil`} onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-bold text-gray-700 flex items-center gap-3">
+                <Link href={getProtectedHref({ targetPath: `/${country}/perfil`, intent: 'buyer', user, country })} onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-bold text-gray-700 flex items-center gap-3">
                   👤 {dict?.header?.profile || 'Mi Cuenta'}
                 </Link>
-                <Link href={`/${country}/vendedor`} onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-bold text-gray-700 flex items-center gap-3">
+                <Link href={getProtectedHref({ targetPath: `/${country}/vendedor`, intent: 'seller', user, country })} onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-bold text-gray-700 flex items-center gap-3">
                   🏪 {dict.header.sell}
                 </Link>
-                <Link href={`/${country}/perfil/soporte`} onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-bold text-gray-700 flex items-center gap-3">
+                <Link href={getProtectedHref({ targetPath: `/${country}/perfil/soporte`, intent: 'buyer', user, country })} onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-bold text-gray-700 flex items-center gap-3">
                   ❓ {dict.header.help}
                 </Link>
              </nav>

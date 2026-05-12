@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
+import { getProtectedHref } from '@/lib/auth/accessBuilder';
 
 export default async function SellerPartnershipCta({ dict, country }: { dict: any, country: string }) {
   const supabase = await createClient();
@@ -30,7 +31,7 @@ export default async function SellerPartnershipCta({ dict, country }: { dict: an
             </li>
           </ul>
           <Link 
-            href={user ? `/${country}/vendedor` : `/${country}/login?intent=seller&next=/${country}/vendedor`} 
+            href={getProtectedHref({ targetPath: `/${country}/vendedor`, intent: 'seller', user, country })} 
             className="inline-block bg-black text-white font-bold px-8 py-4 rounded-full hover:bg-gray-800 transition-colors shadow-xl text-sm"
           >
             {dict.home.start_selling || 'Start Selling Today'}

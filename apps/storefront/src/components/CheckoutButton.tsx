@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { processCheckout } from '@/app/actions/checkout';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter, useParams } from 'next/navigation';
+import { getProtectedHref } from '@/lib/auth/accessBuilder';
 
 type CheckoutButtonProps = {
   tenantId: string;
@@ -20,7 +21,7 @@ export default function CheckoutButton({ tenantId, variantId }: CheckoutButtonPr
 
   const handleCheckout = () => {
     if (!user) {
-      router.push(`/${country || 'hn'}/login?intent=buyer&next=/${country || 'hn'}/cart`);
+      router.push(getProtectedHref({ targetPath: `/${country || 'hn'}/cart`, intent: 'buyer', user, country: country || 'hn' }));
       return;
     }
 
