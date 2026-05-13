@@ -4,6 +4,25 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
 import { getSiteUrl } from '@/utils/url'
+import { headers } from 'next/headers'
+import { SUPPORTED_COUNTRIES } from '@/config/countries'
+
+async function getCountryPrefix() {
+  try {
+    const headersList = await headers();
+    const referer = headersList.get('referer');
+    if (referer) {
+      const path = new URL(referer).pathname;
+      const segment = path.split('/')[1];
+      if (segment && SUPPORTED_COUNTRIES.includes(segment)) {
+        return `/${segment}`;
+      }
+    }
+  } catch (e) {
+    console.error("Error parsing referer for country", e);
+  }
+  return '';
+}
 
 function getErrorKey(message: string) {
   if (message.includes('Invalid login credentials')) return 'err_invalid_creds';
@@ -29,7 +48,8 @@ export async function login(formData: FormData) {
   }
 
   // Safe routing after auth based on Role
-  let redirectUrl = '/'
+  const countryPrefix = await getCountryPrefix()
+  let redirectUrl = countryPrefix || '/'
   const next = formData.get('next') as string
   
   if (authData?.user) {
@@ -40,14 +60,14 @@ export async function login(formData: FormData) {
       .single()
       
     if (dbUser) {
-      if (dbUser.role === 'SUPER_ADMIN') redirectUrl = '/admin'
-      else if (dbUser.role === 'SELLER') redirectUrl = '/vendedor'
-      else if (intent === 'seller') redirectUrl = '/vendedor/onboarding' // Shell routing for seller intent
+      if (dbUser.role === 'SUPER_ADMIN') redirectUrl = `${countryPrefix}/admin`
+      else if (dbUser.role === 'SELLER') redirectUrl = `${countryPrefix}/vendedor`
+      else if (intent === 'seller') redirectUrl = `${countryPrefix}/vendedor/onboarding` // Shell routing for seller intent
     }
   }
 
   // If there's an explicit next parameter and it's a valid relative path, honor it over the default role-based routing
-  if (next && next.startsWith('/') && !next.startsWith('//')) {
+  if (next && next !== '/' && next !== countryPrefix && next.startsWith('/') && !next.startsWith('//')) {
     redirectUrl = next
   }
 
@@ -83,8 +103,9 @@ export async function signup(formData: FormData) {
 
   const options: any = {}
   
+  const countryPrefixSignup = await getCountryPrefix();
   let safeNext = nextParam && nextParam.startsWith('/') && !nextParam.startsWith('//') ? nextParam : null;
-  let defaultNext = intent === 'seller' ? '/vendedor/onboarding' : '/';
+  let defaultNext = intent === 'seller' ? `${countryPrefixSignup}/vendedor/onboarding` : `${countryPrefixSignup || '/'}`;
   const nextPath = safeNext || defaultNext;
 
   options.emailRedirectTo = `${getSiteUrl()}/api/auth/callback?next=${encodeURIComponent(nextPath)}`
@@ -112,7 +133,8 @@ export async function signup(formData: FormData) {
   }
 
   // If auto-login happened
-  let redirectUrl = '/'
+  const countryPrefixAuto = await getCountryPrefix();
+  let redirectUrl = countryPrefixAuto || '/'
 
   if (authData?.user) {
     // AuthAudit Base: signup_completed
@@ -124,14 +146,14 @@ export async function signup(formData: FormData) {
       .single()
       
     if (dbUser) {
-      if (dbUser.role === 'SUPER_ADMIN') redirectUrl = '/admin'
-      else if (dbUser.role === 'SELLER') redirectUrl = '/vendedor'
-      else if (intent === 'seller') redirectUrl = '/vendedor/onboarding'
+      if (dbUser.role === 'SUPER_ADMIN') redirectUrl = `${countryPrefixAuto}/admin`
+      else if (dbUser.role === 'SELLER') redirectUrl = `${countryPrefixAuto}/vendedor`
+      else if (intent === 'seller') redirectUrl = `${countryPrefixAuto}/vendedor/onboarding`
     }
   }
 
   // If there's an explicit next parameter and it's a valid relative path, honor it over the default role-based routing
-  if (nextParam && nextParam.startsWith('/') && !nextParam.startsWith('//')) {
+  if (nextParam && nextParam !== '/' && nextParam !== countryPrefixAuto && nextParam.startsWith('/') && !nextParam.startsWith('//')) {
     redirectUrl = nextParam
   }
 
@@ -163,8 +185,9 @@ export async function signInWithGoogle(formData: FormData) {
   const intent = formData.get('intent') as string
   const nextParam = formData.get('next') as string
 
+  const countryPrefixOAuth = await getCountryPrefix();
   let safeNext = nextParam && nextParam.startsWith('/') && !nextParam.startsWith('//') ? nextParam : null;
-  let defaultNext = intent === 'seller' ? '/vendedor/onboarding' : '/';
+  let defaultNext = intent === 'seller' ? `${countryPrefixOAuth}/vendedor/onboarding` : `${countryPrefixOAuth || '/'}`;
   const nextPath = safeNext || defaultNext;
 
   const intentParam = intent ? `&intent=${intent}` : ''
@@ -172,7 +195,7 @@ export async function signInWithGoogle(formData: FormData) {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${getSiteUrl()}/api/auth/callback?next=${encodeURIComponent(nextPath)}`,
+      redirectTo: `${getSiteUrl()}/api/auth/callback?next=${encodeURIComponent(nextPath)}${intentParam}`,
     },
   })
 
@@ -232,8 +255,9 @@ export async function resendConfirmation(formData: FormData) {
     redirect(`/login?error=err_generic`)
   }
 
+  const countryPrefixResend = await getCountryPrefix();
   let safeNext = nextParam && nextParam.startsWith('/') && !nextParam.startsWith('//') ? nextParam : null;
-  let defaultNext = intent === 'seller' ? '/vendedor/onboarding' : '/';
+  let defaultNext = intent === 'seller' ? `${countryPrefixResend}/vendedor/onboarding` : `${countryPrefixResend || '/'}`;
   const nextPath = safeNext || defaultNext;
 
   const options: any = {
