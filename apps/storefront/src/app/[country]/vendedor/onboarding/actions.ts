@@ -33,7 +33,16 @@ export async function getOrCreateOnboardingSession() {
     });
   }
 
-  // Get or Create Session
+  // If profile is approved or under review, we might not want to create a new session
+  if (profile.status === 'APPROVED' || profile.status === 'UNDER_REVIEW') {
+    // Return what we have, without forcing a new session
+    let session = await prisma.sellerOnboardingSession.findFirst({
+      where: { sellerProfileId: profile.id, completedAt: null }
+    });
+    return { profile, session };
+  }
+
+  // Get or Create Session for DRAFT
   let session = await prisma.sellerOnboardingSession.findFirst({
     where: { sellerProfileId: profile.id, completedAt: null }
   });

@@ -1,6 +1,7 @@
 import { SellerSidebar } from './components/SellerSidebar';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
+import { prisma } from '@/lib/prisma';
 
 export default async function SellerLayout({
   children,
@@ -29,11 +30,16 @@ export default async function SellerLayout({
 
   console.log(`[AZHON_AUTH_TRACE] seller_gate_dashboard:user_role, role: ${dbUser?.role || 'none'}`);
 
-  if (!dbUser || (dbUser.role !== 'SELLER' && dbUser.role !== 'SUPER_ADMIN')) {
-    console.log(`[AZHON_AUTH_TRACE] seller_gate_dashboard:redirect_to_onboarding`);
-    // AuthAudit Base: unauthorized_seller_access_attempt
-    console.log(`[AUTH AUDIT] event: unauthorized_seller_access_attempt, user_id: ${user.id}, date: ${new Date().toISOString()}`)
-    redirect(`/${country}/vendedor/onboarding`);
+  const profile = await prisma.sellerProfile.findUnique({
+    where: { userId: user.id }
+  });
+
+  if (dbUser?.role !== 'SUPER_ADMIN') {
+    if (!profile || profile.status !== 'APPROVED') {
+      console.log(`[AZHON_AUTH_TRACE] seller_gate_dashboard:redirect_to_onboarding (not approved)`);
+      console.log(`[AUTH AUDIT] event: unauthorized_seller_access_attempt, user_id: ${user.id}, date: ${new Date().toISOString()}`)
+      redirect(`/${country}/vendedor/onboarding`);
+    }
   }
 
   console.log(`[AZHON_AUTH_TRACE] seller_gate_dashboard:access_granted`);
