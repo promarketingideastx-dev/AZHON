@@ -45,25 +45,8 @@ export async function GET(request: NextRequest) {
 
         console.log(`[AZHON_AUTH_TRACE] callback:initial_role, role: ${dbUser?.role || 'none'}`);
 
-        if (intent === 'seller' && dbUser && dbUser.role !== 'SELLER' && dbUser.role !== 'SUPER_ADMIN') {
-          console.log(`[AZHON_AUTH_TRACE] callback:role_upgrade_attempt, upgrading to SELLER`);
-          console.log(`[AUTH AUDIT] event: upgrading_to_seller, user_id: ${authData.user.id}, date: ${new Date().toISOString()}`)
-          const { data: updatedUser, error: updateError } = await supabase
-            .from('User')
-            .update({ role: 'SELLER' })
-            .eq('id', authData.user.id)
-            .select('role')
-            .single()
-            
-          if (!updateError && updatedUser) {
-            console.log(`[AZHON_AUTH_TRACE] callback:role_upgrade_result, success, new_role: ${updatedUser.role}`);
-            dbUser = updatedUser
-          } else {
-            console.error(`[AZHON_AUTH_TRACE] callback:role_upgrade_result, failed`, updateError);
-            console.error("Error upgrading user to seller:", updateError)
-          }
-        }
-          
+        // NO ROLE MUTATION HERE. Auth callback should not alter business roles.
+        // Role upgrade will happen only after seller onboarding approval.
         // Fetch locale from cookies or default to 'es'
         const locale = request.cookies.get('NEXT_LOCALE')?.value || 'es';
 
@@ -80,15 +63,20 @@ export async function GET(request: NextRequest) {
           console.error("Failed to send welcome email:", e);
         }
 
+        // Redirection Precedence (state -> next)
         if (dbUser) {
-          if (dbUser.role === 'SUPER_ADMIN') redirectUrl = `${countryPrefix}/admin`
-          else if (dbUser.role === 'SELLER') redirectUrl = `${countryPrefix}/vendedor`
+          if (dbUser.role === 'SUPER_ADMIN') redirectUrl = `${countryPrefix}/admin`;
+          else if (dbUser.role === 'SELLER') redirectUrl = `${countryPrefix}/vendedor`;
+          else redirectUrl = `${countryPrefix || '/'}/perfil`; // Default for BUYER
         }
       }
 
       // If there's an explicit safe next parameter, honor it over the default role-based routing
       if (next && next !== '/' && next !== countryPrefix && next.startsWith('/') && !next.startsWith('//')) {
          redirectUrl = next;
+      } else if (intent === 'seller' && redirectUrl === `${countryPrefix || '/'}/perfil`) {
+         // Fallback to onboarding if intent is seller and we are falling back to default buyer profile
+         redirectUrl = `${countryPrefix}/vendedor/onboarding`;
       }
       
       console.log(`[AZHON_AUTH_TRACE] callback:final_redirect, target: ${redirectUrl}`);

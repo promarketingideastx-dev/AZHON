@@ -8,6 +8,7 @@ export default function AuthClient({ dict, errorKey, msgKey, intent, defaultEmai
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const country = pathname.split('/')[1] || '';
   const [view, setView] = useState<'intent_selector' | 'login' | 'signup' | 'forgot' | 'verify'>(() => {
     return defaultEmail && msgKey === 'msg_check_email' ? 'verify' : (!intent ? 'intent_selector' : 'login');
   });
@@ -158,6 +159,7 @@ export default function AuthClient({ dict, errorKey, msgKey, intent, defaultEmai
         ) : (
           <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
             <input type="hidden" name="intent" value={currentIntent} />
+            <input type="hidden" name="country" value={country} />
             {nextParam && <input type="hidden" name="next" value={nextParam} />}
             
             <div>
@@ -230,6 +232,7 @@ export default function AuthClient({ dict, errorKey, msgKey, intent, defaultEmai
                     setLoading(true);
                     const fd = new FormData();
                     fd.append('intent', currentIntent);
+                    fd.append('country', country);
                     if (nextParam) fd.append('next', nextParam);
                     const result = await signInWithGoogle(fd);
                     if (result?.url) {

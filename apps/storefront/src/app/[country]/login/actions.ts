@@ -7,21 +7,43 @@ import { getSiteUrl } from '@/utils/url'
 import { headers } from 'next/headers'
 import { SUPPORTED_COUNTRIES } from '@/config/countries'
 
-async function getCountryPrefix() {
-  try {
-    const headersList = await headers();
-    const referer = headersList.get('referer');
-    if (referer) {
-      const path = new URL(referer).pathname;
-      const segment = path.split('/')[1];
-      if (segment && SUPPORTED_COUNTRIES.includes(segment)) {
-        return `/${segment}`;
-      }
-    }
-  } catch (e) {
-    console.error("Error parsing referer for country", e);
+function resolveCountryPrefix(formData: FormData) {
+  const country = formData.get('country') as string;
+  if (country && SUPPORTED_COUNTRIES.includes(country)) {
+    return `/${country}`;
   }
   return '';
+}
+
+async function resolveRedirectUrl(supabase: any, formData: FormData) {
+  const countryPrefix = resolveCountryPrefix(formData);
+  const next = formData.get('next') as string;
+  const intent = formData.get('intent') as string;
+
+  // 1. next explícito manda
+  if (next && next !== '/' && next !== countryPrefix && next.startsWith('/') && !next.startsWith('//')) {
+    return next;
+  }
+
+  // 2. Estado real manda
+  const { data: authData } = await supabase.auth.getUser();
+  if (authData?.user) {
+    const { data: dbUser } = await supabase
+      .from('User')
+      .select('role')
+      .eq('id', authData.user.id)
+      .single();
+
+    if (dbUser) {
+      if (dbUser.role === 'SUPER_ADMIN') return `${countryPrefix}/admin`;
+      if (dbUser.role === 'SELLER') return `${countryPrefix}/vendedor`;
+    }
+  }
+
+  // 3. Fallback (intent como hint final)
+  if (intent === 'seller') return `${countryPrefix}/vendedor/onboarding`;
+  
+  return `${countryPrefix || '/'}/perfil`;
 }
 
 function getErrorKey(message: string) {
@@ -59,29 +81,8 @@ export async function login(formData: FormData) {
     redirect(`/login?error=${getErrorKey(error.message)}${intentParam}`)
   }
 
-  // Safe routing after auth based on Role
-  const countryPrefix = await getCountryPrefix()
-  let redirectUrl = countryPrefix || '/'
-  const next = formData.get('next') as string
-  
-  if (authData?.user) {
-    const { data: dbUser } = await supabase
-      .from('User')
-      .select('role')
-      .eq('id', authData.user.id)
-      .single()
-      
-    if (dbUser) {
-      if (dbUser.role === 'SUPER_ADMIN') redirectUrl = `${countryPrefix}/admin`
-      else if (dbUser.role === 'SELLER') redirectUrl = `${countryPrefix}/vendedor`
-      else if (intent === 'seller') redirectUrl = `${countryPrefix}/vendedor/onboarding` // Shell routing for seller intent
-    }
-  }
-
-  // If there's an explicit next parameter and it's a valid relative path, honor it over the default role-based routing
-  if (next && next !== '/' && next !== countryPrefix && next.startsWith('/') && !next.startsWith('//')) {
-    redirectUrl = next
-  }
+  // Safe routing after auth
+  const redirectUrl = await resolveRedirectUrl(supabase, formData);
 
   // AuthAudit Base: signin_success
   console.log(`[AZHON_AUTH_TRACE] login:success, user_id: ${authData.user?.id}, target_url: ${redirectUrl}`)
@@ -117,15 +118,18 @@ export async function signup(formData: FormData) {
     console.log(`[AUTH AUDIT] event: seller_registration_intent_detected, email: ${maskEmail(data.email)}, date: ${new Date().toISOString()}`)
   }
 
-  const options: any = {}
+  const countryPrefixSignup = resolveCountryPrefix(formData);
   
-  const countryPrefixSignup = await getCountryPrefix();
-  let safeNext = nextParam && nextParam.startsWith('/') && !nextParam.startsWith('//') ? nextParam : null;
-  let defaultNext = intent === 'seller' ? `${countryPrefixSignup}/vendedor/onboarding` : `${countryPrefixSignup || '/'}`;
-  const nextPath = safeNext || defaultNext;
+  let targetNext = formData.get('next') as string;
+  if (!targetNext || targetNext === '/' || targetNext === countryPrefixSignup || !targetNext.startsWith('/') || targetNext.startsWith('//')) {
+    // Si no hay next explícito, el default dependerá del intent
+    targetNext = intent === 'seller' ? `${countryPrefixSignup}/vendedor/onboarding` : `${countryPrefixSignup || '/'}/perfil`;
+  }
 
   const intentParamSignup = intent ? `&intent=${intent}` : ''
-  options.emailRedirectTo = `${getSiteUrl()}/api/auth/callback?next=${encodeURIComponent(nextPath)}${intentParamSignup}`
+  const options: any = {
+    emailRedirectTo: `${getSiteUrl()}/api/auth/callback?next=${encodeURIComponent(targetNext)}${intentParamSignup}`
+  }
 
   const { data: authData, error } = await supabase.auth.signUp({
     ...data,
@@ -150,36 +154,13 @@ export async function signup(formData: FormData) {
     console.log(`[AZHON_AUTH_TRACE] signup:session_null_redirecting_to_verify`);
     // AuthAudit Base: email_confirmation_sent
     console.log(`[AUTH AUDIT] event: email_confirmation_sent, email: ${maskEmail(data.email)}, date: ${new Date().toISOString()}`)
-    const countryPrefixVerify = await getCountryPrefix();
-    const target = `${countryPrefixVerify || '/'}/login?msg=msg_check_email&view=verify&email=${encodeURIComponent(data.email)}${intentParamSignup}`;
+    const target = `${countryPrefixSignup || '/'}/login?msg=msg_check_email&view=verify&email=${encodeURIComponent(data.email)}${intentParamSignup}`;
     console.log(`[AZHON_AUTH_TRACE] signup:redirect_to, target: ${target.replace(data.email, maskEmail(data.email))}`);
     redirect(target)
   }
 
   // If auto-login happened
-  const countryPrefixAuto = await getCountryPrefix();
-  let redirectUrl = countryPrefixAuto || '/'
-
-  if (authData?.user) {
-    // AuthAudit Base: signup_completed
-    console.log(`[AUTH AUDIT] event: signup_completed, user_id: ${authData.user.id}, date: ${new Date().toISOString()}`)
-    const { data: dbUser } = await supabase
-      .from('User')
-      .select('role')
-      .eq('id', authData.user.id)
-      .single()
-      
-    if (dbUser) {
-      if (dbUser.role === 'SUPER_ADMIN') redirectUrl = `${countryPrefixAuto}/admin`
-      else if (dbUser.role === 'SELLER') redirectUrl = `${countryPrefixAuto}/vendedor`
-      else if (intent === 'seller') redirectUrl = `${countryPrefixAuto}/vendedor/onboarding`
-    }
-  }
-
-  // If there's an explicit next parameter and it's a valid relative path, honor it over the default role-based routing
-  if (nextParam && nextParam !== '/' && nextParam !== countryPrefixAuto && nextParam.startsWith('/') && !nextParam.startsWith('//')) {
-    redirectUrl = nextParam
-  }
+  const redirectUrl = await resolveRedirectUrl(supabase, formData);
 
   revalidatePath('/', 'layout')
   console.log(`[AZHON_AUTH_TRACE] signup:success_auto_login, redirect_to: ${redirectUrl}`)
@@ -191,7 +172,7 @@ export async function resetPassword(formData: FormData) {
   const email = formData.get('email') as string
   const intent = formData.get('intent') as string
 
-  const countryPrefixReset = await getCountryPrefix();
+  const countryPrefixReset = resolveCountryPrefix(formData);
   
   // We assume the user wants to reset their password
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -214,17 +195,19 @@ export async function signInWithGoogle(formData: FormData) {
 
   console.log(`[AZHON_AUTH_TRACE] google:start, intent: ${intent}, next: ${nextParam}`);
 
-  const countryPrefixOAuth = await getCountryPrefix();
-  let safeNext = nextParam && nextParam.startsWith('/') && !nextParam.startsWith('//') ? nextParam : null;
-  let defaultNext = intent === 'seller' ? `${countryPrefixOAuth}/vendedor/onboarding` : `${countryPrefixOAuth || '/'}`;
-  const nextPath = safeNext || defaultNext;
+  const countryPrefixOAuth = resolveCountryPrefix(formData);
+  
+  let targetNext = nextParam;
+  if (!targetNext || targetNext === '/' || targetNext === countryPrefixOAuth || !targetNext.startsWith('/') || targetNext.startsWith('//')) {
+    targetNext = intent === 'seller' ? `${countryPrefixOAuth}/vendedor/onboarding` : `${countryPrefixOAuth || '/'}/perfil`;
+  }
 
   const intentParam = intent ? `&intent=${intent}` : ''
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${getSiteUrl()}/api/auth/callback?next=${encodeURIComponent(nextPath)}${intentParam}`,
+      redirectTo: `${getSiteUrl()}/api/auth/callback?next=${encodeURIComponent(targetNext)}${intentParam}`,
     },
   })
 
@@ -270,10 +253,10 @@ export async function logout() {
     console.log(`[AUTH AUDIT] event: signout_completed, user_id: ${user.id}, date: ${new Date().toISOString()}`)
   }
 
-  const countryPrefixLogout = await getCountryPrefix();
+  // No formData available here, fallback to home
   await supabase.auth.signOut()
   revalidatePath('/', 'layout')
-  redirect(`${countryPrefixLogout || '/'}/login`)
+  redirect(`/login`)
 }
 
 export async function resendConfirmation(formData: FormData) {
@@ -288,14 +271,15 @@ export async function resendConfirmation(formData: FormData) {
     redirect(`/login?error=err_generic`)
   }
 
-  const countryPrefixResend = await getCountryPrefix();
-  let safeNext = nextParam && nextParam.startsWith('/') && !nextParam.startsWith('//') ? nextParam : null;
-  let defaultNext = intent === 'seller' ? `${countryPrefixResend}/vendedor/onboarding` : `${countryPrefixResend || '/'}`;
-  const nextPath = safeNext || defaultNext;
+  const countryPrefixResend = resolveCountryPrefix(formData);
+  let targetNext = nextParam;
+  if (!targetNext || targetNext === '/' || targetNext === countryPrefixResend || !targetNext.startsWith('/') || targetNext.startsWith('//')) {
+    targetNext = intent === 'seller' ? `${countryPrefixResend}/vendedor/onboarding` : `${countryPrefixResend || '/'}/perfil`;
+  }
 
   const intentParamResend = intent ? `&intent=${intent}` : ''
   const options: any = {
-    emailRedirectTo: `${getSiteUrl()}/api/auth/callback?next=${encodeURIComponent(nextPath)}${intentParamResend}`
+    emailRedirectTo: `${getSiteUrl()}/api/auth/callback?next=${encodeURIComponent(targetNext)}${intentParamResend}`
   }
 
   const { error } = await supabase.auth.resend({
@@ -313,7 +297,7 @@ export async function resendConfirmation(formData: FormData) {
     redirect(`/login?error=${getErrorKey(error.message)}${intentParam}`)
   }
 
-  const countryPrefixVerifyResend = await getCountryPrefix();
+  const countryPrefixVerifyResend = resolveCountryPrefix(formData);
   console.log(`[AZHON_AUTH_TRACE] resend:success_redirect_to_verify`)
   redirect(`${countryPrefixVerifyResend || '/'}/login?msg=msg_check_email&view=verify&email=${encodeURIComponent(email)}${intentParamResend}`)
 }
