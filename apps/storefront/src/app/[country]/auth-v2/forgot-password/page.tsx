@@ -1,6 +1,8 @@
 import { getDictionary, defaultLocale } from '@/i18n';
 import { cookies } from 'next/headers';
 import Link from 'next/link';
+import { SubmitButton } from '../SubmitButton';
+import { forgotPasswordAction } from '../actions';
 
 export default async function ForgotPasswordV2Page({
   params,
@@ -34,8 +36,8 @@ export default async function ForgotPasswordV2Page({
         </div>
       )}
 
-      {/* Scaffold for Atomic Form - Logic intentionally omitted for Phase 1 */}
-      <form className="w-full space-y-4">
+      {/* Atomic Form bound to Server Action */}
+      <form action={forgotPasswordAction} className="w-full space-y-4">
         <input type="hidden" name="country" value={country} />
 
         <div>
@@ -49,13 +51,9 @@ export default async function ForgotPasswordV2Page({
           />
         </div>
 
-        <button 
-          type="button" 
-          disabled
-          className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-3 px-4 rounded-full transition-colors disabled:opacity-50"
-        >
+        <SubmitButton pendingText="Enviando...">
           {dict.auth.sendResetLink}
-        </button>
+        </SubmitButton>
       </form>
 
       <div className="text-center mt-6">

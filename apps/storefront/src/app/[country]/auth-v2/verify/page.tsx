@@ -1,6 +1,8 @@
 import { getDictionary, defaultLocale } from '@/i18n';
 import { cookies } from 'next/headers';
 import Link from 'next/link';
+import { SubmitButton } from '../SubmitButton';
+import { resendVerifyAction } from '../actions';
 
 export default async function VerifyV2Page({
   params,
@@ -35,19 +37,25 @@ export default async function VerifyV2Page({
       </div>
 
       <div className="w-full space-y-4">
-        <form className="w-full">
+        {sParams?.error && (
+          <div className="p-4 bg-red-50 border border-red-100 rounded-lg">
+            <p className="text-sm text-red-600 text-center font-medium">
+              {dict.auth.errors[sParams.error as keyof typeof dict.auth.errors] || 'Ha ocurrido un error.'}
+            </p>
+          </div>
+        )}
+        <form action={resendVerifyAction} className="w-full">
            <input type="hidden" name="email" value={email || ''} />
            <input type="hidden" name="country" value={country} />
            {next && <input type="hidden" name="next" value={next} />}
            {intent && <input type="hidden" name="intent" value={intent} />}
            
-           <button 
-             type="button" 
-             disabled
+           <SubmitButton 
+             pendingText="Reenviando..."
              className="w-full bg-white border border-gray-300 hover:bg-gray-50 text-secondary font-bold py-3 px-4 rounded-full transition-colors disabled:opacity-50"
            >
              {dict.auth.resendLink}
-           </button>
+           </SubmitButton>
         </form>
 
         <div className="text-center mt-6">
