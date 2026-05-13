@@ -18,6 +18,18 @@ export default function AuthClient({ dict, errorKey, msgKey, intent, defaultEmai
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // Sync state with URL params after Server Action redirects (to fix UI hangs)
+  useEffect(() => {
+    if (errorKey || msgKey) {
+      setLoading(false); // Action completed, clear loading
+    }
+    
+    const urlView = searchParams.get('view');
+    if (urlView === 'verify') {
+      setView('verify');
+    }
+  }, [errorKey, msgKey, searchParams]);
+
   // Extract next param to preserve destination
   const nextParam = searchParams.get('next');
 
