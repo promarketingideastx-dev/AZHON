@@ -78,6 +78,7 @@ export async function loginAction(formData: FormData) {
 }
 
 export async function signupAction(formData: FormData) {
+  console.log('[AUTH-V2] signupAction: start');
   const supabase = await createClient()
   const country = formData.get('country') as string
   const email = formData.get('email') as string
@@ -86,16 +87,22 @@ export async function signupAction(formData: FormData) {
   const intent = formData.get('intent') as string | null
   const nextParam = formData.get('next') as string | null
 
+  console.log('[AUTH-V2] signupAction: data extracted', { country, email, intent, nextParam });
+
   if (password !== passwordConfirm) {
+    console.log('[AUTH-V2] signupAction: password mismatch, redirecting');
     const qs = buildQueryString({ error: 'err_pass_mismatch', intent, next: nextParam });
     redirect(`/${country}/auth-v2/signup${qs}`)
   }
 
   // Determine the final destination for the callback redirect
+  console.log('[AUTH-V2] signupAction: resolving destination');
   const destination = await resolveDestination(supabase, country, nextParam, intent);
   const intentParam = intent ? `&intent=${intent}` : '';
   const emailRedirectTo = `${getSiteUrl()}/api/auth/callback?next=${encodeURIComponent(destination)}${intentParam}`;
+  console.log('[AUTH-V2] signupAction: destination resolved', { destination, emailRedirectTo });
 
+  console.log('[AUTH-V2] signupAction: calling supabase.auth.signUp');
   const { data: authData, error } = await supabase.auth.signUp({
     email,
     password,
@@ -104,17 +111,27 @@ export async function signupAction(formData: FormData) {
     }
   })
 
+  console.log('[AUTH-V2] signupAction: supabase.auth.signUp returned', { 
+    hasData: !!authData, 
+    hasSession: !!authData?.session, 
+    hasUser: !!authData?.user, 
+    error: error ? error.message : null 
+  });
+
   if (error) {
+    console.log('[AUTH-V2] signupAction: redirecting due to error', error.message);
     const qs = buildQueryString({ error: getErrorKey(error.message), intent, next: nextParam });
     redirect(`/${country}/auth-v2/signup${qs}`)
   }
 
   if (!authData.session) {
+    console.log('[AUTH-V2] signupAction: no session, redirecting to verify');
     // Requires email confirmation
     const qs = buildQueryString({ email, intent, next: nextParam });
     redirect(`/${country}/auth-v2/verify${qs}`)
   }
 
+  console.log('[AUTH-V2] signupAction: auto-login successful, redirecting to destination');
   // Auto-login successful (e.g., if confirmation is disabled)
   const autoDestination = await resolveDestination(supabase, country, nextParam, intent);
   revalidatePath('/', 'layout')
