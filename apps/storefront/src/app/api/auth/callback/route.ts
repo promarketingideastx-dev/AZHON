@@ -20,8 +20,8 @@ export async function GET(request: NextRequest) {
     if (!error) {
       // Handle safe routing post auth based on role
       const { data: authData } = await supabase.auth.getUser()
-      let redirectUrl = next
-      
+      let redirectUrl = '/' // default
+
       if (authData?.user) {
         console.log(`[AUTH AUDIT] event: email_confirmed_or_session_started, user_id: ${authData.user.id}, date: ${new Date().toISOString()}`)
         const { data: dbUser } = await supabase
@@ -50,6 +50,11 @@ export async function GET(request: NextRequest) {
           if (dbUser.role === 'SUPER_ADMIN') redirectUrl = '/admin'
           else if (dbUser.role === 'SELLER') redirectUrl = '/vendedor'
         }
+      }
+
+      // If there's an explicit safe next parameter, honor it over the default role-based routing
+      if (next && next !== '/' && next.startsWith('/') && !next.startsWith('//')) {
+         redirectUrl = next;
       }
       
       return NextResponse.redirect(new URL(redirectUrl, request.url))

@@ -74,6 +74,7 @@ export async function signup(formData: FormData) {
     password: password,
   }
   const intent = formData.get('intent') as string
+  const nextParam = formData.get('next') as string
 
   if (intent === 'seller') {
     // AuthAudit Base: seller_registration_intent_detected
@@ -81,10 +82,12 @@ export async function signup(formData: FormData) {
   }
 
   const options: any = {}
-  if (intent === 'seller') {
-    // Pass intent via the next param in the callback URL
-    options.emailRedirectTo = `${getSiteUrl()}/api/auth/callback?next=/vendedor/onboarding`
-  }
+  
+  let safeNext = nextParam && nextParam.startsWith('/') && !nextParam.startsWith('//') ? nextParam : null;
+  let defaultNext = intent === 'seller' ? '/vendedor/onboarding' : '/';
+  const nextPath = safeNext || defaultNext;
+
+  options.emailRedirectTo = `${getSiteUrl()}/api/auth/callback?next=${encodeURIComponent(nextPath)}`
 
   const { data: authData, error } = await supabase.auth.signUp({
     ...data,
@@ -110,7 +113,6 @@ export async function signup(formData: FormData) {
 
   // If auto-login happened
   let redirectUrl = '/'
-  const next = formData.get('next') as string
 
   if (authData?.user) {
     // AuthAudit Base: signup_completed
@@ -129,8 +131,8 @@ export async function signup(formData: FormData) {
   }
 
   // If there's an explicit next parameter and it's a valid relative path, honor it over the default role-based routing
-  if (next && next.startsWith('/') && !next.startsWith('//')) {
-    redirectUrl = next
+  if (nextParam && nextParam.startsWith('/') && !nextParam.startsWith('//')) {
+    redirectUrl = nextParam
   }
 
   revalidatePath('/', 'layout')
@@ -159,19 +161,22 @@ export async function resetPassword(formData: FormData) {
 export async function signInWithGoogle(formData: FormData) {
   const supabase = await createClient()
   const intent = formData.get('intent') as string
+  const nextParam = formData.get('next') as string
 
-  const nextPath = intent === 'seller' ? '/vendedor/onboarding' : '/'
+  let safeNext = nextParam && nextParam.startsWith('/') && !nextParam.startsWith('//') ? nextParam : null;
+  let defaultNext = intent === 'seller' ? '/vendedor/onboarding' : '/';
+  const nextPath = safeNext || defaultNext;
+
   const intentParam = intent ? `&intent=${intent}` : ''
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${getSiteUrl()}/api/auth/callback?next=${nextPath}`,
+      redirectTo: `${getSiteUrl()}/api/auth/callback?next=${encodeURIComponent(nextPath)}`,
     },
   })
 
   if (error) {
-    const intentParam = intent ? `&intent=${intent}` : ''
     redirect(`/login?error=${getErrorKey(error.message)}${intentParam}`)
   }
 
@@ -221,17 +226,18 @@ export async function resendConfirmation(formData: FormData) {
   const supabase = await createClient()
   const email = formData.get('email') as string
   const intent = formData.get('intent') as string
+  const nextParam = formData.get('next') as string
   
   if (!email) {
     redirect(`/login?error=err_generic`)
   }
 
+  let safeNext = nextParam && nextParam.startsWith('/') && !nextParam.startsWith('//') ? nextParam : null;
+  let defaultNext = intent === 'seller' ? '/vendedor/onboarding' : '/';
+  const nextPath = safeNext || defaultNext;
+
   const options: any = {
-    emailRedirectTo: `${getSiteUrl()}/api/auth/callback`
-  }
-  
-  if (intent === 'seller') {
-    options.emailRedirectTo = `${getSiteUrl()}/api/auth/callback?next=/vendedor/onboarding`
+    emailRedirectTo: `${getSiteUrl()}/api/auth/callback?next=${encodeURIComponent(nextPath)}`
   }
 
   const { error } = await supabase.auth.resend({
