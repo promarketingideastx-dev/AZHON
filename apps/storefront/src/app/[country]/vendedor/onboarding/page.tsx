@@ -15,14 +15,17 @@ export default async function SellerOnboardingPage({
   const dict = getDictionary(locale);
 
   // Initialize or fetch existing session securely from DB
+  console.log(`[AZHON_AUTH_TRACE] seller_gate_onboarding:start`);
   const data = await getOrCreateOnboardingSession();
 
   if (!data) {
+    console.log(`[AZHON_AUTH_TRACE] seller_gate_onboarding:no_session, redirecting to login`);
     const nextPath = encodeURIComponent(`/${country}/vendedor/onboarding`);
     redirect(`/${country}/login?intent=seller&next=${nextPath}`);
   }
 
   const { profile, session } = data;
+  console.log(`[AZHON_AUTH_TRACE] seller_gate_onboarding:session_active, profile_id: ${profile?.id || 'none'}, step: ${session?.currentStep || 'none'}`);
 
   return (
     <div className="min-h-screen bg-neutral-50 pb-20">

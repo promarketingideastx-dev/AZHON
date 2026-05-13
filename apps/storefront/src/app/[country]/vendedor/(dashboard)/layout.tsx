@@ -13,7 +13,10 @@ export default async function SellerLayout({
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
+  console.log(`[AZHON_AUTH_TRACE] seller_gate_dashboard:start, user_id: ${user?.id || 'none'}`);
+
   if (!user) {
+    console.log(`[AZHON_AUTH_TRACE] seller_gate_dashboard:no_user, redirecting to login`);
     const nextPath = encodeURIComponent(`/${country}/vendedor`);
     redirect(`/${country}/login?intent=seller&next=${nextPath}`);
   }
@@ -24,11 +27,16 @@ export default async function SellerLayout({
     .eq('id', user.id)
     .single();
 
+  console.log(`[AZHON_AUTH_TRACE] seller_gate_dashboard:user_role, role: ${dbUser?.role || 'none'}`);
+
   if (!dbUser || (dbUser.role !== 'SELLER' && dbUser.role !== 'SUPER_ADMIN')) {
+    console.log(`[AZHON_AUTH_TRACE] seller_gate_dashboard:redirect_to_onboarding`);
     // AuthAudit Base: unauthorized_seller_access_attempt
     console.log(`[AUTH AUDIT] event: unauthorized_seller_access_attempt, user_id: ${user.id}, date: ${new Date().toISOString()}`)
     redirect(`/${country}/vendedor/onboarding`);
   }
+
+  console.log(`[AZHON_AUTH_TRACE] seller_gate_dashboard:access_granted`);
 
   return (
     <div className="w-full bg-gray-50 min-h-screen pb-12">

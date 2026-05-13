@@ -30,6 +30,15 @@ function getErrorKey(message: string) {
   return 'err_generic';
 }
 
+function maskEmail(email: string) {
+  if (!email) return 'null';
+  const parts = email.split('@');
+  if (parts.length !== 2) return email;
+  const name = parts[0];
+  if (name.length <= 2) return `***@${parts[1]}`;
+  return `${name.substring(0, 2)}***@${parts[1]}`;
+}
+
 export async function login(formData: FormData) {
   const supabase = await createClient()
 
@@ -39,11 +48,14 @@ export async function login(formData: FormData) {
   }
   const intent = formData.get('intent') as string
 
+  console.log(`[AZHON_AUTH_TRACE] login:start, email: ${maskEmail(data.email)}, intent: ${intent}`);
+
   const { data: authData, error } = await supabase.auth.signInWithPassword(data)
 
   if (error) {
-    console.error("LOGIN ERROR:", error.message)
+    console.error(`[AZHON_AUTH_TRACE] login:supabase_error, msg: ${error.message}`)
     const intentParam = intent ? `&intent=${intent}` : ''
+    console.log(`[AZHON_AUTH_TRACE] login:redirect_to, target: /login?error=${getErrorKey(error.message)}`)
     redirect(`/login?error=${getErrorKey(error.message)}${intentParam}`)
   }
 
@@ -72,9 +84,11 @@ export async function login(formData: FormData) {
   }
 
   // AuthAudit Base: signin_success
+  console.log(`[AZHON_AUTH_TRACE] login:success, user_id: ${authData.user?.id}, target_url: ${redirectUrl}`)
   console.log(`[AUTH AUDIT] event: signin_success, user_id: ${authData.user?.id}, date: ${new Date().toISOString()}`)
 
   revalidatePath('/', 'layout')
+  console.log(`[AZHON_AUTH_TRACE] login:redirect_to, target: ${redirectUrl}`)
   redirect(redirectUrl)
 }
 
@@ -96,9 +110,11 @@ export async function signup(formData: FormData) {
   const intent = formData.get('intent') as string
   const nextParam = formData.get('next') as string
 
+  console.log(`[AZHON_AUTH_TRACE] signup:start, email: ${maskEmail(data.email)}, intent: ${intent}, next: ${nextParam}`);
+
   if (intent === 'seller') {
     // AuthAudit Base: seller_registration_intent_detected
-    console.log(`[AUTH AUDIT] event: seller_registration_intent_detected, email: ${data.email}, date: ${new Date().toISOString()}`)
+    console.log(`[AUTH AUDIT] event: seller_registration_intent_detected, email: ${maskEmail(data.email)}, date: ${new Date().toISOString()}`)
   }
 
   const options: any = {}
@@ -116,22 +132,28 @@ export async function signup(formData: FormData) {
     options
   })
 
+  console.log(`[AZHON_AUTH_TRACE] signup:supabase_response, error: ${error?.message || 'none'}, user_created: ${!!authData?.user}, session_created: ${!!authData?.session}`);
+
   if (error) {
-    console.error("SIGNUP ERROR:", error.message)
+    console.error(`[AZHON_AUTH_TRACE] signup:supabase_error, msg: ${error.message}`)
     const intentParam = intent ? `&intent=${intent}` : ''
+    console.log(`[AZHON_AUTH_TRACE] signup:redirect_to, target: /login?error=${getErrorKey(error.message)}`)
     redirect(`/login?error=${getErrorKey(error.message)}${intentParam}`)
   }
 
   // AuthAudit Base: account_created
-  console.log(`[AUTH AUDIT] event: account_created, email: ${data.email}, date: ${new Date().toISOString()}`)
+  console.log(`[AUTH AUDIT] event: account_created, email: ${maskEmail(data.email)}, date: ${new Date().toISOString()}`)
 
   // GoTrue returns a session if auto-confirm is enabled or if verification is off.
   // If session is null, email confirmation is required.
   if (!authData.session) {
+    console.log(`[AZHON_AUTH_TRACE] signup:session_null_redirecting_to_verify`);
     // AuthAudit Base: email_confirmation_sent
-    console.log(`[AUTH AUDIT] event: email_confirmation_sent, email: ${data.email}, date: ${new Date().toISOString()}`)
+    console.log(`[AUTH AUDIT] event: email_confirmation_sent, email: ${maskEmail(data.email)}, date: ${new Date().toISOString()}`)
     const countryPrefixVerify = await getCountryPrefix();
-    redirect(`${countryPrefixVerify || '/'}/login?msg=msg_check_email&view=verify&email=${encodeURIComponent(data.email)}${intentParamSignup}`)
+    const target = `${countryPrefixVerify || '/'}/login?msg=msg_check_email&view=verify&email=${encodeURIComponent(data.email)}${intentParamSignup}`;
+    console.log(`[AZHON_AUTH_TRACE] signup:redirect_to, target: ${target.replace(data.email, maskEmail(data.email))}`);
+    redirect(target)
   }
 
   // If auto-login happened
@@ -160,6 +182,7 @@ export async function signup(formData: FormData) {
   }
 
   revalidatePath('/', 'layout')
+  console.log(`[AZHON_AUTH_TRACE] signup:success_auto_login, redirect_to: ${redirectUrl}`)
   redirect(redirectUrl)
 }
 
@@ -189,6 +212,8 @@ export async function signInWithGoogle(formData: FormData) {
   const intent = formData.get('intent') as string
   const nextParam = formData.get('next') as string
 
+  console.log(`[AZHON_AUTH_TRACE] google:start, intent: ${intent}, next: ${nextParam}`);
+
   const countryPrefixOAuth = await getCountryPrefix();
   let safeNext = nextParam && nextParam.startsWith('/') && !nextParam.startsWith('//') ? nextParam : null;
   let defaultNext = intent === 'seller' ? `${countryPrefixOAuth}/vendedor/onboarding` : `${countryPrefixOAuth || '/'}`;
@@ -204,6 +229,7 @@ export async function signInWithGoogle(formData: FormData) {
   })
 
   if (error) {
+    console.error(`[AZHON_AUTH_TRACE] google:supabase_error, msg: ${error.message}`)
     redirect(`/login?error=${getErrorKey(error.message)}${intentParam}`)
   }
 
@@ -256,6 +282,8 @@ export async function resendConfirmation(formData: FormData) {
   const intent = formData.get('intent') as string
   const nextParam = formData.get('next') as string
   
+  console.log(`[AZHON_AUTH_TRACE] resend:start, email: ${maskEmail(email)}, intent: ${intent}`);
+
   if (!email) {
     redirect(`/login?error=err_generic`)
   }
@@ -277,13 +305,15 @@ export async function resendConfirmation(formData: FormData) {
   })
 
   // AuthAudit Base: confirmation_resent
-  console.log(`[AUTH AUDIT] event: confirmation_resent, email: ${email}, date: ${new Date().toISOString()}`)
+  console.log(`[AUTH AUDIT] event: confirmation_resent, email: ${maskEmail(email)}, date: ${new Date().toISOString()}`)
 
   if (error) {
+    console.error(`[AZHON_AUTH_TRACE] resend:error, msg: ${error.message}`)
     const intentParam = intent ? `&intent=${intent}` : ''
     redirect(`/login?error=${getErrorKey(error.message)}${intentParam}`)
   }
 
   const countryPrefixVerifyResend = await getCountryPrefix();
+  console.log(`[AZHON_AUTH_TRACE] resend:success_redirect_to_verify`)
   redirect(`${countryPrefixVerifyResend || '/'}/login?msg=msg_check_email&view=verify&email=${encodeURIComponent(email)}${intentParamResend}`)
 }

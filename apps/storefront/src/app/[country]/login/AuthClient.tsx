@@ -20,12 +20,20 @@ export default function AuthClient({ dict, errorKey, msgKey, intent, defaultEmai
 
   // Sync state with URL params after Server Action redirects (to fix UI hangs)
   useEffect(() => {
+    console.log(`[AZHON_AUTH_TRACE] ui:url_params_changed, errorKey: ${errorKey}, msgKey: ${msgKey}, view: ${searchParams.get('view')}`);
+    
     if (errorKey || msgKey) {
+      console.log(`[AZHON_AUTH_TRACE] ui:loading_false (cleared by props)`);
       setLoading(false); // Action completed, clear loading
+    }
+    
+    if (errorKey) {
+      console.log(`[AZHON_AUTH_TRACE] ui:error_visible, errorKey: ${errorKey}`);
     }
     
     const urlView = searchParams.get('view');
     if (urlView === 'verify') {
+      console.log(`[AZHON_AUTH_TRACE] ui:view_changed to verify`);
       setView('verify');
     }
   }, [errorKey, msgKey, searchParams]);
@@ -39,6 +47,8 @@ export default function AuthClient({ dict, errorKey, msgKey, intent, defaultEmai
     // If the browser submits it directly without a Server Action trigger, we prevent it.
     // However, Server Actions (formAction) bypass onSubmit if triggered by a button.
     e.preventDefault();
+    console.log(`[AZHON_AUTH_TRACE] ui:submit_clicked, view: ${view}`);
+    console.log(`[AZHON_AUTH_TRACE] ui:loading_true`);
     setLoading(true);
   };
 
