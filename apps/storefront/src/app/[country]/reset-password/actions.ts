@@ -2,6 +2,24 @@
 
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
+import { headers } from 'next/headers'
+import { SUPPORTED_COUNTRIES } from '@/config/countries'
+
+async function getCountryPrefix() {
+  try {
+    const headersList = await headers();
+    const referer = headersList.get('referer');
+    if (referer) {
+      const path = new URL(referer).pathname;
+      const segment = path.split('/')[1];
+      if (segment && SUPPORTED_COUNTRIES.includes(segment)) {
+        return `/${segment}`;
+      }
+    }
+  } catch (e) {
+  }
+  return '';
+}
 
 export async function updatePassword(formData: FormData) {
   const supabase = await createClient()
@@ -9,8 +27,10 @@ export async function updatePassword(formData: FormData) {
   const password = formData.get('password') as string
   const passwordConfirm = formData.get('passwordConfirm') as string
 
+  const countryPrefix = await getCountryPrefix();
+
   if (password !== passwordConfirm) {
-    redirect(`/reset-password?error=err_pass_mismatch`)
+    redirect(`${countryPrefix || '/'}/reset-password?error=err_pass_mismatch`)
   }
 
   const { error } = await supabase.auth.updateUser({ password })
@@ -20,9 +40,9 @@ export async function updatePassword(formData: FormData) {
 
   if (error) {
     console.error("UPDATE PASSWORD ERROR:", error.message)
-    redirect(`/reset-password?error=err_password_update`)
+    redirect(`${countryPrefix || '/'}/reset-password?error=err_password_update`)
   }
 
   // Once updated successfully, redirect to login with success message
-  redirect(`/login?msg=msg_password_updated`)
+  redirect(`${countryPrefix || '/'}/login?msg=msg_password_updated`)
 }

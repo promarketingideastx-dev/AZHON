@@ -14,7 +14,8 @@ export default async function SellerLayout({
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect(`/${country}/login`);
+    const nextPath = encodeURIComponent(`/${country}/vendedor`);
+    redirect(`/${country}/login?intent=seller&next=${nextPath}`);
   }
 
   const { data: dbUser } = await supabase
@@ -26,7 +27,7 @@ export default async function SellerLayout({
   if (!dbUser || (dbUser.role !== 'SELLER' && dbUser.role !== 'SUPER_ADMIN')) {
     // AuthAudit Base: unauthorized_seller_access_attempt
     console.log(`[AUTH AUDIT] event: unauthorized_seller_access_attempt, user_id: ${user.id}, date: ${new Date().toISOString()}`)
-    redirect(`/${country}/perfil`);
+    redirect(`/${country}/vendedor/onboarding`);
   }
 
   return (

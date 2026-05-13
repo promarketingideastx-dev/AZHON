@@ -2,6 +2,7 @@ import { getDictionary, defaultLocale } from '@/i18n';
 import { cookies } from 'next/headers';
 import { getOrCreateOnboardingSession } from './actions';
 import OnboardingClient from './OnboardingClient';
+import { redirect } from 'next/navigation';
 
 export default async function SellerOnboardingPage({
   params,
@@ -17,11 +18,8 @@ export default async function SellerOnboardingPage({
   const data = await getOrCreateOnboardingSession();
 
   if (!data) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh]">
-        <p className="text-secondary font-medium">Debes iniciar sesión para continuar.</p>
-      </div>
-    );
+    const nextPath = encodeURIComponent(`/${country}/vendedor/onboarding`);
+    redirect(`/${country}/login?intent=seller&next=${nextPath}`);
   }
 
   const { profile, session } = data;

@@ -108,7 +108,8 @@ export async function signup(formData: FormData) {
   let defaultNext = intent === 'seller' ? `${countryPrefixSignup}/vendedor/onboarding` : `${countryPrefixSignup || '/'}`;
   const nextPath = safeNext || defaultNext;
 
-  options.emailRedirectTo = `${getSiteUrl()}/api/auth/callback?next=${encodeURIComponent(nextPath)}`
+  const intentParamSignup = intent ? `&intent=${intent}` : ''
+  options.emailRedirectTo = `${getSiteUrl()}/api/auth/callback?next=${encodeURIComponent(nextPath)}${intentParamSignup}`
 
   const { data: authData, error } = await supabase.auth.signUp({
     ...data,
@@ -129,7 +130,8 @@ export async function signup(formData: FormData) {
   if (!authData.session) {
     // AuthAudit Base: email_confirmation_sent
     console.log(`[AUTH AUDIT] event: email_confirmation_sent, email: ${data.email}, date: ${new Date().toISOString()}`)
-    redirect(`/login?msg=msg_check_email&view=verify&email=${encodeURIComponent(data.email)}`)
+    const countryPrefixVerify = await getCountryPrefix();
+    redirect(`${countryPrefixVerify || '/'}/login?msg=msg_check_email&view=verify&email=${encodeURIComponent(data.email)}${intentParamSignup}`)
   }
 
   // If auto-login happened
@@ -166,18 +168,20 @@ export async function resetPassword(formData: FormData) {
   const email = formData.get('email') as string
   const intent = formData.get('intent') as string
 
+  const countryPrefixReset = await getCountryPrefix();
+  
   // We assume the user wants to reset their password
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${getSiteUrl()}/api/auth/callback?next=/reset-password`,
+    redirectTo: `${getSiteUrl()}/api/auth/callback?next=${countryPrefixReset || '/'}/reset-password`,
   })
 
   const intentParam = intent ? `&intent=${intent}` : ''
 
   if (error) {
-    redirect(`/login?error=${getErrorKey(error.message)}${intentParam}`)
+    redirect(`${countryPrefixReset || '/'}/login?error=${getErrorKey(error.message)}${intentParam}`)
   }
 
-  redirect(`/login?msg=msg_check_email_reset${intentParam}`)
+  redirect(`${countryPrefixReset || '/'}/login?msg=msg_check_email_reset${intentParam}`)
 }
 
 export async function signInWithGoogle(formData: FormData) {
@@ -240,9 +244,10 @@ export async function logout() {
     console.log(`[AUTH AUDIT] event: signout_completed, user_id: ${user.id}, date: ${new Date().toISOString()}`)
   }
 
+  const countryPrefixLogout = await getCountryPrefix();
   await supabase.auth.signOut()
   revalidatePath('/', 'layout')
-  redirect('/login')
+  redirect(`${countryPrefixLogout || '/'}/login`)
 }
 
 export async function resendConfirmation(formData: FormData) {
@@ -260,8 +265,9 @@ export async function resendConfirmation(formData: FormData) {
   let defaultNext = intent === 'seller' ? `${countryPrefixResend}/vendedor/onboarding` : `${countryPrefixResend || '/'}`;
   const nextPath = safeNext || defaultNext;
 
+  const intentParamResend = intent ? `&intent=${intent}` : ''
   const options: any = {
-    emailRedirectTo: `${getSiteUrl()}/api/auth/callback?next=${encodeURIComponent(nextPath)}`
+    emailRedirectTo: `${getSiteUrl()}/api/auth/callback?next=${encodeURIComponent(nextPath)}${intentParamResend}`
   }
 
   const { error } = await supabase.auth.resend({
@@ -278,5 +284,6 @@ export async function resendConfirmation(formData: FormData) {
     redirect(`/login?error=${getErrorKey(error.message)}${intentParam}`)
   }
 
-  redirect(`/login?msg=msg_check_email&view=verify&email=${encodeURIComponent(email)}`)
+  const countryPrefixVerifyResend = await getCountryPrefix();
+  redirect(`${countryPrefixVerifyResend || '/'}/login?msg=msg_check_email&view=verify&email=${encodeURIComponent(email)}${intentParamResend}`)
 }

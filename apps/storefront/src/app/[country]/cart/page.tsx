@@ -14,7 +14,8 @@ export default async function CartPage({ params }: { params: { country: string }
   const tenant = await prisma.tenant.findUnique({ where: { countryCode } });
 
   if (!user) {
-    redirect(`/${country}/login`);
+    const nextPath = encodeURIComponent(`/${country}/cart`);
+    redirect(`/${country}/login?intent=buyer&next=${nextPath}`);
   }
 
   const cookieStore = await cookies();

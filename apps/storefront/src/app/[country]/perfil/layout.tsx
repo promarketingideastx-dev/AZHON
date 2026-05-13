@@ -17,7 +17,8 @@ export default async function BuyerProfileLayout({
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect(`/${country}/login`);
+    const nextPath = encodeURIComponent(`/${country}/perfil`);
+    redirect(`/${country}/login?intent=buyer&next=${nextPath}`);
   }
 
   return (
