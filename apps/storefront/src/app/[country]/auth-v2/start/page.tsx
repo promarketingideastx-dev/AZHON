@@ -32,9 +32,9 @@ export default async function IntentGatePage({
   return (
     <div className="w-full flex flex-col items-center">
       <div className="mb-8 w-full text-center">
-        <h1 className="text-3xl font-bold text-secondary mb-2">Crea una cuenta para continuar</h1>
+        <h1 className="text-3xl font-bold text-secondary mb-2">{dict.auth.gate_title}</h1>
         <p className="text-base text-neutral">
-          ¿Qué tipo de cuenta quieres crear?
+          {dict.auth.gate_subtitle}
         </p>
       </div>
 
@@ -48,10 +48,10 @@ export default async function IntentGatePage({
           </div>
           <div className="ml-4 text-left">
             <h3 className="text-lg font-bold text-secondary group-hover:text-primary transition-colors">
-              Comprar en AZHON
+              {dict.auth.gate_buyerTitle}
             </h3>
             <p className="text-sm text-neutral">
-              Explora productos, guarda favoritos y compra de forma segura.
+              {dict.auth.gate_buyerDesc}
             </p>
           </div>
         </Link>
@@ -65,10 +65,10 @@ export default async function IntentGatePage({
           </div>
           <div className="ml-4 text-left">
             <h3 className="text-lg font-bold text-secondary group-hover:text-primary transition-colors">
-              Vender en AZHON
+              {dict.auth.gate_sellerTitle}
             </h3>
             <p className="text-sm text-neutral">
-              Abre tu tienda, gestiona productos y aumenta tus ventas.
+              {dict.auth.gate_sellerDesc}
             </p>
           </div>
         </Link>
@@ -76,12 +76,12 @@ export default async function IntentGatePage({
 
       <div className="mt-4 text-center w-full">
         <p className="text-sm text-neutral">
-          ¿Ya tienes una cuenta?{' '}
+          {dict.auth.gate_loginPrompt}{' '}
           <Link 
             href={`/${country}/auth-v2/login${loginQuery}`}
             className="text-primary font-bold hover:underline"
           >
-            Iniciar sesión
+            {dict.auth.gate_loginLink}
           </Link>
         </p>
       </div>
