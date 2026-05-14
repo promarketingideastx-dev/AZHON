@@ -106,7 +106,7 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
           <Link href={`/${country}`} className={isActive(`/${country}`, true) ? activeClass : inactiveClass}>{dict.header.home}</Link>
           <Link href={`/${country}/categorias`} className={isActive(`/${country}/categorias`) ? activeClass : inactiveClass}>{dict.header.categories}</Link>
           <Link href={`/${country}/ofertas`} className={isActive(`/${country}/ofertas`) ? activeClass : inactiveClass}>{dict.header.deals}</Link>
-          <Link href={getProtectedHref({ targetPath: `/${country}/vendedor`, intent: 'seller', user, country })} className={isActive(`/${country}/vendedor`) ? activeClass : inactiveClass}>{dict.header.sell}</Link>
+          <Link href={user ? `/${country}/vendedor` : `/${country}/auth-v2/signup?intent=seller&next=${encodeURIComponent(`/${country}/vendedor/onboarding`)}`} className={isActive(`/${country}/vendedor`) ? activeClass : inactiveClass}>{dict.header.sell}</Link>
           <Link href={getProtectedHref({ targetPath: `/${country}/perfil/soporte`, intent: 'buyer', user, country })} className={isActive(`/${country}/perfil/soporte`) ? activeClass : inactiveClass}>{dict.header.help}</Link>
         </nav>
 
@@ -158,7 +158,7 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
                 <Link href={user ? `/${country}/perfil` : `/${country}/auth-v2/start?next=${encodeURIComponent(`/${country}/perfil`)}`} onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-bold text-gray-700 flex items-center gap-3">
                   👤 {dict?.header?.profile || 'Mi Cuenta'}
                 </Link>
-                <Link href={getProtectedHref({ targetPath: `/${country}/vendedor`, intent: 'seller', user, country })} onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-bold text-gray-700 flex items-center gap-3">
+                <Link href={user ? `/${country}/vendedor` : `/${country}/auth-v2/signup?intent=seller&next=${encodeURIComponent(`/${country}/vendedor/onboarding`)}`} onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-bold text-gray-700 flex items-center gap-3">
                   🏪 {dict.header.sell}
                 </Link>
                 <Link href={getProtectedHref({ targetPath: `/${country}/perfil/soporte`, intent: 'buyer', user, country })} onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-bold text-gray-700 flex items-center gap-3">

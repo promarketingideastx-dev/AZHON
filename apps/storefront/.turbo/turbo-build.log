@@ -15,11 +15,11 @@
 
 ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
   Creating an optimized production build ...
-✓ Compiled successfully in 6.7s
-  Finished TypeScript in 6.1s    ✓ Finished TypeScript in 6.1s 
-  Collecting page data using 5 workers in 616ms    ✓ Collecting page data using 5 workers in 616ms 
-✓ Generating static pages using 5 workers (5/5) in 129ms
-  Finalizing page optimization in 15ms    ✓ Finalizing page optimization in 15ms 
+✓ Compiled successfully in 7.2s
+  Finished TypeScript in 6.2s    ✓ Finished TypeScript in 6.2s 
+  Collecting page data using 5 workers in 798ms    ✓ Collecting page data using 5 workers in 798ms 
+✓ Generating static pages using 5 workers (5/5) in 145ms
+  Finalizing page optimization in 10ms    ✓ Finalizing page optimization in 10ms 
 
 Route (app)
 ┌ ○ /_not-found
