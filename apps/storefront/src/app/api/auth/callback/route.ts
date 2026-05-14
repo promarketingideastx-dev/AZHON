@@ -17,25 +17,25 @@ export async function GET(request: NextRequest) {
   const errorDescription = requestUrl.searchParams.get('error_description')
 
   if (authError || errorDescription) {
-    console.error(`[AZHON_AUTH_TRACE] callback:error_param, error: ${authError}, desc: ${errorDescription}`);
+    console.error(`[AZHON_AUTH_V2_TRACE] callback:error_param, error: ${authError}, desc: ${errorDescription}`);
     console.error(`[AUTH AUDIT] event: confirmation_error, error: ${authError}, desc: ${errorDescription}, date: ${new Date().toISOString()}`)
     return NextResponse.redirect(new URL(`/login?error=err_generic&msg=${encodeURIComponent('Enlace inválido o expirado. Intenta de nuevo.')}`, request.url))
   }
 
-  console.log(`[AZHON_AUTH_TRACE] callback:start, has_code: ${!!code}, intent: ${intent}, next: ${next}`);
+  console.log(`[AZHON_AUTH_V2_TRACE] callback:start, has_code: ${!!code}, intent: ${intent}, next: ${next}`);
 
   if (code) {
     const supabase = await createClient()
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     
     if (!error) {
-      console.log(`[AZHON_AUTH_TRACE] callback:session_exchange_ok`);
+      console.log(`[AZHON_AUTH_V2_TRACE] callback:session_exchange_ok`);
       // Handle safe routing post auth based on role
       const { data: authData } = await supabase.auth.getUser()
       let redirectUrl = countryPrefix || '/' // default
 
       if (authData?.user) {
-        console.log(`[AZHON_AUTH_TRACE] callback:user_authenticated, user_id: ${authData.user.id}`);
+        console.log(`[AZHON_AUTH_V2_TRACE] callback:user_authenticated, user_id: ${authData.user.id}`);
         console.log(`[AUTH AUDIT] event: email_confirmed_or_session_started, user_id: ${authData.user.id}, date: ${new Date().toISOString()}`)
         let { data: dbUser } = await supabase
           .from('User')
@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
           .eq('id', authData.user.id)
           .single()
 
-        console.log(`[AZHON_AUTH_TRACE] callback:initial_role, role: ${dbUser?.role || 'none'}`);
+        console.log(`[AZHON_AUTH_V2_TRACE] callback:initial_role, role: ${dbUser?.role || 'none'}`);
 
         // NO ROLE MUTATION HERE. Auth callback should not alter business roles.
         // Role upgrade will happen only after seller onboarding approval.
@@ -79,15 +79,15 @@ export async function GET(request: NextRequest) {
          redirectUrl = `${countryPrefix}/vendedor/onboarding`;
       }
       
-      console.log(`[AZHON_AUTH_TRACE] callback:final_redirect, target: ${redirectUrl}`);
+      console.log(`[AZHON_AUTH_V2_TRACE] callback:final_redirect, target: ${redirectUrl}`);
       return NextResponse.redirect(new URL(redirectUrl, request.url))
     }
     
-    console.error(`[AZHON_AUTH_TRACE] callback:session_exchange_failed`, error);
+    console.error(`[AZHON_AUTH_V2_TRACE] callback:session_exchange_failed`, error);
     console.error("Callback Error:", error)
   }
 
-  console.error(`[AZHON_AUTH_TRACE] callback:fallback_error_redirect`);
+  console.error(`[AZHON_AUTH_V2_TRACE] callback:fallback_error_redirect`);
   // return the user to an error page with instructions
   return NextResponse.redirect(new URL('/login?error=true&msg=Error%20de%20autenticaci%C3%B3n', request.url))
 }

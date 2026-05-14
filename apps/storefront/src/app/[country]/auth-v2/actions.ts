@@ -5,6 +5,9 @@ import { getSiteUrl } from '@/utils/url'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 
+// Helper to mask email for safe logging
+const maskEmail = (e: string) => e ? e.replace(/(.{2})(.*)(?=@)/, "$1***") : 'unknown';
+
 // Helper to determine the post-login destination deterministically
 async function resolveDestination(supabase: any, country: string, next: string | null, intent: string | null) {
   const countryPrefix = `/${country}`;
@@ -78,8 +81,6 @@ export async function loginAction(formData: FormData) {
 }
 
 export async function signupAction(formData: FormData) {
-  console.log('[AUTH-V2] signupAction: start');
-  const supabase = await createClient()
   const country = formData.get('country') as string
   const email = formData.get('email') as string
   const password = formData.get('password') as string
@@ -87,22 +88,35 @@ export async function signupAction(formData: FormData) {
   const intent = formData.get('intent') as string | null
   const nextParam = formData.get('next') as string | null
 
-  console.log('[AUTH-V2] signupAction: data extracted', { country, email, intent, nextParam });
+  console.log('[AZHON_AUTH_V2_TRACE]', {
+    step: 'signup:start',
+    intent,
+    hasNext: Boolean(nextParam),
+    country,
+    emailMasked: maskEmail(email),
+  });
+
+  const supabase = await createClient()
 
   if (password !== passwordConfirm) {
-    console.log('[AUTH-V2] signupAction: password mismatch, redirecting');
+    console.log('[AZHON_AUTH_V2_TRACE]', { step: 'signup:password_mismatch_redirecting' });
     const qs = buildQueryString({ error: 'err_pass_mismatch', intent, next: nextParam });
     redirect(`/${country}/auth-v2/signup${qs}`)
   }
 
   // Determine the final destination for the callback redirect
-  console.log('[AUTH-V2] signupAction: resolving destination');
   const destination = await resolveDestination(supabase, country, nextParam, intent);
   const intentParam = intent ? `&intent=${intent}` : '';
   const emailRedirectTo = `${getSiteUrl()}/api/auth/callback?next=${encodeURIComponent(destination)}${intentParam}`;
-  console.log('[AUTH-V2] signupAction: destination resolved', { destination, emailRedirectTo });
+  
+  console.log('[AZHON_AUTH_V2_TRACE]', {
+    step: 'signup:destination_resolved',
+    destination,
+    emailRedirectTo_hasValue: Boolean(emailRedirectTo)
+  });
 
-  console.log('[AUTH-V2] signupAction: calling supabase.auth.signUp');
+  console.log('[AZHON_AUTH_V2_TRACE]', { step: 'signup:supabase_call_start' });
+  
   const { data: authData, error } = await supabase.auth.signUp({
     email,
     password,
@@ -111,27 +125,29 @@ export async function signupAction(formData: FormData) {
     }
   })
 
-  console.log('[AUTH-V2] signupAction: supabase.auth.signUp returned', { 
+  console.log('[AZHON_AUTH_V2_TRACE]', { 
+    step: 'signup:supabase_call_end',
     hasData: !!authData, 
     hasSession: !!authData?.session, 
     hasUser: !!authData?.user, 
-    error: error ? error.message : null 
+    success: !error,
+    error: error ? 'Supabase Auth Error' : null 
   });
 
   if (error) {
-    console.log('[AUTH-V2] signupAction: redirecting due to error', error.message);
+    console.log('[AZHON_AUTH_V2_TRACE]', { step: 'signup:redirecting_due_to_error' });
     const qs = buildQueryString({ error: getErrorKey(error.message), intent, next: nextParam });
     redirect(`/${country}/auth-v2/signup${qs}`)
   }
 
   if (!authData.session) {
-    console.log('[AUTH-V2] signupAction: no session, redirecting to verify');
+    console.log('[AZHON_AUTH_V2_TRACE]', { step: 'signup:no_session_redirecting_to_verify' });
     // Requires email confirmation
     const qs = buildQueryString({ email, intent, next: nextParam });
     redirect(`/${country}/auth-v2/verify${qs}`)
   }
 
-  console.log('[AUTH-V2] signupAction: auto-login successful, redirecting to destination');
+  console.log('[AZHON_AUTH_V2_TRACE]', { step: 'signup:auto_login_success_redirecting' });
   // Auto-login successful (e.g., if confirmation is disabled)
   const autoDestination = await resolveDestination(supabase, country, nextParam, intent);
   revalidatePath('/', 'layout')
