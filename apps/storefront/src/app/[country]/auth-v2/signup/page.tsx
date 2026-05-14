@@ -24,19 +24,19 @@ export default async function SignupV2Page({
   return (
     <div className="w-full flex flex-col items-center">
       <div className="mb-8 w-full text-center">
-        <h1 className="text-3xl font-bold text-secondary mb-2">{dict.auth.createAccount}</h1>
-        {intent === 'seller' && (
-          <p className="text-sm text-neutral mb-2">
-            Crea tu cuenta para comenzar a vender en AZHON.
-          </p>
-        )}
-        <p className="text-sm text-neutral">
+        <h1 className="text-3xl font-bold text-secondary mb-2">
+          {intent === 'buyer' ? dict.auth.signupTitleBuyer : intent === 'seller' ? dict.auth.signupTitleSeller : dict.auth.signupTitleDefault}
+        </h1>
+        <p className="text-sm text-neutral mb-2">
+          {intent === 'buyer' ? dict.auth.signupSubtitleBuyer : intent === 'seller' ? dict.auth.signupSubtitleSeller : dict.auth.signupSubtitleDefault}
+        </p>
+        <p className="text-sm text-neutral mt-4">
           {dict.auth.alreadyHaveAccount}{' '}
           <Link 
             href={`/${country}/auth-v2/login${intent ? `?intent=${intent}` : ''}${next ? `${intent ? '&' : '?'}next=${encodeURIComponent(next)}` : ''}`}
             className="text-primary font-bold hover:underline"
           >
-            {dict.auth.login}
+            {dict.auth.signInLink}
           </Link>
         </p>
       </div>
@@ -56,7 +56,7 @@ export default async function SignupV2Page({
         {intent && <input type="hidden" name="intent" value={intent} />}
 
         <div>
-          <label className="block text-sm font-medium text-secondary mb-1">{dict.auth.email}</label>
+          <label className="block text-sm font-medium text-secondary mb-1">{dict.auth.emailLabel}</label>
           <input 
             type="email" 
             name="email"
@@ -67,7 +67,7 @@ export default async function SignupV2Page({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-secondary mb-1">{dict.auth.password}</label>
+          <label className="block text-sm font-medium text-secondary mb-1">{dict.auth.passwordLabel}</label>
           <input 
             type="password" 
             name="password"
@@ -78,7 +78,7 @@ export default async function SignupV2Page({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-secondary mb-1">{dict.auth.passwordConfirm}</label>
+          <label className="block text-sm font-medium text-secondary mb-1">{dict.auth.confirmPasswordLabel}</label>
           <input 
             type="password" 
             name="passwordConfirm"
@@ -88,8 +88,8 @@ export default async function SignupV2Page({
           />
         </div>
 
-        <SubmitButton pendingText={dict.auth.creatingAccount || 'Creando...'}>
-          {dict.auth.createAccount}
+        <SubmitButton pendingText="Creando...">
+          {dict.auth.createAccountButton}
         </SubmitButton>
       </form>
 
@@ -98,7 +98,7 @@ export default async function SignupV2Page({
           <div className="w-full border-t border-gray-200"></div>
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-white text-gray-500">{dict.auth.orContinueWith}</span>
+          <span className="px-2 bg-white text-gray-500">{dict.auth.separatorOr}</span>
         </div>
       </div>
 
@@ -117,7 +117,7 @@ export default async function SignupV2Page({
               <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
               <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
             </svg>
-            Google
+            {dict.auth.continueWithGoogle}
           </SubmitButton>
         </form>
       </div>

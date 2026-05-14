@@ -24,19 +24,23 @@ export default async function LoginV2Page({
   return (
     <div className="w-full flex flex-col items-center">
       <div className="mb-8 w-full text-center">
-        <h1 className="text-3xl font-bold text-secondary mb-2">{dict.auth.login}</h1>
-        {intent === 'seller' && (
+        <h1 className="text-3xl font-bold text-secondary mb-2">{dict.auth.loginTitle}</h1>
+        {intent === 'seller' ? (
           <p className="text-sm text-neutral mb-2">
-            Inicia sesión para continuar con tu registro de vendedor.
+            {dict.auth.loginSubtitleSeller}
+          </p>
+        ) : (
+          <p className="text-sm text-neutral mb-2">
+            {dict.auth.loginSubtitle}
           </p>
         )}
         <p className="text-sm text-neutral">
-          {dict.auth.noAccount}{' '}
+          {dict.auth.noAccountPrompt}{' '}
           <Link 
-            href={`/${country}/auth-v2/signup${intent ? `?intent=${intent}` : ''}${next ? `${intent ? '&' : '?'}next=${encodeURIComponent(next)}` : ''}`}
+            href={intent ? `/${country}/auth-v2/signup?intent=${intent}${next ? `&next=${encodeURIComponent(next)}` : ''}` : `/${country}/auth-v2/start${next ? `?next=${encodeURIComponent(next)}` : ''}`}
             className="text-primary font-bold hover:underline"
           >
-            {dict.auth.createAccount}
+            {dict.auth.signUpLink}
           </Link>
         </p>
       </div>
@@ -53,21 +57,21 @@ export default async function LoginV2Page({
       {sParams?.msg === 'msg_check_email_reset' && (
         <div className="mb-6 w-full p-4 bg-green-50 border border-green-100 rounded-lg">
           <p className="text-sm text-green-700 text-center font-medium">
-            {dict.auth.checkEmailReset || 'Revisa tu correo para recuperar tu contraseña.'}
+            {dict.auth.msg_check_email_reset || 'Revisa tu correo para recuperar tu contraseña.'}
           </p>
         </div>
       )}
       {sParams?.msg === 'msg_password_updated' && (
         <div className="mb-6 w-full p-4 bg-green-50 border border-green-100 rounded-lg">
           <p className="text-sm text-green-700 text-center font-medium">
-            Tu contraseña ha sido actualizada. Ya puedes iniciar sesión.
+            {dict.auth.msg_password_updated || 'Tu contraseña ha sido actualizada con éxito.'}
           </p>
         </div>
       )}
       {sParams?.msg === 'msg_check_email' && (
         <div className="mb-6 w-full p-4 bg-green-50 border border-green-100 rounded-lg">
           <p className="text-sm text-green-700 text-center font-medium">
-            Revisa tu correo para confirmar tu cuenta.
+            {dict.auth.msg_check_email || 'Revisa tu correo para confirmar tu cuenta.'}
           </p>
         </div>
       )}
@@ -79,7 +83,7 @@ export default async function LoginV2Page({
         {intent && <input type="hidden" name="intent" value={intent} />}
 
         <div>
-          <label className="block text-sm font-medium text-secondary mb-1">{dict.auth.email}</label>
+          <label className="block text-sm font-medium text-secondary mb-1">{dict.auth.emailLabel}</label>
           <input 
             type="email" 
             name="email"
@@ -91,7 +95,7 @@ export default async function LoginV2Page({
 
         <div>
           <div className="flex justify-between items-center mb-1">
-            <label className="block text-sm font-medium text-secondary">{dict.auth.password}</label>
+            <label className="block text-sm font-medium text-secondary">{dict.auth.passwordLabel}</label>
             <Link href={`/${country}/auth-v2/forgot-password`} className="text-sm text-primary hover:underline">
               {dict.auth.forgotPassword}
             </Link>
@@ -105,8 +109,8 @@ export default async function LoginV2Page({
           />
         </div>
 
-        <SubmitButton pendingText={dict.auth.loggingIn || 'Iniciando...'}>
-          {dict.auth.login}
+        <SubmitButton pendingText="Iniciando...">
+          {dict.auth.loginButton}
         </SubmitButton>
       </form>
 
@@ -115,7 +119,7 @@ export default async function LoginV2Page({
           <div className="w-full border-t border-gray-200"></div>
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-white text-gray-500">{dict.auth.orContinueWith}</span>
+          <span className="px-2 bg-white text-gray-500">{dict.auth.separatorOr}</span>
         </div>
       </div>
 
@@ -134,7 +138,7 @@ export default async function LoginV2Page({
               <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
               <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
             </svg>
-            Google
+            {dict.auth.continueWithGoogle}
           </SubmitButton>
         </form>
       </div>
