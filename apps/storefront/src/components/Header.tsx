@@ -73,7 +73,7 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
             {/* User Account / Auth */}
             <div className="flex items-center gap-2 sm:gap-4">
               <Link 
-                href={getProtectedHref({ targetPath: `/${country}/perfil`, intent: 'buyer', user, country })}
+                href={user ? `/${country}/perfil` : `/${country}/auth-v2/start?next=${encodeURIComponent(`/${country}/perfil`)}`}
                 className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-50 hover:bg-gray-100 border border-gray-200 transition-colors relative cursor-pointer" title="Ver Perfil"
               >
                 <span className="text-base sm:text-lg">👤</span>
@@ -155,7 +155,7 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
              <div className="h-px w-full bg-gray-100 my-2"></div>
 
              <nav className="flex flex-col gap-5">
-                <Link href={getProtectedHref({ targetPath: `/${country}/perfil`, intent: 'buyer', user, country })} onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-bold text-gray-700 flex items-center gap-3">
+                <Link href={user ? `/${country}/perfil` : `/${country}/auth-v2/start?next=${encodeURIComponent(`/${country}/perfil`)}`} onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-bold text-gray-700 flex items-center gap-3">
                   👤 {dict?.header?.profile || 'Mi Cuenta'}
                 </Link>
                 <Link href={getProtectedHref({ targetPath: `/${country}/vendedor`, intent: 'seller', user, country })} onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-bold text-gray-700 flex items-center gap-3">
