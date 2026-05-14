@@ -14,6 +14,7 @@
     "gate_sellerDesc": "Open your store, manage products, and grow your sales.",
     "gate_loginPrompt": "Already have an account?",
     "gate_loginLink": "Sign in",
+    "backToPreviousStep": "Back",
     "signupTitleDefault": "Create an account",
     "signupTitleBuyer": "Create a buyer account",
     "signupTitleSeller": "Create a seller account",

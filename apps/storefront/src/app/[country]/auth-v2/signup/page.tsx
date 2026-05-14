@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { SubmitButton } from '../SubmitButton';
 import { signupAction, googleOAuthAction } from '../actions';
+import { ArrowLeft } from 'lucide-react';
 
 export default async function SignupV2Page({
   params,
@@ -22,7 +23,17 @@ export default async function SignupV2Page({
   const dict = getDictionary(locale);
 
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className="w-full flex flex-col items-center relative">
+      <div className="w-full flex justify-start mb-4">
+        <Link 
+          href={`/${country}/auth-v2/start${next ? `?next=${encodeURIComponent(next)}` : ''}`}
+          className="inline-flex items-center gap-2 text-sm font-medium text-neutral hover:text-secondary transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          {dict.auth.backToPreviousStep}
+        </Link>
+      </div>
+
       <div className="mb-8 w-full text-center">
         <h1 className="text-3xl font-bold text-secondary mb-2">
           {intent === 'buyer' ? dict.auth.signupTitleBuyer : intent === 'seller' ? dict.auth.signupTitleSeller : dict.auth.signupTitleDefault}
