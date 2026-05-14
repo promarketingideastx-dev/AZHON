@@ -27,6 +27,12 @@
     "confirmPasswordLabel": "Confirm password",
     "createAccountButton": "Create account",
     "continueWithGoogle": "Continue with Google",
+    "errors": {
+      "err_generic": "Something went wrong. Please try again.",
+      "unknown": "Something went wrong. Please try again.",
+      "err_pass_mismatch": "Passwords do not match.",
+      "err_invalid_creds": "Incorrect email or password."
+    },
     "alreadyHaveAccount": "Already have an account?",
     "signInLink": "Sign in",
     "loginTitle": "Welcome to AZHON",

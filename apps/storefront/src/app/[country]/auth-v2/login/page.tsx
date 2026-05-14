@@ -22,6 +22,12 @@ export default async function LoginV2Page({
   const locale = cookieStore.get('NEXT_LOCALE')?.value || defaultLocale;
   const dict = getDictionary(locale);
 
+  const errors = dict.auth?.errors ?? {};
+  const errorMessage =
+    errorKey && typeof errorKey === "string"
+      ? errors[errorKey as keyof typeof errors] ?? errors.unknown ?? errors.err_generic ?? 'Algo salió mal. Inténtalo nuevamente.'
+      : null;
+
   return (
     <div className="w-full flex flex-col items-center relative">
       <div className="w-full flex justify-start mb-4">
@@ -56,10 +62,10 @@ export default async function LoginV2Page({
         </p>
       </div>
 
-      {errorKey && (
+      {errorMessage && (
         <div className="mb-6 w-full p-4 bg-red-50 border border-red-100 rounded-lg">
           <p className="text-sm text-red-600 text-center font-medium">
-            {dict.auth.errors[errorKey as keyof typeof dict.auth.errors] || 'Ha ocurrido un error.'}
+            {errorMessage}
           </p>
         </div>
       )}
