@@ -67,7 +67,7 @@ export default async function SignupV2Page({
       )}
 
       {/* Atomic Form bound to Server Action */}
-      <form action={signupAction} className="w-full space-y-4">
+      <form action={signupAction} method="POST" className="w-full space-y-4">
         <input type="hidden" name="country" value={country} />
         {next && <input type="hidden" name="next" value={next} />}
         {intent && <input type="hidden" name="intent" value={intent} />}
@@ -120,7 +120,7 @@ export default async function SignupV2Page({
       </div>
 
       <div className="mt-6 w-full">
-        <form action={googleOAuthAction}>
+        <form action={googleOAuthAction} method="POST">
           <input type="hidden" name="country" value={country} />
           {next && <input type="hidden" name="next" value={next} />}
           {intent && <input type="hidden" name="intent" value={intent} />}
