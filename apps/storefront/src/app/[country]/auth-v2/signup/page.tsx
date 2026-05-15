@@ -59,10 +59,18 @@ export default async function SignupV2Page({
       </div>
 
       {errorMessage && (
-        <div className="mb-6 w-full p-4 bg-red-50 border border-red-100 rounded-lg">
+        <div className="mb-6 w-full p-4 bg-red-50 border border-red-100 rounded-lg flex flex-col gap-3 items-center">
           <p className="text-sm text-red-600 text-center font-medium">
             {errorMessage}
           </p>
+          {(errorKey === 'err_email_exists' || errorKey === 'err_email_exists_seller' || errorKey === 'err_email_exists_pending') && (
+            <Link 
+              href={`/${country}/auth-v2/login${intent ? `?intent=${intent}` : ''}${next ? `${intent ? '&' : '?'}next=${encodeURIComponent(next)}` : ''}`}
+              className="inline-block text-xs font-bold bg-white text-secondary px-4 py-2 rounded-full border border-gray-200 shadow-sm hover:bg-gray-50 transition-colors"
+            >
+              {dict.auth.errors?.signInToContinue || 'Iniciar sesión para continuar'}
+            </Link>
+          )}
         </div>
       )}
 

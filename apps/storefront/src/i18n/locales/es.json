@@ -35,7 +35,11 @@
       "err_generic": "Algo salió mal. Inténtalo nuevamente.",
       "unknown": "Algo salió mal. Inténtalo nuevamente.",
       "err_pass_mismatch": "Las contraseñas no coinciden.",
-      "err_invalid_creds": "Correo o contraseña incorrectos."
+      "err_invalid_creds": "Correo o contraseña incorrectos.",
+      "err_email_exists": "Ya existe una cuenta con este correo. Inicia sesión o recupera tu contraseña.",
+      "err_email_exists_seller": "Ya existe una cuenta con este correo. Inicia sesión para continuar tu registro como vendedor.",
+      "err_email_exists_pending": "Ya existe una cuenta pendiente de verificación. Revisa tu correo o reenvía la verificación.",
+      "signInToContinue": "Iniciar sesión para continuar"
     },
     "alreadyHaveAccount": "¿Ya tienes cuenta?",
     "signInLink": "Inicia sesión",

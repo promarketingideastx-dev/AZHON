@@ -35,7 +35,11 @@
       "err_generic": "Algo deu errado. Tente novamente.",
       "unknown": "Algo deu errado. Tente novamente.",
       "err_pass_mismatch": "As senhas não coincidem.",
-      "err_invalid_creds": "E-mail ou senha incorretos."
+      "err_invalid_creds": "E-mail ou senha incorretos.",
+      "err_email_exists": "Já existe uma conta com este e-mail. Entre ou redefina sua senha.",
+      "err_email_exists_seller": "Já existe uma conta com este e-mail. Entre para continuar seu cadastro como vendedor.",
+      "err_email_exists_pending": "Já existe uma conta aguardando verificação. Verifique sua caixa de entrada ou reenvie a verificação.",
+      "signInToContinue": "Entrar para continuar"
     },
     "alreadyHaveAccount": "Já tem uma conta?",
     "signInLink": "Entrar",

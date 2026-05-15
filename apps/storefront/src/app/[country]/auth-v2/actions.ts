@@ -40,9 +40,12 @@ async function resolveDestination(supabase: any, country: string, next: string |
   return `${countryPrefix}/perfil`;
 }
 
-function getErrorKey(message: string) {
+function getErrorKey(message: string, intent?: string | null) {
   if (message.includes('Invalid login credentials')) return 'err_invalid_creds';
-  if (message.includes('already registered')) return 'err_generic';
+  if (message.includes('already registered') || message.includes('User already registered')) {
+    if (intent === 'seller') return 'err_email_exists_seller';
+    return 'err_email_exists';
+  }
   return 'err_generic';
 }
 
@@ -68,7 +71,7 @@ export async function loginAction(formData: FormData) {
     password,
   })
 
-  const qs = buildQueryString({ error: error ? getErrorKey(error.message) : null, intent, next: nextParam });
+  const qs = buildQueryString({ error: error ? getErrorKey(error.message, intent) : null, intent, next: nextParam });
 
   if (error) {
     redirect(`/${country}/auth-v2/login${qs}`)
@@ -136,7 +139,7 @@ export async function signupAction(formData: FormData) {
 
   if (error) {
     console.log('[AZHON_AUTH_V2_TRACE]', { step: 'signup:redirecting_due_to_error' });
-    const qs = buildQueryString({ error: getErrorKey(error.message), intent, next: nextParam });
+    const qs = buildQueryString({ error: getErrorKey(error.message, intent), intent, next: nextParam });
     redirect(`/${country}/auth-v2/signup${qs}`)
   }
 
@@ -193,7 +196,7 @@ export async function resendVerifyAction(formData: FormData) {
 
   if (error) {
     console.log('[AZHON_AUTH_V2_TRACE]', { step: 'verify:resend_redirect_error' });
-    const qs = buildQueryString({ error: getErrorKey(error.message), email, intent, next: nextParam });
+    const qs = buildQueryString({ error: getErrorKey(error.message, intent), email, intent, next: nextParam });
     redirect(`/${country}/auth-v2/verify${qs}`)
   }
 
