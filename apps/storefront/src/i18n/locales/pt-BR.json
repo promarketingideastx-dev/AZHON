@@ -174,6 +174,9 @@
   },
   "categories": {
     "title": "Todas as Categorias",
+    "subtitle": "Explore nosso catálogo completo com milhares de produtos em todas as nossas principais categorias.",
+    "empty_title": "Nenhum produto disponível",
+    "empty_desc": "Ainda não há produtos publicados nesta categoria para a sua região.",
     "adult_warning_title": "Acesso para maiores de 18 anos",
     "adult_warning_desc": "Esta categoria pode incluir produtos de bem-estar íntimo e cuidados pessoais direcionados a adultos. Ao continuar, você confirma que tem mais de 18 anos e que o acesso a esses produtos é permitido na sua jurisdição.",
     "adult_warning_legal": "AZHON reserva-se o direito de restringir produtos com base em regulamentos locais, políticas da plataforma e critérios comerciais.",

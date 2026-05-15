@@ -52,7 +52,7 @@ export default async function CategoriesPage({ params }: { params: Promise<{ cou
             {dict.categories.title}
           </h1>
           <p className="text-gray-300 max-w-2xl mx-auto text-lg">
-            Explora nuestro catálogo completo con miles de productos en todas nuestras categorías principales.
+            {dict.categories?.subtitle || 'Explora nuestro catálogo completo con miles de productos en todas nuestras categorías principales.'}
           </p>
         </div>
       </div>

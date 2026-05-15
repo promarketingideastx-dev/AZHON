@@ -177,6 +177,9 @@
   },
   "categories": {
     "title": "All Categories",
+    "subtitle": "Explore our complete catalog with thousands of products across all our main categories.",
+    "empty_title": "No products available",
+    "empty_desc": "There are no products published in this category for your region yet.",
     "adult_warning_title": "Access for 18+ only",
     "adult_warning_desc": "This category may include intimate wellness and personal care products for adults. By proceeding, you confirm you are over 18 and access is permitted in your jurisdiction.",
     "adult_warning_legal": "AZHON reserves the right to restrict products based on local regulations, platform policies, and commercial criteria.",

@@ -74,8 +74,8 @@ export default async function CategoryPage({ params }: { params: { country: stri
          ) : (
            <div className="py-24 text-center">
              <div className="text-6xl mb-4 text-gray-200">🛒</div>
-             <h3 className="text-2xl font-bold text-gray-900 mb-2">No hay productos disponibles</h3>
-             <p className="text-gray-500">Aún no hay productos publicados en esta categoría para tu región.</p>
+             <h3 className="text-2xl font-bold text-gray-900 mb-2">{dict.categories?.empty_title || 'No hay productos disponibles'}</h3>
+             <p className="text-gray-500">{dict.categories?.empty_desc || 'Aún no hay productos publicados en esta categoría para tu región.'}</p>
            </div>
          )}
       </div>
