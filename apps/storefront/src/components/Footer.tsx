@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
 import { getProtectedHref } from '@/lib/auth/accessBuilder';
 
-export async function Footer({ country = 'hn' }: { country?: string }) {
+export async function Footer({ country = 'hn', dict }: { country?: string, dict?: any }) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -14,7 +14,7 @@ export async function Footer({ country = 'hn' }: { country?: string }) {
           <div className="lg:col-span-2">
             <h2 className="text-2xl font-black tracking-tighter text-secondary mb-4">AZHON</h2>
             <p className="text-sm text-neutral mb-6 max-w-xs leading-relaxed">
-              The global destination for curated marketplace excellence. Connecting quality products with discerning customers worldwide.
+              {dict?.footer?.desc || 'The global destination for curated marketplace excellence. Connecting quality products with discerning customers worldwide.'}
             </p>
             <div className="flex gap-3">
               <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-neutral hover:bg-primary hover:text-white transition-colors cursor-pointer">
@@ -31,38 +31,38 @@ export async function Footer({ country = 'hn' }: { country?: string }) {
 
           {/* Links */}
           <div>
-            <h3 className="font-bold text-secondary mb-6">Company</h3>
+            <h3 className="font-bold text-secondary mb-6">{dict?.footer?.company || 'Company'}</h3>
             <ul className="space-y-4">
-              <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">About Us</a></li>
-              <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">Careers</a></li>
-              <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">Press Center</a></li>
-              <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">AZHON Blog</a></li>
+              <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">{dict?.footer?.about_us || 'About Us'}</a></li>
+              <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">{dict?.footer?.careers || 'Careers'}</a></li>
+              <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">{dict?.footer?.press_center || 'Press Center'}</a></li>
+              <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">{dict?.footer?.blog || 'AZHON Blog'}</a></li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-bold text-secondary mb-6">Support</h3>
+            <h3 className="font-bold text-secondary mb-6">{dict?.footer?.support || 'Support'}</h3>
             <ul className="space-y-4">
-              <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">Contact Support</a></li>
-              <li><Link href={getProtectedHref({ targetPath: `/${country}/perfil/soporte`, intent: 'buyer', user, country })} className="text-sm text-neutral hover:text-primary transition-colors">Help Center</Link></li>
-              <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">Shipping & Delivery</a></li>
-              <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">Returns & Refunds</a></li>
+              <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">{dict?.footer?.contact_support || 'Contact Support'}</a></li>
+              <li><Link href={getProtectedHref({ targetPath: `/${country}/perfil/soporte`, intent: 'buyer', user, country })} className="text-sm text-neutral hover:text-primary transition-colors">{dict?.footer?.help_center || 'Help Center'}</Link></li>
+              <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">{dict?.footer?.shipping_delivery || 'Shipping & Delivery'}</a></li>
+              <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">{dict?.footer?.returns_refunds || 'Returns & Refunds'}</a></li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-bold text-secondary mb-6">Legal</h3>
+            <h3 className="font-bold text-secondary mb-6">{dict?.footer?.legal || 'Legal'}</h3>
             <ul className="space-y-4">
-              <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">Cookie Settings</a></li>
+              <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">{dict?.footer?.terms_of_service || 'Terms of Service'}</a></li>
+              <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">{dict?.footer?.privacy_policy || 'Privacy Policy'}</a></li>
+              <li><a href="#" className="text-sm text-neutral hover:text-primary transition-colors">{dict?.footer?.cookie_settings || 'Cookie Settings'}</a></li>
             </ul>
           </div>
         </div>
 
         <div className="border-t border-gray-100 mt-16 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-gray-400">
-            © {new Date().getFullYear()} AZHON Marketplace. All rights reserved.
+            © {new Date().getFullYear()} {dict?.footer?.all_rights_reserved || 'AZHON Marketplace. All rights reserved.'}
           </p>
           <div className="flex gap-4">
             {/* Dummy Payment Methods */}

@@ -557,7 +557,24 @@
     "rejectDiscrepancy": "Rejeitar / Solicitar Recontagem",
     "auditNotes": "Notas de Auditoria",
     "adjustQty": "Ajustar Estoque Físico",
-    "closeCase": "Fechar Caso",
-    "noDiscrepancies": "Não há discrepâncias pendentes no armazém."
+    "closeCase": "Fechar Caso"
+  },
+  "footer": {
+    "desc": "O destino global da excelência de mercado curada. Conectando produtos de qualidade a clientes exigentes no mundo todo.",
+    "company": "Empresa",
+    "about_us": "Sobre Nós",
+    "careers": "Carreiras",
+    "press_center": "Centro de Imprensa",
+    "blog": "Blog AZHON",
+    "support": "Suporte",
+    "contact_support": "Contatar Suporte",
+    "help_center": "Centro de Ajuda",
+    "shipping_delivery": "Envio e Entrega",
+    "returns_refunds": "Devoluções e Reembolsos",
+    "legal": "Legal",
+    "terms_of_service": "Termos de Serviço",
+    "privacy_policy": "Política de Privacidade",
+    "cookie_settings": "Configurações de Cookies",
+    "all_rights_reserved": "AZHON Marketplace. Todos os direitos reservados."
   }
 }

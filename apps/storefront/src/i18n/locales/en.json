@@ -567,7 +567,24 @@
     "rejectDiscrepancy": "Reject / Require Recount",
     "auditNotes": "Audit Notes",
     "adjustQty": "Adjust Physical Stock",
-    "closeCase": "Close Case",
-    "noDiscrepancies": "There are no pending discrepancies in the warehouse."
+    "closeCase": "Close Case"
+  },
+  "footer": {
+    "desc": "The global destination for curated marketplace excellence. Connecting quality products with discerning customers worldwide.",
+    "company": "Company",
+    "about_us": "About Us",
+    "careers": "Careers",
+    "press_center": "Press Center",
+    "blog": "AZHON Blog",
+    "support": "Support",
+    "contact_support": "Contact Support",
+    "help_center": "Help Center",
+    "shipping_delivery": "Shipping & Delivery",
+    "returns_refunds": "Returns & Refunds",
+    "legal": "Legal",
+    "terms_of_service": "Terms of Service",
+    "privacy_policy": "Privacy Policy",
+    "cookie_settings": "Cookie Settings",
+    "all_rights_reserved": "AZHON Marketplace. All rights reserved."
   }
 }

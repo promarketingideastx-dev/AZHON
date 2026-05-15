@@ -97,7 +97,7 @@ export default async function RootLayout({
           <AuthProvider user={user}>
             <ShellWrapper
               header={<Header locale={locale} country={country} />}
-              footer={<Footer country={country} />}
+              footer={<Footer country={country} dict={dictionary} />}
             >
               {children}
             </ShellWrapper>
