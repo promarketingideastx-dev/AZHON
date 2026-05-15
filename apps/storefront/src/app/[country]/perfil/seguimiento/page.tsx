@@ -2,10 +2,10 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { getDictionary, defaultLocale } from '@/i18n';
-import { CreditCard } from 'lucide-react';
+import { Truck } from 'lucide-react';
 import { ProfileEmptyState } from '@/components/ui/ProfileEmptyState';
 
-export default async function PaymentsPage({ params }: { params: Promise<{ country: string }> }) {
+export default async function TrackingPage({ params }: { params: Promise<{ country: string }> }) {
   const { country } = await params;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -21,18 +21,17 @@ export default async function PaymentsPage({ params }: { params: Promise<{ count
 
   return (
     <div className="w-full">
-      <h1 className="text-3xl font-bold text-secondary mb-8">{bp?.paymentsEmptyTitle || 'Métodos de pago'}</h1>
+      <h1 className="text-3xl font-bold text-secondary mb-8">{bp?.shippingEmptyTitle || 'Envíos y entregas'}</h1>
 
       <ProfileEmptyState 
-        icon={<CreditCard className="w-8 h-8 text-neutral" />}
-        title={bp?.paymentsEmptyTitle || 'Métodos de pago'}
-        description={bp?.paymentsEmptyDesc || 'Pronto podrás administrar tus métodos de pago desde aquí.'}
+        icon={<Truck className="w-8 h-8 text-neutral" />}
+        title={bp?.shippingEmptyTitle || 'Envíos y entregas'}
+        description={bp?.shippingEmptyDesc || 'Cuando tengas pedidos, podrás consultar aquí tus entregas y su seguimiento.'}
         primaryAction={{
           label: bp?.backToSummary || 'Volver al resumen',
           href: `/${country}/perfil`
         }}
       />
-      <p className="mt-8 text-center text-sm text-neutral">{bp?.paymentsEmptyNote || 'AZHON todavía no almacena métodos de pago en esta fase.'}</p>
     </div>
   );
 }

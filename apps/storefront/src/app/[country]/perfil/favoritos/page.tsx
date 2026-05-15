@@ -2,10 +2,10 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { getDictionary, defaultLocale } from '@/i18n';
-import { CreditCard } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import { ProfileEmptyState } from '@/components/ui/ProfileEmptyState';
 
-export default async function PaymentsPage({ params }: { params: Promise<{ country: string }> }) {
+export default async function FavoritesPage({ params }: { params: Promise<{ country: string }> }) {
   const { country } = await params;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -21,18 +21,17 @@ export default async function PaymentsPage({ params }: { params: Promise<{ count
 
   return (
     <div className="w-full">
-      <h1 className="text-3xl font-bold text-secondary mb-8">{bp?.paymentsEmptyTitle || 'Métodos de pago'}</h1>
+      <h1 className="text-3xl font-bold text-secondary mb-8">{bp?.favoritesEmptyTitle || 'Favoritos'}</h1>
 
       <ProfileEmptyState 
-        icon={<CreditCard className="w-8 h-8 text-neutral" />}
-        title={bp?.paymentsEmptyTitle || 'Métodos de pago'}
-        description={bp?.paymentsEmptyDesc || 'Pronto podrás administrar tus métodos de pago desde aquí.'}
+        icon={<Heart className="w-8 h-8 text-neutral" />}
+        title={bp?.favoritesEmptyTitle || 'Favoritos'}
+        description={bp?.favoritesEmptyDesc || 'Tus productos favoritos aparecerán aquí.'}
         primaryAction={{
-          label: bp?.backToSummary || 'Volver al resumen',
-          href: `/${country}/perfil`
+          label: bp?.exploreProducts || 'Explorar productos',
+          href: `/${country}/categorias`
         }}
       />
-      <p className="mt-8 text-center text-sm text-neutral">{bp?.paymentsEmptyNote || 'AZHON todavía no almacena métodos de pago en esta fase.'}</p>
     </div>
   );
 }
