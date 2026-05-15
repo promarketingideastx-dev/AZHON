@@ -31,7 +31,7 @@ export function BuyerSidebar({ country }: { country: string }) {
     { name: bp.orders || 'Pedidos', href: `/${country}/perfil/ordenes`, icon: Package },
     { name: bp.addresses || 'Direcciones', href: `/${country}/perfil/direcciones`, icon: MapPin },
     { name: bp.payments || 'Pagos', href: `/${country}/perfil/pagos`, icon: CreditCard },
-    { name: bp.shipping || 'Seguimiento', href: `/${country}/perfil/seguimiento`, icon: Truck },
+    { name: bp.sidebarShipping || 'Seguimiento', href: `/${country}/perfil/seguimiento`, icon: Truck },
     { name: bp.favorites || 'Favoritos', href: `/${country}/perfil/favoritos`, icon: Heart },
     { name: bp.recentMessages || 'Mensajes', href: `/${country}/perfil/mensajes`, icon: MessageSquare },
     { name: bp.support || 'Soporte', href: `/${country}/perfil/soporte`, icon: HelpCircle },
@@ -56,7 +56,7 @@ export function BuyerSidebar({ country }: { country: string }) {
             </div>
             {/* Text */}
             <div className="flex flex-col">
-              <h3 className="font-bold text-[15px] text-gray-900 leading-tight">{displayName || 'Comprador'}</h3>
+              <h3 className="font-bold text-[15px] text-gray-900 leading-tight">{displayName || bp.buyerAccountDefaultName || 'Comprador AZHON'}</h3>
               <p className="text-[13px] text-gray-500">{bp.buyerAccount || 'Cuenta de Comprador'}</p>
             </div>
           </div>
