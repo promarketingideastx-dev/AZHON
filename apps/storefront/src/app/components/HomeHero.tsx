@@ -16,10 +16,10 @@ export default function HomeHero({ dict, country, currencyCode = 'USD' }: { dict
         <div className="relative z-10 max-w-[280px] sm:max-w-md md:max-w-xl lg:max-w-2xl mt-2 sm:mt-0">
           <ActiveSeasonBadge dict={dict} />
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-white leading-[1.1] mb-3 md:mb-6 tracking-tight drop-shadow-md">
-            {dict.home.hero_title || 'Elevate Your Lifestyle Every Day.'}
+            {dict?.home?.hero_title || 'Elevate Your Lifestyle Every Day.'}
           </h1>
           <p className="text-sm md:text-base lg:text-lg text-gray-300 mb-5 md:mb-10 max-w-lg leading-relaxed font-medium drop-shadow-md">
-            {dict.home.hero_desc || `Discover curated collections from global brands. Free shipping on your first purchase over ${currencyCode} 1,200. Ready. Set. Shop.`}
+            {dict?.home?.hero_desc || `Discover curated collections from global brands. Free shipping on your first purchase over ${currencyCode} 1,200. Ready. Set. Shop.`}
           </p>
           <div className="flex flex-wrap items-center gap-3 md:gap-4">
             <Link href={`/${country}/categorias`} className="bg-primary text-white font-bold px-6 md:px-8 py-3 md:py-4 rounded-full hover:bg-orange-600 transition-colors shadow-lg shadow-orange-500/20 text-xs md:text-sm">

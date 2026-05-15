@@ -5,22 +5,22 @@ export default function BenefitStrip({ dict }: { dict: any }) {
     {
       icon: Truck,
       title: dict?.home?.benefits_free_shipping || 'Envío Global',
-      desc: 'En tu primera compra',
+      desc: dict?.home?.benefits_free_shipping_desc || 'En tu primera compra',
     },
     {
       icon: ShieldCheck,
       title: dict?.home?.benefits_buyer_protection || 'Protección al Comprador',
-      desc: 'Garantía de reembolso',
+      desc: dict?.home?.benefits_buyer_protection_desc || 'Garantía de reembolso',
     },
     {
       icon: CreditCard,
       title: dict?.home?.benefits_secure_payments || 'Pagos 100% Seguros',
-      desc: 'Transacciones cifradas',
+      desc: dict?.home?.benefits_secure_payments_desc || 'Transacciones cifradas',
     },
     {
       icon: Globe,
       title: dict?.home?.benefits_global_logistics || 'Logística Acelerada',
-      desc: 'Entregas prioritarias',
+      desc: dict?.home?.benefits_global_logistics_desc || 'Entregas prioritarias',
     },
   ];
 

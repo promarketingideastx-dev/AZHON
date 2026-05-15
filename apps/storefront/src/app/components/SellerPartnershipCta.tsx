@@ -11,7 +11,7 @@ export default async function SellerPartnershipCta({ dict, country }: { dict: an
       <div className="bg-[#FAF8F5] rounded-3xl p-8 md:p-16 flex flex-col md:flex-row items-center gap-12 border border-[#E5E0D8]">
         <div className="flex-1">
           <span className="inline-block bg-white text-secondary text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full mb-6 border border-gray-200">
-            PARTNERSHIP
+            {dict?.home?.partnership_cta_label || 'PARTNERSHIP'}
           </span>
           <h2 className="text-4xl md:text-5xl font-black text-secondary tracking-tight mb-6 leading-tight">
             {dict.home.partnership || 'Emprenda com a AZHON.'}
@@ -21,13 +21,13 @@ export default async function SellerPartnershipCta({ dict, country }: { dict: an
           </p>
           <ul className="space-y-4 mb-10">
             <li className="flex items-center gap-3 text-sm font-bold text-secondary">
-              <span className="text-primary text-lg">✓</span> {dict.home.no_upfront_fees || 'No upfront listing fees'}
+              <span className="text-primary text-lg">✓</span> {dict?.home?.no_upfront_fees || 'No upfront listing fees'}
             </li>
             <li className="flex items-center gap-3 text-sm font-bold text-secondary">
-              <span className="text-primary text-lg">✓</span> {dict.home.global_logistics || 'Global logistics support'}
+              <span className="text-primary text-lg">✓</span> {dict?.home?.global_logistics_support || 'Global logistics support'}
             </li>
             <li className="flex items-center gap-3 text-sm font-bold text-secondary">
-              <span className="text-primary text-lg">✓</span> {dict.home.advanced_dashboard || 'Advanced seller dashboard'}
+              <span className="text-primary text-lg">✓</span> {dict?.home?.advanced_dashboard || 'Advanced seller dashboard'}
             </li>
           </ul>
           <Link 

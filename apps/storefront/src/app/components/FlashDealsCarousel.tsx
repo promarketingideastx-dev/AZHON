@@ -87,7 +87,7 @@ export default function FlashDealsCarousel({ products, tenantId, currencyCode = 
           </div>
         </div>
         <Link href={`/${country}/ofertas`} className="hidden md:flex bg-white text-[#FF4400] hover:bg-gray-50 px-6 md:px-8 py-3 md:py-3.5 rounded-full text-xs md:text-sm font-black transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 uppercase tracking-wide items-center justify-center gap-2">
-          Shop All Deals
+          {dict?.home?.shop_all_deals || 'Shop All Deals'}
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
         </Link>
       </div>

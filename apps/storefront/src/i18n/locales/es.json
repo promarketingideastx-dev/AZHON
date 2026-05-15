@@ -163,7 +163,19 @@
     "limited_quantities": "Cantidades Limitadas",
     "flash_offer_active": "Oferta Activa",
     "ends_today": "Termina Hoy",
-    "flash_selection": "Selección Relámpago"
+    "flash_selection": "Selección Relámpago",
+    "shop_all_deals": "Ver Todas las Ofertas",
+    "product_feed": "Feed de Productos",
+    "browse_catalog": "Navega el catálogo completo",
+    "load_more": "Cargar más resultados",
+    "discover_more": "Descubre Más",
+    "no_photo": "Sin foto",
+    "category": "Categoría",
+    "benefits_free_shipping_desc": "En tu primera compra",
+    "benefits_buyer_protection_desc": "Garantía de reembolso",
+    "benefits_secure_payments_desc": "Transacciones cifradas",
+    "benefits_global_logistics_desc": "Entregas prioritarias",
+    "partnership_cta_label": "PARTNERSHIP"
   },
   "categories": {
     "title": "Todas las Categorías",
