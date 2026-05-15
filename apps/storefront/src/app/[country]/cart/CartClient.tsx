@@ -75,7 +75,7 @@ export default function CartClient({ initialItems, dict, user, country, currency
                     {dict.cart.sold_by} AZHON OFICIAL
                   </div>
                   <h3 className="text-lg font-bold text-secondary leading-tight mb-1">{item.variant.Product.title}</h3>
-                  <p className="text-sm text-neutral mb-3">Variante | ID: {item.variant.id.slice(0,8)}</p>
+                  <p className="text-sm text-neutral mb-3">{dict.cart.variant_id || 'Variante | ID: '}{item.variant.id.slice(0,8)}</p>
                   <div className="inline-flex items-center gap-1 bg-green-50 text-green-700 px-2 py-1 rounded text-xs font-bold">
                     <span>✓</span> {dict.cart.in_stock}
                   </div>
@@ -111,7 +111,7 @@ export default function CartClient({ initialItems, dict, user, country, currency
                   <div className="text-xl font-black text-secondary">
                     {formatPrice(item.variant.Product.basePrice)}
                   </div>
-                  <div className="text-[10px] text-neutral mt-1">Precio unitario</div>
+                  <div className="text-[10px] text-neutral mt-1">{dict.cart.unit_price || 'Precio unitario'}</div>
                 </div>
               </div>
             </div>
@@ -137,17 +137,17 @@ export default function CartClient({ initialItems, dict, user, country, currency
               <span className="text-neutral flex items-center gap-1">
                 {dict.cart.estimated_shipping} <span className="text-gray-300">ⓘ</span>
               </span>
-              <span className="font-medium text-neutral italic">Calculado en Checkout</span>
+              <span className="font-medium text-neutral italic">{dict.cart.calculated_at_checkout || 'Calculado en Checkout'}</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-neutral">{dict.cart.taxes}</span>
-              <span className="font-medium text-neutral italic">Calculado en Checkout</span>
+              <span className="font-medium text-neutral italic">{dict.cart.calculated_at_checkout || 'Calculado en Checkout'}</span>
             </div>
           </div>
 
           <div className="border-t border-gray-100 pt-6 mb-8">
             <div className="text-[10px] font-bold text-neutral uppercase tracking-widest mb-1">
-              Subtotal Estimado
+              {dict.cart.estimated_subtotal || 'Subtotal Estimado'}
             </div>
             <div className="text-4xl font-black text-secondary">
               {formatPrice(subtotal)}
@@ -159,7 +159,7 @@ export default function CartClient({ initialItems, dict, user, country, currency
             disabled={loading}
             className="w-full bg-primary hover:bg-orange-600 text-white py-4 rounded-xl font-bold text-lg transition-all shadow-lg shadow-primary/30 flex items-center justify-center gap-2 group disabled:opacity-50"
           >
-            {loading ? 'Procesando...' : 'Proceder al Checkout'}
+            {loading ? (dict.cart.processing || 'Procesando...') : (dict.cart.proceed_checkout || 'Proceder al Checkout')}
             {!loading && <span className="group-hover:translate-x-1 transition-transform">➔</span>}
           </button>
           

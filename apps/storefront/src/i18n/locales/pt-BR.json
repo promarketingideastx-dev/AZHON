@@ -109,7 +109,16 @@
     "secure_payments": "PAGAMENTOS 100% SEGUROS",
     "upsell_title": "Complete seu Estilo",
     "empty_cart": "Seu carrinho está vazio",
-    "back_to_shop": "Voltar à Loja"
+    "add_to_cart": "Adicionar ao Carrinho",
+    "breadcrumb_home": "INÍCIO",
+    "breadcrumb_cart": "CARRINHO DE COMPRAS",
+    "back_to_shop": "Voltar à Loja",
+    "variant_id": "Variante | ID: ",
+    "unit_price": "Preço unitário",
+    "calculated_at_checkout": "Calculado no Checkout",
+    "estimated_subtotal": "Subtotal Estimado",
+    "processing": "Processando...",
+    "proceed_checkout": "Prosseguir para o Checkout"
   },
   "header": {
     "home": "Início",

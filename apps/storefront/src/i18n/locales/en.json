@@ -109,7 +109,16 @@
     "secure_payments": "100% SECURE PAYMENTS",
     "upsell_title": "Complete Your Style",
     "empty_cart": "Your cart is empty",
-    "back_to_shop": "Back to Shop"
+    "add_to_cart": "Add to Cart",
+    "breadcrumb_home": "HOME",
+    "breadcrumb_cart": "SHOPPING CART",
+    "back_to_shop": "Back to Shop",
+    "variant_id": "Variant | ID: ",
+    "unit_price": "Unit price",
+    "calculated_at_checkout": "Calculated at Checkout",
+    "estimated_subtotal": "Estimated Subtotal",
+    "processing": "Processing...",
+    "proceed_checkout": "Proceed to Checkout"
   },
   "header": {
     "home": "Home",

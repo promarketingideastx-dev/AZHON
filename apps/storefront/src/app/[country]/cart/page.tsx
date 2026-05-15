@@ -55,9 +55,9 @@ export default async function CartPage({ params }: { params: { country: string }
     <div className="bg-[#FCF9F6] min-h-screen pb-24">
       <div className="max-w-[1200px] mx-auto px-6 pt-8 pb-12">
         <div className="text-xs text-neutral mb-6 flex items-center gap-2 font-medium tracking-wide">
-          <span>INICIO</span>
+          <span>{dict.cart?.breadcrumb_home || 'INICIO'}</span>
           <span className="text-gray-300">›</span>
-          <span className="text-secondary font-bold">CARRITO DE COMPRAS</span>
+          <span className="text-secondary font-bold">{dict.cart?.breadcrumb_cart || 'CARRITO DE COMPRAS'}</span>
         </div>
         
         <h1 className="text-4xl font-bold text-secondary mb-10 tracking-tight">
