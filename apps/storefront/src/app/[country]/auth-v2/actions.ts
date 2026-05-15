@@ -165,9 +165,18 @@ export async function resendVerifyAction(formData: FormData) {
     redirect(`/${country}/auth-v2/login`)
   }
 
+  console.log('[AZHON_AUTH_V2_TRACE]', {
+    step: 'verify:resend_start',
+    emailMasked: maskEmail(email),
+    intent,
+    hasNext: Boolean(nextParam),
+    country
+  });
+
   const destination = await resolveDestination(supabase, country, nextParam, intent);
   const intentParam = intent ? `&intent=${intent}` : '';
   
+  console.log('[AZHON_AUTH_V2_TRACE]', { step: 'verify:resend_supabase_call_start' });
   const { error } = await supabase.auth.resend({
     type: 'signup',
     email,
@@ -176,11 +185,19 @@ export async function resendVerifyAction(formData: FormData) {
     }
   })
 
+  console.log('[AZHON_AUTH_V2_TRACE]', { 
+    step: 'verify:resend_supabase_call_end',
+    success: !error,
+    error: error ? 'Supabase Auth Error' : null
+  });
+
   if (error) {
+    console.log('[AZHON_AUTH_V2_TRACE]', { step: 'verify:resend_redirect_error' });
     const qs = buildQueryString({ error: getErrorKey(error.message), email, intent, next: nextParam });
     redirect(`/${country}/auth-v2/verify${qs}`)
   }
 
+  console.log('[AZHON_AUTH_V2_TRACE]', { step: 'verify:resend_redirect_success' });
   // Si fue exitoso, redirigimos a login con el mensaje de revisar correo
   const qs = buildQueryString({ msg: 'msg_check_email', intent, next: nextParam });
   redirect(`/${country}/auth-v2/login${qs}`)
