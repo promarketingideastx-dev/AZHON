@@ -3,7 +3,8 @@ import { cookies } from 'next/headers';
 
 export const dynamic = 'force-dynamic';
 
-export default async function OfertasPage({ params }: { params: { country: string } }) {
+export default async function OfertasPage({ params }: { params: Promise<{ country: string }> }) {
+  const { country } = await params;
   const cookieStore = await cookies();
   const locale = cookieStore.get('NEXT_LOCALE')?.value || defaultLocale;
   const dict = getDictionary(locale);
@@ -16,16 +17,16 @@ export default async function OfertasPage({ params }: { params: { country: strin
             {dict.header?.deals || 'OFERTAS'}
           </h1>
           <p className="text-orange-50 font-medium">
-            Encuentra las mejores oportunidades en AZHON.
+            {dict.deals?.subtitle || 'Encuentra las mejores oportunidades en AZHON.'}
           </p>
         </div>
       </div>
       
       <div className="max-w-[1440px] mx-auto py-24 text-center px-4">
         <div className="text-6xl mb-6 opacity-80">⚡</div>
-        <h3 className="text-2xl font-black text-gray-900 mb-3 tracking-tight">Preparando nuevas ofertas</h3>
+        <h3 className="text-2xl font-black text-gray-900 mb-3 tracking-tight">{dict.deals?.empty_title || 'Preparando nuevas ofertas'}</h3>
         <p className="text-gray-500 max-w-md mx-auto leading-relaxed">
-          Nuestros vendedores están preparando las mejores promociones y descuentos. Regresa muy pronto para aprovecharlas.
+          {dict.deals?.empty_desc || 'Nuestros vendedores están preparando las mejores promociones y descuentos. Regresa muy pronto para aprovecharlas.'}
         </p>
       </div>
     </div>

@@ -583,5 +583,10 @@
     "privacy_policy": "Política de Privacidad",
     "cookie_settings": "Configuración de Cookies",
     "all_rights_reserved": "AZHON Marketplace. Todos los derechos reservados."
+  },
+  "deals": {
+    "subtitle": "Encuentra las mejores oportunidades en AZHON.",
+    "empty_title": "Preparando nuevas ofertas",
+    "empty_desc": "Nuestros vendedores están preparando las mejores promociones y descuentos. Regresa muy pronto para aprovecharlas."
   }
 }
