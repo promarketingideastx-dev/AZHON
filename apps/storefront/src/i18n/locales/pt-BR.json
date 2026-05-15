@@ -481,7 +481,8 @@
     "noDescription": "Nenhuma descrição disponível para este produto.",
     "verifiedProduct": "Produto verificado em {country}",
     "outOfStock": "Esgotado",
-    "noImage": "Sem imagem disponível"
+    "noImage": "Sem imagem disponível",
+    "options": "opções"
   },
   "density": {
     "relatedProducts": "Produtos Relacionados",

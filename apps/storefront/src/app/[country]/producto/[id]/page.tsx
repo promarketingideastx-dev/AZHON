@@ -237,6 +237,7 @@ export default async function ProductDetailPage({
                   <CheckoutButton
                     tenantId={tenant.id}
                     variantId={product.Variants[0].id}
+                    dict={dict}
                   />
                 ) : (
                   <button disabled className="w-full bg-gray-200 text-gray-500 font-bold py-3 md:py-4 rounded-xl text-base md:text-lg cursor-not-allowed">

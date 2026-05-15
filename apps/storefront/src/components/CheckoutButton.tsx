@@ -9,9 +9,10 @@ import { getProtectedHref } from '@/lib/auth/accessBuilder';
 type CheckoutButtonProps = {
   tenantId: string;
   variantId: string;
+  dict?: any;
 };
 
-export default function CheckoutButton({ tenantId, variantId }: CheckoutButtonProps) {
+export default function CheckoutButton({ tenantId, variantId, dict }: CheckoutButtonProps) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
   const { user } = useAuth();
@@ -63,7 +64,7 @@ export default function CheckoutButton({ tenantId, variantId }: CheckoutButtonPr
         disabled={loading}
         className={`w-full text-white py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-50 shadow-sm flex items-center justify-center h-full ${user ? 'bg-secondary hover:bg-black' : 'bg-primary hover:opacity-90'}`}
       >
-        {loading ? 'Añadiendo...' : (!user ? 'Inicia Sesión' : 'Añadir')}
+        {loading ? (dict?.cart?.processing || 'Añadiendo...') : (!user ? (dict?.header?.login || 'Inicia Sesión') : (dict?.cart?.add_to_cart || 'Añadir'))}
       </button>
 
       {result && (

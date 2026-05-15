@@ -87,7 +87,7 @@ export function ProductCard({ product, tenantId, currencyCode, country, dict, is
           </span>
           {product.Variants && product.Variants.length > 1 && (
             <span className="text-[9px] font-bold text-gray-400 bg-gray-50 border border-gray-100 px-1.5 py-0.5 rounded uppercase tracking-wider">
-              {product.Variants.length} opciones
+              {product.Variants.length} {dict?.pdp?.options || 'opciones'}
             </span>
           )}
         </div>
@@ -102,6 +102,7 @@ export function ProductCard({ product, tenantId, currencyCode, country, dict, is
               <CheckoutButton
                 tenantId={tenantId}
                 variantId={product.Variants[0].id}
+                dict={dict}
               />
             </div>
           </div>
