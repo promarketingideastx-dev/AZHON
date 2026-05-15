@@ -21,12 +21,16 @@ export default async function ReceiptsPage({ params }: { params: Promise<{ count
 
   return (
     <div className="w-full">
-      <h1 className="text-3xl font-bold text-secondary mb-8">{bp?.receipts || 'Comprobantes'}</h1>
+      <h1 className="text-3xl font-bold text-secondary mb-8">{bp?.receiptsEmptyTitle || 'Mis Comprobantes'}</h1>
 
       <ProfileEmptyState 
         icon={<FileText className="w-8 h-8 text-neutral" />}
-        title={bp?.coming_soon || 'Próximamente'}
-        description={bp?.coming_soon_desc || 'Esta sección estará disponible muy pronto.'}
+        title={bp?.receiptsEmptyTitle || 'Mis Comprobantes'}
+        description={bp?.receiptsEmptyDesc || 'Cuando tengas pedidos, tus facturas y comprobantes aparecerán aquí.'}
+        primaryAction={{
+          label: bp?.backToSummary || 'Volver al resumen',
+          href: `/${country}/perfil`
+        }}
       />
     </div>
   );

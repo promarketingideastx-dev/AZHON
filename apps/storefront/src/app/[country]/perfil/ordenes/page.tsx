@@ -39,9 +39,9 @@ export default async function OrderHistoryPage({
 
       {orders.length === 0 ? (
         <div className="bg-white rounded-2xl border border-gray-100 p-10 text-center shadow-sm">
-          <p className="text-neutral font-medium mb-4">Aún no has realizado ninguna compra.</p>
+          <p className="text-neutral font-medium mb-4">{bp?.noPurchases || 'Aún no has realizado ninguna compra.'}</p>
           <Link href={`/${country}`} className="bg-primary text-white px-6 py-3 rounded-full font-bold hover:opacity-90 transition-opacity">
-            Explorar Catálogo
+            {bp?.exploreCatalog || 'Explorar Catálogo'}
           </Link>
         </div>
       ) : (
@@ -60,10 +60,10 @@ export default async function OrderHistoryPage({
                 </div>
                 
                 <p className="text-sm text-neutral mb-1">
-                  Fecha: {new Date(order.createdAt).toLocaleDateString(locale === 'es' ? 'es-HN' : locale === 'pt' ? 'pt-BR' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                  {bp?.date || 'Fecha: '} {new Date(order.createdAt).toLocaleDateString(locale === 'es' ? 'es-HN' : locale === 'pt' ? 'pt-BR' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                 </p>
                 <p className="text-sm text-neutral">
-                  Envíos: {order.Shipments.length} paquete(s)
+                  {bp?.shipments || 'Envíos: '} {order.Shipments.length} {bp?.packages || 'paquete(s)'}
                 </p>
               </div>
 
@@ -72,7 +72,7 @@ export default async function OrderHistoryPage({
                   HNL {(order.grandTotal / 100).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                 </div>
                 <Link href={`/${country}/perfil/ordenes/${order.id}`} className="text-sm font-bold text-primary hover:underline">
-                  Ver Detalles &rarr;
+                  {bp?.viewDetails || 'Ver Detalles'} &rarr;
                 </Link>
               </div>
               

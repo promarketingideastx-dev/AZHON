@@ -21,12 +21,16 @@ export default async function AddressesPage({ params }: { params: Promise<{ coun
 
   return (
     <div className="w-full">
-      <h1 className="text-3xl font-bold text-secondary mb-8">{bp?.addresses || 'Direcciones'}</h1>
+      <h1 className="text-3xl font-bold text-secondary mb-8">{bp?.addressesEmptyTitle || 'Mis Direcciones'}</h1>
 
       <ProfileEmptyState 
         icon={<MapPin className="w-8 h-8 text-neutral" />}
-        title={bp?.coming_soon || 'Próximamente'}
-        description={bp?.coming_soon_desc || 'Esta sección estará disponible muy pronto.'}
+        title={bp?.addressesEmptyTitle || 'Mis Direcciones'}
+        description={bp?.addressesEmptyDesc || 'Pronto podrás gestionar tus direcciones de envío y facturación aquí.'}
+        primaryAction={{
+          label: bp?.backToSummary || 'Volver al resumen',
+          href: `/${country}/perfil`
+        }}
       />
     </div>
   );

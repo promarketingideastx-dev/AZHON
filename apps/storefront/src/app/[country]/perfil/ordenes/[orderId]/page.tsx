@@ -2,6 +2,8 @@ import { prisma } from '@/lib/prisma';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import { cookies } from 'next/headers';
+import { getDictionary, defaultLocale } from '@/i18n';
 
 export default async function OrderDetailPage({ params }: { params: Promise<{ country: string, orderId: string }> }) {
   const { country, orderId } = await params;
@@ -39,11 +41,16 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ co
     }
   });
 
+  const cookieStore = await cookies();
+  const locale = cookieStore.get('NEXT_LOCALE')?.value || defaultLocale;
+  const dict = getDictionary(locale);
+  const bp = dict.buyerProfile;
+
   if (!order) {
     return (
       <div className="w-full max-w-4xl mx-auto px-6 py-12 text-center">
-        <h1 className="text-2xl font-bold text-secondary mb-4">Orden no encontrada</h1>
-          <Link href={`/${country}/perfil/ordenes`} className="text-primary hover:underline font-bold">Volver a mis órdenes</Link>
+        <h1 className="text-2xl font-bold text-secondary mb-4">{bp?.orderNotFound || 'Orden no encontrada'}</h1>
+          <Link href={`/${country}/perfil/ordenes`} className="text-primary hover:underline font-bold">{bp?.backToOrders || 'Volver a mis órdenes'}</Link>
       </div>
     );
   }
@@ -60,17 +67,17 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ co
     <div className="w-full max-w-4xl mx-auto px-6 py-12">
       <div className="mb-8">
         <Link href={`/${country}/perfil/ordenes`} className="text-sm font-bold text-neutral hover:text-primary transition-colors">
-          &larr; Volver a Mis Órdenes
+          {bp?.backToOrdersArrow || '← Volver a Mis Órdenes'}
         </Link>
       </div>
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 gap-4">
         <div>
           <h1 className="text-3xl font-bold text-secondary mb-2">
-            Detalle de Orden <span className="text-primary">#{order.id.split('-')[0].toUpperCase()}</span>
+            {bp?.orderDetail || 'Detalle de Orden'} <span className="text-primary">#{order.id.split('-')[0].toUpperCase()}</span>
           </h1>
           <p className="text-neutral text-sm">
-            Realizada el {new Date(order.createdAt).toLocaleDateString('es', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+            {bp?.placedOn || 'Realizada el'} {new Date(order.createdAt).toLocaleDateString(locale === 'es' ? 'es-HN' : locale === 'pt' ? 'pt-BR' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
           </p>
         </div>
         <div className={`px-4 py-2 rounded-lg font-bold uppercase tracking-widest text-sm border 
@@ -78,7 +85,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ co
           ${isPending ? 'bg-orange-50 text-orange-700 border-orange-100' : ''}
           ${isFailed ? 'bg-red-50 text-red-700 border-red-100' : ''}
         `}>
-          {isPaid ? 'PAGADA' : isPending ? 'ESPERANDO PAGO' : 'DECLINADA / EXPIRADA'}
+          {isPaid ? (bp?.statusPaid || 'PAGADA') : isPending ? (bp?.statusPending || 'ESPERANDO PAGO') : (bp?.statusFailed || 'DECLINADA / EXPIRADA')}
         </div>
       </div>
 
@@ -86,7 +93,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ co
         {/* Resumen Logístico */}
         <div className="md:col-span-2 space-y-6">
           <div className="bg-background rounded-2xl border border-gray-100 p-6 shadow-sm">
-            <h2 className="text-lg font-bold text-secondary mb-4">Artículos ({order.OrderLines.length})</h2>
+            <h2 className="text-lg font-bold text-secondary mb-4">{bp?.items || 'Artículos'} ({order.OrderLines.length})</h2>
             
             <div className="space-y-4 divide-y divide-gray-50">
               {order.OrderLines.map((line) => (
@@ -100,9 +107,9 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ co
                   </div>
                   <div className="flex-1">
                     <p className="font-bold text-secondary text-sm mb-1">{line.Variant.Product.title}</p>
-                    <p className="text-xs text-neutral mb-2">Vendido por: {line.Store.name}</p>
+                    <p className="text-xs text-neutral mb-2">{bp?.soldBy || 'Vendido por:'} {line.Store.name}</p>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium text-secondary">Cant: {line.qty}</span>
+                      <span className="text-sm font-medium text-secondary">{bp?.qty || 'Cant:'} {line.qty}</span>
                       <span className="font-bold text-secondary">
                         {formatPrice(line.unitPriceSnap * line.qty)}
                       </span>
@@ -114,12 +121,12 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ co
           </div>
 
           <div className="bg-background rounded-2xl border border-gray-100 p-6 shadow-sm">
-            <h2 className="text-lg font-bold text-secondary mb-4">Estado de Paquetes ({order.Shipments.length})</h2>
+            <h2 className="text-lg font-bold text-secondary mb-4">{bp?.packageStatus || 'Estado de Paquetes'} ({order.Shipments.length})</h2>
             <div className="space-y-3">
               {order.Shipments.map((shipment, index) => (
                 <div key={shipment.id} className="flex justify-between items-center bg-gray-50 p-3 rounded-lg border border-gray-100">
                   <div>
-                    <p className="text-sm font-bold text-secondary">Paquete {index + 1}</p>
+                    <p className="text-sm font-bold text-secondary">{bp?.package || 'Paquete'} {index + 1}</p>
                     <p className="text-xs text-neutral font-mono">ID: {shipment.id.split('-')[0]}</p>
                   </div>
                   <span className="text-xs font-bold bg-white px-2 py-1 rounded shadow-sm text-primary uppercase tracking-wider">
@@ -134,39 +141,39 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ co
         {/* Resumen Financiero */}
         <div className="space-y-6">
           <div className="bg-background rounded-2xl border border-gray-100 p-6 shadow-sm sticky top-24">
-            <h2 className="text-lg font-bold text-secondary mb-4">Resumen de Pago</h2>
+            <h2 className="text-lg font-bold text-secondary mb-4">{bp?.paymentSummary || 'Resumen de Pago'}</h2>
             
             <div className="space-y-3 text-sm mb-6">
               <div className="flex justify-between">
-                <span className="text-neutral">Subtotal</span>
+                <span className="text-neutral">{bp?.subtotal || 'Subtotal'}</span>
                 <span className="font-medium text-secondary">{formatPrice(order.baseTotal)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-neutral">Impuestos</span>
+                <span className="text-neutral">{bp?.taxes || 'Impuestos'}</span>
                 <span className="font-medium text-secondary">{formatPrice(order.taxTotal)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-neutral">Envío</span>
+                <span className="text-neutral">{bp?.shipping || 'Envío'}</span>
                 <span className="font-medium text-secondary">{formatPrice(order.shippingTotal)}</span>
               </div>
               
               <div className="border-t border-gray-100 pt-3 flex justify-between items-center">
-                <span className="font-bold text-secondary">{isPaid ? 'Total Pagado' : 'Total a Pagar'}</span>
+                <span className="font-bold text-secondary">{isPaid ? (bp?.totalPaid || 'Total Pagado') : (bp?.totalToPay || 'Total a Pagar')}</span>
                 <span className="text-xl font-black text-secondary">{formatPrice(order.grandTotal)}</span>
               </div>
             </div>
             
             {isPaid ? (
               <div className="bg-green-50 rounded-lg p-4 text-xs text-green-700 leading-relaxed border border-green-100">
-                Tu pago está asegurado por AZHON. Los fondos no serán liberados al vendedor hasta que confirmes la entrega.
+                {bp?.paymentSecured || 'Tu pago está asegurado por AZHON. Los fondos no serán liberados al vendedor hasta que confirmes la entrega.'}
               </div>
             ) : isPending ? (
               <div className="bg-orange-50 rounded-lg p-4 text-xs text-orange-700 leading-relaxed border border-orange-100">
-                Estamos esperando la confirmación del banco. Te notificaremos cuando se procese.
+                {bp?.paymentWaiting || 'Estamos esperando la confirmación del banco. Te notificaremos cuando se procese.'}
               </div>
             ) : (
               <div className="bg-red-50 rounded-lg p-4 text-xs text-red-700 leading-relaxed border border-red-100">
-                El pago fue declinado o la sesión expiró. Por favor intenta realizar la compra nuevamente desde la tienda.
+                {bp?.paymentDeclined || 'El pago fue declinado o la sesión expiró. Por favor intenta realizar la compra nuevamente desde la tienda.'}
               </div>
             )}
           </div>
