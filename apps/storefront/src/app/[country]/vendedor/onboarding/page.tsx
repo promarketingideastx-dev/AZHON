@@ -36,7 +36,7 @@ export default async function SellerOnboardingPage({
       <div className="min-h-screen bg-neutral-50 pb-20">
         <div className="bg-white border-b border-neutral-100 py-6 mb-8">
           <div className="max-w-3xl mx-auto px-4">
-            <h1 className="text-xl font-bold text-secondary">Centro de Registro AZHON Sellers</h1>
+            <h1 className="text-xl font-bold text-secondary">{dict.onboarding?.center_title || 'Centro de Registro AZHON Sellers'}</h1>
           </div>
         </div>
         <div className="max-w-3xl mx-auto px-4">
@@ -46,13 +46,12 @@ export default async function SellerOnboardingPage({
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
              </div>
-             <h2 className="text-2xl font-bold text-secondary mb-3">Tu solicitud está en revisión</h2>
+             <h2 className="text-2xl font-bold text-secondary mb-3">{dict.onboarding?.review_title || 'Tu solicitud está en revisión'}</h2>
              <p className="text-neutral mb-8 max-w-md mx-auto">
-               Hemos recibido tu solicitud para vender en AZHON. Nuestro equipo está revisando la información de tu negocio. 
-               Te notificaremos por correo electrónico una vez que tu tienda sea aprobada.
+               {dict.onboarding?.review_desc || 'Hemos recibido tu solicitud para vender en AZHON. Nuestro equipo está revisando la información de tu negocio. Te notificaremos por correo electrónico una vez que tu tienda sea aprobada.'}
              </p>
              <a href={`/${country}/perfil`} className="inline-block bg-white text-secondary border border-gray-200 rounded-full py-3 px-8 font-bold hover:bg-gray-50 transition-colors">
-               Volver a mi perfil
+               {dict.onboarding?.back_profile || 'Volver a mi perfil'}
              </a>
            </div>
         </div>
@@ -69,14 +68,15 @@ export default async function SellerOnboardingPage({
     <div className="min-h-screen bg-neutral-50 pb-20">
       <div className="bg-white border-b border-neutral-100 py-6 mb-8">
         <div className="max-w-3xl mx-auto px-4">
-          <h1 className="text-xl font-bold text-secondary">Centro de Registro AZHON Sellers</h1>
+          <h1 className="text-xl font-bold text-secondary">{dict.onboarding?.center_title || 'Centro de Registro AZHON Sellers'}</h1>
         </div>
       </div>
       
       <OnboardingClient 
         country={country} 
         initialStep={session.currentStep} 
-        initialData={session.progressData} 
+        initialData={session.progressData}
+        dict={dict}
       />
     </div>
   );
