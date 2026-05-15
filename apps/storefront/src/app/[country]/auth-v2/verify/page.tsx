@@ -44,7 +44,7 @@ export default async function VerifyV2Page({
             </p>
           </div>
         )}
-        <form action={resendVerifyAction} className="w-full">
+        <form action={resendVerifyAction} method="POST" className="w-full">
            <input type="hidden" name="email" value={email || ''} />
            <input type="hidden" name="country" value={country} />
            {next && <input type="hidden" name="next" value={next} />}
