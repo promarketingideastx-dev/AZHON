@@ -23,7 +23,7 @@ export function BuyerSidebar({ country }: { country: string }) {
   const { user } = useAuth();
 
   const handleLogout = async () => {
-    import('@/app/[country]/login/actions').then(m => m.logout());
+    import('@/app/[country]/login/actions').then(m => m.logout(country));
   };
 
   const navItems = [

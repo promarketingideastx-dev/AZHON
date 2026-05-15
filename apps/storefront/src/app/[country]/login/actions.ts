@@ -244,7 +244,7 @@ export async function signInWithGoogle(formData: FormData) {
   }
 }
 
-export async function logout() {
+export async function logout(country?: string) {
   const supabase = await createClient()
   
   const { data: { user } } = await supabase.auth.getUser()
@@ -256,7 +256,11 @@ export async function logout() {
   // No formData available here, fallback to home
   await supabase.auth.signOut()
   revalidatePath('/', 'layout')
-  redirect(`/login`)
+  if (country) {
+    redirect(`/${country}`)
+  } else {
+    redirect(`/`)
+  }
 }
 
 export async function resendConfirmation(formData: FormData) {

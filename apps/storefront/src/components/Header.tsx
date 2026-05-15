@@ -81,7 +81,7 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
               {user && (
                 <button 
                   onClick={() => {
-                    import('@/app/[country]/login/actions').then(m => m.logout())
+                    import('@/app/[country]/login/actions').then(m => m.logout(country))
                   }}
                   className="text-[10px] sm:text-xs font-bold text-neutral hover:text-secondary transition-colors uppercase tracking-wider hidden sm:block"
                 >
@@ -176,14 +176,14 @@ export function Header({ locale = 'es', country = 'hn' }: { locale?: string, cou
                 <button 
                   onClick={() => {
                     setIsMobileMenuOpen(false);
-                    import('@/app/[country]/login/actions').then(m => m.logout());
+                    import('@/app/[country]/login/actions').then(m => m.logout(country));
                   }}
                   className="w-full bg-black text-white font-bold py-4 rounded-xl text-center uppercase tracking-widest text-sm mt-2"
                 >
                   {dict.header.logout}
                 </button>
              ) : (
-                <Link href={`/${country}/login`} onClick={() => setIsMobileMenuOpen(false)} className="w-full bg-[#FF4400] text-white font-bold py-4 rounded-xl text-center uppercase tracking-widest text-sm mt-2 shadow-lg shadow-orange-500/20">
+                <Link href={`/${country}/auth-v2/start`} onClick={() => setIsMobileMenuOpen(false)} className="w-full bg-[#FF4400] text-white font-bold py-4 rounded-xl text-center uppercase tracking-widest text-sm mt-2 shadow-lg shadow-orange-500/20">
                   Iniciar Sesión
                 </Link>
              )}

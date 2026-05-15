@@ -25,7 +25,7 @@ export function getProtectedHref({ targetPath, intent, user, country }: Protecte
   }
 
   // Build the login URL preserving intent and next destination
-  const loginBase = `/${safeCountry}/login`;
+  const loginBase = `/${safeCountry}/auth-v2/start`;
   const nextParam = encodeURIComponent(safeTarget);
   
   return `${loginBase}?intent=${intent}&next=${nextParam}`;

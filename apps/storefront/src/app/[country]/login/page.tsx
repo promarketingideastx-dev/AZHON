@@ -1,25 +1,19 @@
-import { getDictionary, defaultLocale } from '@/i18n';
-import AuthClient from './AuthClient';
-import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export default async function LoginPage({
+  params,
   searchParams,
 }: {
+  params: Promise<{ country: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
-  const params = await searchParams;
-  const errorKey = params?.error as string;
-  const msgKey = params?.msg as string;
-  const intent = params?.intent as string;
-  const email = params?.email as string;
+  const { country } = await params;
+  const sParams = await searchParams;
   
-  const cookieStore = await cookies();
-  const locale = cookieStore.get('NEXT_LOCALE')?.value || defaultLocale;
-  const dict = getDictionary(locale);
-
-  return (
-    <div className="flex flex-col justify-center items-center p-4 flex-1 h-full pt-16">
-      <AuthClient dict={dict} errorKey={errorKey} msgKey={msgKey} intent={intent} defaultEmail={email} />
-    </div>
-  )
+  const qs = new URLSearchParams();
+  if (sParams?.intent) qs.append('intent', sParams.intent as string);
+  if (sParams?.next) qs.append('next', sParams.next as string);
+  
+  const qsStr = qs.toString();
+  redirect(`/${country}/auth-v2/start${qsStr ? `?${qsStr}` : ''}`);
 }
