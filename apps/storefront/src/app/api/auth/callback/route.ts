@@ -5,14 +5,18 @@ import { SUPPORTED_COUNTRIES } from '@/config/countries'
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url)
   const code = requestUrl.searchParams.get('code')
-  const next = requestUrl.searchParams.get('next') || '/'
-  
+  const cookieStore = request.cookies
+  const intentCookie = cookieStore.get('azhon_auth_intent')?.value
+  const nextCookie = cookieStore.get('azhon_auth_next')?.value
+
+  const next = requestUrl.searchParams.get('next') || nextCookie || '/'
+  const intent = requestUrl.searchParams.get('intent') || intentCookie || null
+
   let countryPrefix = '';
   const nextSegment = next.split('/')[1];
   if (nextSegment && SUPPORTED_COUNTRIES.includes(nextSegment)) {
     countryPrefix = `/${nextSegment}`;
   }
-  const intent = requestUrl.searchParams.get('intent')
   const authError = requestUrl.searchParams.get('error')
   const errorDescription = requestUrl.searchParams.get('error_description')
 
@@ -80,7 +84,13 @@ export async function GET(request: NextRequest) {
       }
       
       console.log(`[AZHON_AUTH_V2_TRACE] callback:final_redirect, target: ${redirectUrl}`);
-      return NextResponse.redirect(new URL(redirectUrl, request.url))
+      const response = NextResponse.redirect(new URL(redirectUrl, request.url))
+      
+      // Clear the fallback cookies
+      response.cookies.delete('azhon_auth_intent')
+      response.cookies.delete('azhon_auth_next')
+      
+      return response
     }
     
     console.error(`[AZHON_AUTH_V2_TRACE] callback:session_exchange_failed`, error);

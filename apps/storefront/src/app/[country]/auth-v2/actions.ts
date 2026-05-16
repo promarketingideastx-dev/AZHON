@@ -4,6 +4,7 @@ import { createClient } from '@/utils/supabase/server'
 import { getSiteUrl } from '@/utils/url'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
+import { cookies } from 'next/headers'
 
 // Helper to mask email for safe logging
 const maskEmail = (e: string) => e ? e.replace(/(.{2})(.*)(?=@)/, "$1***") : 'unknown';
@@ -98,6 +99,10 @@ export async function signupAction(formData: FormData) {
     country,
     emailMasked: maskEmail(email),
   });
+
+  const cookieStore = await cookies();
+  if (intent) cookieStore.set('azhon_auth_intent', intent, { maxAge: 3600, path: '/' });
+  if (nextParam) cookieStore.set('azhon_auth_next', nextParam, { maxAge: 3600, path: '/' });
 
   const supabase = await createClient()
 
