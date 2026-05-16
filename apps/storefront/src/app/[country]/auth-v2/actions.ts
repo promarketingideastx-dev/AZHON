@@ -6,20 +6,15 @@ import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
 import { prisma } from '@/lib/prisma'
+import { normalizeAuthNext } from '@/utils/url'
 
 // Helper to mask email for safe logging
 const maskEmail = (e: string) => e ? e.replace(/(.{2})(.*)(?=@)/, "$1***") : 'unknown';
 
-// Helper to determine the post-login destination deterministically
 async function resolveDestination(supabase: any, country: string, next: string | null, intent: string | null) {
   const countryPrefix = `/${country}`;
 
-  // 1. Explicit next has priority
-  if (next && next !== '/' && next !== countryPrefix && next.startsWith('/') && !next.startsWith('//')) {
-    return next;
-  }
-
-  // 2. Business state has priority over intent
+  // Business state has priority over intent and next
   const { data: authData } = await supabase.auth.getUser();
   if (authData?.user) {
     const { data: dbUser } = await supabase
@@ -34,12 +29,7 @@ async function resolveDestination(supabase: any, country: string, next: string |
     }
   }
 
-  // 3. Fallback to intent hint or profile
-  if (intent === 'seller') {
-    return `${countryPrefix}/vendedor/onboarding`;
-  }
-  
-  return `${countryPrefix}/perfil`;
+  return normalizeAuthNext({ country, intent, next });
 }
 
 function getErrorKey(message: string, intent?: string | null) {
@@ -79,7 +69,8 @@ export async function loginAction(formData: FormData) {
   const email = formData.get('email') as string
   const password = formData.get('password') as string
   const intent = formData.get('intent') as string | null
-  const nextParam = formData.get('next') as string | null
+  const rawNext = formData.get('next') as string | null
+  const nextParam = normalizeAuthNext({ country, intent, next: rawNext })
 
   const { data: authData, error } = await supabase.auth.signInWithPassword({
     email,
@@ -129,7 +120,8 @@ export async function signupAction(formData: FormData) {
   const password = formData.get('password') as string
   const passwordConfirm = formData.get('passwordConfirm') as string
   const intent = formData.get('intent') as string | null
-  const nextParam = formData.get('next') as string | null
+  const rawNext = formData.get('next') as string | null
+  const nextParam = normalizeAuthNext({ country, intent, next: rawNext })
 
   console.log('[AZHON_AUTH_V2_TRACE]', {
     step: 'signup:start',
@@ -228,7 +220,8 @@ export async function resendVerifyAction(formData: FormData) {
   const country = formData.get('country') as string
   const email = formData.get('email') as string
   const intent = formData.get('intent') as string | null
-  const nextParam = formData.get('next') as string | null
+  const rawNext = formData.get('next') as string | null
+  const nextParam = normalizeAuthNext({ country, intent, next: rawNext })
 
   if (!email) {
     redirect(`/${country}/auth-v2/login`)
@@ -316,7 +309,8 @@ export async function googleOAuthAction(formData: FormData) {
   const supabase = await createClient()
   const country = formData.get('country') as string
   const intent = formData.get('intent') as string | null
-  const nextParam = formData.get('next') as string | null
+  const rawNext = formData.get('next') as string | null
+  const nextParam = normalizeAuthNext({ country, intent, next: rawNext })
 
   const destination = await resolveDestination(supabase, country, nextParam, intent);
   const intentParam = intent ? `&intent=${intent}` : '';
@@ -363,8 +357,9 @@ export async function completeProfileAction(formData: FormData) {
   const lastName = formData.get('lastName') as string;
   const phone = formData.get('phone') as string;
   const intent = formData.get('intent') as string;
-  const nextParam = formData.get('next') as string;
+  const rawNext = formData.get('next') as string;
   const country = formData.get('country') as string || 'hn';
+  const nextParam = normalizeAuthNext({ country, intent, next: rawNext });
 
   console.log('[AZHON_AUTH_V2_TRACE]', { step: 'complete_profile:start', intent, nextParam, country });
 
@@ -419,13 +414,7 @@ export async function completeProfileAction(formData: FormData) {
   }
 
   // 3. Resolve destination
-  let redirectUrl = `/${country}/perfil`;
-  
-  if (nextParam && nextParam.startsWith('/') && !nextParam.startsWith('//')) {
-    redirectUrl = nextParam;
-  } else if (intent === 'seller') {
-    redirectUrl = `/${country}/vendedor/onboarding`;
-  }
+  const redirectUrl = nextParam;
 
   console.log('[AZHON_AUTH_V2_TRACE]', { step: 'complete_profile:redirecting', target: redirectUrl });
   redirect(redirectUrl);

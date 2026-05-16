@@ -2,6 +2,7 @@ import { getDictionary, defaultLocale } from '@/i18n';
 import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { ShoppingBag, Store } from 'lucide-react'; // Asumiendo lucide-react basado en Next.js standard
+import { normalizeAuthNext } from '@/utils/url';
 
 export default async function IntentGatePage({
   params,
@@ -23,11 +24,15 @@ export default async function IntentGatePage({
   const buildQuery = (newIntent: string) => {
     const qs = new URLSearchParams();
     qs.append('intent', newIntent);
-    if (next) qs.append('next', next);
+    
+    const resolvedNext = normalizeAuthNext({ country, intent: newIntent, next });
+    if (resolvedNext) qs.append('next', resolvedNext);
+    
     return `?${qs.toString()}`;
   };
 
-  const loginQuery = next ? `?next=${encodeURIComponent(next)}` : '';
+  const resolvedLoginNext = normalizeAuthNext({ country, intent, next });
+  const loginQuery = resolvedLoginNext ? `?next=${encodeURIComponent(resolvedLoginNext)}` : '';
 
   return (
     <div className="w-full flex flex-col items-center">

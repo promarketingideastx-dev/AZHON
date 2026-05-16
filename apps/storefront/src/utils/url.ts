@@ -17,3 +17,25 @@ export const getSiteUrl = () => {
   
   return url;
 };
+
+export function normalizeAuthNext(params: {
+  country: string;
+  intent?: string | null;
+  next?: string | null;
+}) {
+  const { country, intent, next } = params;
+  const countryPrefix = `/${country}`;
+
+  if (intent === 'seller') {
+    if (next && next.includes('/vendedor/') && next.startsWith('/') && !next.startsWith('//')) {
+      return next;
+    }
+    return `${countryPrefix}/vendedor/onboarding`;
+  }
+
+  if (next && next.startsWith('/') && !next.startsWith('//')) {
+    return next;
+  }
+  
+  return `${countryPrefix}/perfil`;
+}

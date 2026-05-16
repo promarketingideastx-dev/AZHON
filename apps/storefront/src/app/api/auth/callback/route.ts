@@ -2,6 +2,7 @@ import { createClient } from '@/utils/supabase/server'
 import { NextResponse, NextRequest } from 'next/server'
 import { SUPPORTED_COUNTRIES } from '@/config/countries'
 import { prisma } from '@/lib/prisma'
+import { normalizeAuthNext } from '@/utils/url'
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url)
@@ -93,12 +94,13 @@ export async function GET(request: NextRequest) {
       }
 
       // If there's an explicit safe next parameter, honor it over the default role-based routing
+      // Use normalizeAuthNext to ensure intent=seller never ends up in /perfil by mistake
       if (next && next !== '/' && next !== countryPrefix && next.startsWith('/') && !next.startsWith('//')) {
          redirectUrl = next;
-      } else if (intent === 'seller' && redirectUrl === `${countryPrefix || '/'}/perfil`) {
-         // Fallback to onboarding if intent is seller and we are falling back to default buyer profile
-         redirectUrl = `${countryPrefix}/vendedor/onboarding`;
       }
+      
+      const parsedCountry = countryPrefix ? countryPrefix.replace('/', '') : 'hn';
+      redirectUrl = normalizeAuthNext({ country: parsedCountry, intent, next: redirectUrl });
       
       // PROFILE COMPLETION GATE
       if (authData?.user) {
