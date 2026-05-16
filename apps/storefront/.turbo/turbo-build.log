@@ -15,11 +15,11 @@
 
 ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
   Creating an optimized production build ...
-✓ Compiled successfully in 6.8s
-  Finished TypeScript in 5.7s    ✓ Finished TypeScript in 5.7s 
-  Collecting page data using 5 workers in 630ms    ✓ Collecting page data using 5 workers in 630ms 
-✓ Generating static pages using 5 workers (5/5) in 137ms
-  Finalizing page optimization in 85ms    ✓ Finalizing page optimization in 85ms 
+✓ Compiled successfully in 6.6s
+  Finished TypeScript in 5.9s    ✓ Finished TypeScript in 5.9s 
+  Collecting page data using 5 workers in 635ms    ✓ Collecting page data using 5 workers in 635ms 
+✓ Generating static pages using 5 workers (5/5) in 124ms
+  Finalizing page optimization in 17ms    ✓ Finalizing page optimization in 17ms 
 
 Route (app)
 ┌ ○ /_not-found
@@ -27,6 +27,7 @@ Route (app)
 ├ ƒ /[country]/admin/bodega/discrepancias
 ├ ƒ /[country]/admin/bodega/discrepancias/[id]
 ├ ƒ /[country]/admin/productos/revision
+├ ƒ /[country]/auth-v2/complete-profile
 ├ ƒ /[country]/auth-v2/forgot-password
 ├ ƒ /[country]/auth-v2/login
 ├ ƒ /[country]/auth-v2/reset-password
@@ -46,9 +47,12 @@ Route (app)
 ├ ƒ /[country]/perfil/comprobantes
 ├ ƒ /[country]/perfil/configuracion
 ├ ƒ /[country]/perfil/direcciones
+├ ƒ /[country]/perfil/favoritos
+├ ƒ /[country]/perfil/mensajes
 ├ ƒ /[country]/perfil/ordenes
 ├ ƒ /[country]/perfil/ordenes/[orderId]
 ├ ƒ /[country]/perfil/pagos
+├ ƒ /[country]/perfil/seguimiento
 ├ ƒ /[country]/perfil/soporte
 ├ ƒ /[country]/producto/[id]
 ├ ƒ /[country]/reset-password

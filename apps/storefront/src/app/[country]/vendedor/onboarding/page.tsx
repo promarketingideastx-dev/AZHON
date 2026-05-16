@@ -3,6 +3,8 @@ import { cookies } from 'next/headers';
 import { getOrCreateOnboardingSession } from './actions';
 import OnboardingClient from './OnboardingClient';
 import { redirect } from 'next/navigation';
+import { createClient } from '@/utils/supabase/server';
+import { prisma } from '@/lib/prisma';
 
 export default async function SellerOnboardingPage({
   params,
@@ -22,6 +24,24 @@ export default async function SellerOnboardingPage({
     console.log(`[AZHON_AUTH_TRACE] seller_gate_onboarding:no_session, redirecting to login`);
     const nextPath = encodeURIComponent(`/${country}/vendedor/onboarding`);
     redirect(`/${country}/login?intent=seller&next=${nextPath}`);
+  }
+
+  // PROFILE COMPLETION GATE
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (user) {
+    const dbUserFull = await prisma.user.findUnique({
+      where: { id: user.id },
+      include: { BuyerProfile: true }
+    });
+
+    const isProfileComplete = dbUserFull?.phone && dbUserFull?.BuyerProfile?.fullName;
+
+    if (!isProfileComplete) {
+      console.log(`[AZHON_AUTH_TRACE] seller_gate_onboarding:profile_incomplete, redirecting to complete-profile`);
+      const nextPath = encodeURIComponent(`/${country}/vendedor/onboarding`);
+      redirect(`/${country}/auth-v2/complete-profile?intent=seller&next=${nextPath}`);
+    }
   }
 
   const { profile, session } = data;

@@ -15,9 +15,18 @@ export default async function BuyerProfileOverviewPage({ params }: { params: Pro
   }
 
   // Fetch or infer Buyer Profile
-  let profile = await prisma.buyerProfile.findUnique({
-    where: { userId: user.id }
+  let dbUserFull = await prisma.user.findUnique({
+    where: { id: user.id },
+    include: { BuyerProfile: true }
   });
+
+  const profile = dbUserFull?.BuyerProfile;
+  const isProfileComplete = dbUserFull?.phone && profile?.fullName;
+
+  if (!isProfileComplete) {
+    const nextPath = encodeURIComponent(`/${country}/perfil`);
+    redirect(`/${country}/auth-v2/complete-profile?intent=buyer&next=${nextPath}`);
+  }
 
   // If profile doesn't exist, we fallback to auth metadata (auto-creation will happen in CRM background sync later)
   const cookieStore = await cookies();

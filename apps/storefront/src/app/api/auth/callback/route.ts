@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { NextResponse, NextRequest } from 'next/server'
 import { SUPPORTED_COUNTRIES } from '@/config/countries'
+import { prisma } from '@/lib/prisma'
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url)
@@ -99,6 +100,29 @@ export async function GET(request: NextRequest) {
          redirectUrl = `${countryPrefix}/vendedor/onboarding`;
       }
       
+      // PROFILE COMPLETION GATE
+      if (authData?.user) {
+        let isProfileComplete = false;
+        
+        // Check User.phone and BuyerProfile.fullName
+        const dbUserFull = await prisma.user.findUnique({
+          where: { id: authData.user.id },
+          include: { BuyerProfile: true }
+        });
+        
+        if (dbUserFull?.phone && dbUserFull?.BuyerProfile?.fullName) {
+          isProfileComplete = true;
+        }
+        
+        if (!isProfileComplete) {
+          console.log(`[AZHON_AUTH_V2_TRACE] callback:profile_incomplete, redirecting to complete-profile`);
+          const qs = new URLSearchParams();
+          if (intent) qs.set('intent', intent);
+          if (redirectUrl && redirectUrl !== '/') qs.set('next', redirectUrl);
+          redirectUrl = `${countryPrefix || '/'}/auth-v2/complete-profile?${qs.toString()}`;
+        }
+      }
+
       console.log(`[AZHON_AUTH_V2_TRACE] callback:final_redirect, target: ${redirectUrl}`);
       const response = NextResponse.redirect(new URL(redirectUrl, request.url))
       

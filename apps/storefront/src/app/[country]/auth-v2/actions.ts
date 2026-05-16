@@ -5,6 +5,7 @@ import { getSiteUrl } from '@/utils/url'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
+import { prisma } from '@/lib/prisma'
 
 // Helper to mask email for safe logging
 const maskEmail = (e: string) => e ? e.replace(/(.{2})(.*)(?=@)/, "$1***") : 'unknown';
@@ -315,4 +316,77 @@ export async function googleOAuthAction(formData: FormData) {
     
     redirect(finalUrl);
   }
+}
+
+export async function completeProfileAction(formData: FormData) {
+  const firstName = formData.get('firstName') as string;
+  const lastName = formData.get('lastName') as string;
+  const phone = formData.get('phone') as string;
+  const intent = formData.get('intent') as string;
+  const nextParam = formData.get('next') as string;
+  const country = formData.get('country') as string || 'hn';
+
+  console.log('[AZHON_AUTH_V2_TRACE]', { step: 'complete_profile:start', intent, nextParam, country });
+
+  // Basic validation
+  if (!firstName || !firstName.trim() || !lastName || !lastName.trim() || !phone || !phone.trim()) {
+    console.log('[AZHON_AUTH_V2_TRACE]', { step: 'complete_profile:validation_failed', reason: 'missing_fields' });
+    const qs = buildQueryString({ error: 'err_profile_required', intent, next: nextParam });
+    redirect(`/${country}/auth-v2/complete-profile${qs}`);
+  }
+
+  // Very basic phone validation (just check length for safety, allow + and digits)
+  const phoneRegex = /^\+?[0-9\s\-]{8,15}$/;
+  if (!phoneRegex.test(phone)) {
+    console.log('[AZHON_AUTH_V2_TRACE]', { step: 'complete_profile:validation_failed', reason: 'invalid_phone' });
+    const qs = buildQueryString({ error: 'err_invalid_phone', intent, next: nextParam });
+    redirect(`/${country}/auth-v2/complete-profile${qs}`);
+  }
+
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect(`/${country}/auth-v2/login`);
+  }
+
+  const fullName = `${firstName.trim()} ${lastName.trim()}`;
+
+  try {
+    // 1. Update User phone
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { phone: phone.trim() }
+    });
+
+    // 2. Upsert BuyerProfile
+    await prisma.buyerProfile.upsert({
+      where: { userId: user.id },
+      create: {
+        userId: user.id,
+        fullName: fullName
+      },
+      update: {
+        fullName: fullName
+      }
+    });
+    
+    console.log('[AZHON_AUTH_V2_TRACE]', { step: 'complete_profile:saved' });
+  } catch (error) {
+    console.error('[AZHON_AUTH_V2_TRACE] complete_profile:error_saving', error);
+    const qs = buildQueryString({ error: 'err_generic', intent, next: nextParam });
+    redirect(`/${country}/auth-v2/complete-profile${qs}`);
+  }
+
+  // 3. Resolve destination
+  let redirectUrl = `/${country}/perfil`;
+  
+  if (nextParam && nextParam.startsWith('/') && !nextParam.startsWith('//')) {
+    redirectUrl = nextParam;
+  } else if (intent === 'seller') {
+    redirectUrl = `/${country}/vendedor/onboarding`;
+  }
+
+  console.log('[AZHON_AUTH_V2_TRACE]', { step: 'complete_profile:redirecting', target: redirectUrl });
+  redirect(redirectUrl);
 }
