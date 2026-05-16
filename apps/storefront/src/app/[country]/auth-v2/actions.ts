@@ -138,11 +138,18 @@ export async function signupAction(formData: FormData) {
 
   console.log('[AZHON_AUTH_V2_TRACE]', { step: 'signup:supabase_call_start' });
   
+  console.log('[AZHON_AUTH_V2_TRACE]', { step: 'signup:metadata_attached', auth_intent: intent, auth_next: nextParam, auth_country: country });
+
   const { data: authData, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
-      emailRedirectTo
+      emailRedirectTo,
+      data: {
+        auth_intent: intent || null,
+        auth_next: nextParam || null,
+        auth_country: country || null
+      }
     }
   })
 

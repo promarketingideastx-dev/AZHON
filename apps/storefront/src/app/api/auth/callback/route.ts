@@ -9,8 +9,8 @@ export async function GET(request: NextRequest) {
   const intentCookie = cookieStore.get('azhon_auth_intent')?.value
   const nextCookie = cookieStore.get('azhon_auth_next')?.value
 
-  const next = requestUrl.searchParams.get('next') || nextCookie || '/'
-  const intent = requestUrl.searchParams.get('intent') || intentCookie || null
+  let next = requestUrl.searchParams.get('next') || nextCookie || '/'
+  let intent = requestUrl.searchParams.get('intent') || intentCookie || null
 
   let countryPrefix = '';
   const nextSegment = next.split('/')[1];
@@ -41,6 +41,22 @@ export async function GET(request: NextRequest) {
       if (authData?.user) {
         console.log(`[AZHON_AUTH_V2_TRACE] callback:user_authenticated, user_id: ${authData.user.id}`);
         console.log(`[AUTH AUDIT] event: email_confirmed_or_session_started, user_id: ${authData.user.id}, date: ${new Date().toISOString()}`)
+        
+        // 3. user_metadata fallback added
+        const metaIntent = authData.user.user_metadata?.auth_intent;
+        const metaNext = authData.user.user_metadata?.auth_next;
+        const metaCountry = authData.user.user_metadata?.auth_country;
+
+        if (metaIntent && (!intent || intent !== 'seller')) {
+          console.log(`[AZHON_AUTH_V2_TRACE] callback:metadata_intent_found, intent: ${metaIntent}`);
+          intent = metaIntent;
+        }
+        if (metaNext && next === '/') {
+          next = metaNext;
+        }
+        if (metaCountry && !countryPrefix) {
+          countryPrefix = `/${metaCountry}`;
+        }
         let { data: dbUser } = await supabase
           .from('User')
           .select('role')
