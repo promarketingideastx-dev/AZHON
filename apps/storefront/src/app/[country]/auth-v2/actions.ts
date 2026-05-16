@@ -93,6 +93,22 @@ export async function loginAction(formData: FormData) {
   }
 
   const destination = await resolveDestination(supabase, country, nextParam, intent);
+
+  // PROFILE COMPLETION GATE (PREVENT VISUAL BOUNCE)
+  if (authData?.user) {
+    const dbUserFull = await prisma.user.findUnique({
+      where: { id: authData.user.id },
+      include: { BuyerProfile: true }
+    });
+    
+    const isProfileComplete = dbUserFull?.phone && dbUserFull?.BuyerProfile?.fullName;
+    
+    if (!isProfileComplete) {
+      console.log(`[AZHON_AUTH_V2_TRACE] loginAction:profile_incomplete, redirecting to complete-profile`);
+      const nextPath = encodeURIComponent(destination);
+      redirect(`/${country}/auth-v2/complete-profile?intent=${intent || 'buyer'}&next=${nextPath}`);
+    }
+  }
   
   revalidatePath('/', 'layout')
   redirect(destination)
