@@ -136,7 +136,14 @@ export default async function SellerDashboardPage({
           <h1 className="text-2xl font-black text-secondary">
             {dict?.sellerProfile?.dashboardTitle || 'Dashboard Operacional'}
           </h1>
-          <p className="text-sm text-gray-500 mt-1">{store.name}</p>
+          <div className="flex items-center gap-3 mt-1">
+            <p className="text-sm text-gray-500">{store.name}</p>
+            {store.kycStatus === 'PENDING' && (
+              <span className="bg-orange-100 text-orange-800 text-[10px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
+                {dict?.sellerProfile?.statusReview || 'En Revisión'}
+              </span>
+            )}
+          </div>
         </div>
         <Link 
           href={`/${country}/vendedor/productos/nuevo`}
@@ -145,6 +152,19 @@ export default async function SellerDashboardPage({
           {dict?.sellerProfile?.createProductBtn || '+ Crear Producto'}
         </Link>
       </div>
+
+      {/* KYC PENDING BANNER */}
+      {store.kycStatus === 'PENDING' && (
+        <div className="bg-orange-50 border border-orange-200 p-6 rounded-2xl flex items-start gap-4 animate-fade-in">
+          <AlertCircle className="w-6 h-6 flex-shrink-0 mt-0.5 text-orange-600" />
+          <div>
+            <h3 className="font-bold text-orange-900 text-lg">{dict?.sellerProfile?.storeInReviewTitle || 'Tienda en revisión'}</h3>
+            <p className="text-orange-800 text-sm mt-1 leading-relaxed">
+              {dict?.sellerProfile?.storeInReviewDesc || 'Tu solicitud de vendedor está siendo revisada por nuestro equipo. Puedes comenzar a crear tu catálogo en modo borrador, pero la publicación activa estará bloqueada hasta que la tienda sea aprobada.'}
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* LAYER 1: Catalog Health */}
       <section>

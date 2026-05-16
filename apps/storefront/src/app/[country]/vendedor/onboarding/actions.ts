@@ -108,6 +108,9 @@ export async function submitOnboardingAction(country: string) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Unauthorized");
 
+  const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
+  if (!dbUser) throw new Error("User not found");
+
   const profile = await prisma.sellerProfile.findUnique({
     where: { userId: user.id },
     include: { OnboardingSessions: { where: { completedAt: null } } }
@@ -118,7 +121,18 @@ export async function submitOnboardingAction(country: string) {
   }
 
   const session = profile.OnboardingSessions[0];
+  const progressData = session.progressData as Record<string, any> || {};
 
+  // Extraer data acumulada
+  const commercialData = progressData['COMMERCIAL'] || {};
+  const businessTypeData = progressData['BUSINESS_TYPE'] || {};
+  const residenceData = progressData['RESIDENCE'] || {};
+  
+  const storeName = commercialData.storeName || `Tienda de ${user.email}`;
+  const category = commercialData.category ? [commercialData.category] : [];
+  const targetCountry = residenceData.targetCountry ? [residenceData.targetCountry] : [];
+
+  // 1. Cerrar Sesión de Onboarding
   await prisma.sellerOnboardingSession.update({
     where: { id: session.id },
     data: {
@@ -127,19 +141,53 @@ export async function submitOnboardingAction(country: string) {
     }
   });
 
+  // 2. Actualizar Seller Profile con la data real
   await prisma.sellerProfile.update({
     where: { id: profile.id },
-    data: { status: 'UNDER_REVIEW' } // Goes to Super Admin
+    data: { 
+      status: 'UNDER_REVIEW', // Goes to Super Admin
+      commercialName: storeName,
+      businessType: businessTypeData.businessType || 'FORMAL',
+      targetCategories: category,
+      targetCountries: targetCountry
+    } 
   });
 
+  // 3. CREAR / ACTUALIZAR LA TIENDA (STORE)
+  let store = await prisma.store.findFirst({
+    where: { ownerId: user.id, tenantId: dbUser.tenantId }
+  });
+
+  if (!store) {
+    store = await prisma.store.create({
+      data: {
+        tenantId: dbUser.tenantId,
+        ownerId: user.id,
+        name: storeName,
+        planType: 'STANDARD', // Por defecto
+        kycStatus: 'PENDING'  // Bloqueo operativo inicial
+      }
+    });
+  } else {
+    store = await prisma.store.update({
+      where: { id: store.id },
+      data: {
+        name: storeName,
+        kycStatus: 'PENDING'
+      }
+    });
+  }
+
+  // 4. Auditoría
   await prisma.accountEvent.create({
     data: {
       userId: user.id,
       eventType: 'seller_under_review',
-      payload: { sessionId: session.id }
+      payload: { sessionId: session.id, storeId: store.id }
     }
   });
 
+  // 5. Correo
   try {
     const { sendTransactionalEmail } = await import('@/lib/email');
     await sendTransactionalEmail({
