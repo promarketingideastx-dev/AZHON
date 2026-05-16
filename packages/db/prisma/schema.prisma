@@ -49,12 +49,12 @@ model User {
   ReceiptsReceived       WarehouseReceipt[]     @relation("ReceiptReceiver")
   DiscrepanciesValidated WarehouseDiscrepancy[] @relation("DiscrepancyValidator")
 
-  BuyerProfile      BuyerProfile?
-  SellerProfile     SellerProfile?
-  Verifications     AccountVerification[]
-  Addresses         UserAddress[]
-  Preferences       UserPreference?
-  Events            AccountEvent[]
+  BuyerProfile  BuyerProfile?
+  SellerProfile SellerProfile?
+  Verifications AccountVerification[]
+  Addresses     UserAddress[]
+  Preferences   UserPreference?
+  Events        AccountEvent[]
 
   @@unique([tenantId, email])
 }
@@ -428,18 +428,18 @@ model BuyerProfile {
 }
 
 model SellerProfile {
-  id               String   @id @default(uuid())
-  userId           String   @unique
-  status           String   @default("DRAFT") // DRAFT, IN_PREPARATION, PENDING_DOCUMENTS, UNDER_REVIEW, ACTIVE, RESTRICTED
-  sellerType       String   @default("FORMAL") // FORMAL, REGULARIZATION, INTERNATIONAL_WAITLIST
-  
+  id         String @id @default(uuid())
+  userId     String @unique
+  status     String @default("DRAFT") // DRAFT, IN_PREPARATION, PENDING_DOCUMENTS, UNDER_REVIEW, ACTIVE, RESTRICTED
+  sellerType String @default("FORMAL") // FORMAL, REGULARIZATION, INTERNATIONAL_WAITLIST
+
   commercialName   String?
   businessType     String?
   targetCountries  String[] // Ej. ['HN', 'MX']
   targetCategories String[]
 
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   User               User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
   OnboardingSessions SellerOnboardingSession[]
@@ -447,69 +447,83 @@ model SellerProfile {
 }
 
 model SellerOnboardingSession {
-  id               String    @id @default(uuid())
-  sellerProfileId  String
-  currentStep      String    @default("INTENT") // INTENT, RESIDENCE, TARGET, BUSINESS_TYPE, COMMERCIAL, CATEGORIES, ADDRESS, PAYOUT, DOCUMENTS, SECURITY, COMPLETED
-  progressData     Json      // Datos en borrador
-  completedAt      DateTime?
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
+  id              String    @id @default(uuid())
+  sellerProfileId String
+  currentStep     String    @default("INTENT") // INTENT, RESIDENCE, TARGET, BUSINESS_TYPE, COMMERCIAL, CATEGORIES, ADDRESS, PAYOUT, DOCUMENTS, SECURITY, COMPLETED
+  progressData    Json // Datos en borrador
+  completedAt     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 
   SellerProfile SellerProfile @relation(fields: [sellerProfileId], references: [id], onDelete: Cascade)
 }
 
 model SellerComplianceRecord {
-  id               String    @id @default(uuid())
-  sellerProfileId  String
-  documentType     String    // ID, TAX, BANK, INCORPORATION
-  documentUrl      String
-  status           String    @default("PENDING") // PENDING, APPROVED, REJECTED
-  reviewerNotes    String?
-  reviewedAt       DateTime?
-  createdAt        DateTime  @default(now())
+  id              String    @id @default(uuid())
+  sellerProfileId String
+  documentType    String // ID, TAX, BANK, INCORPORATION
+  documentUrl     String
+  status          String    @default("PENDING") // PENDING, APPROVED, REJECTED
+  reviewerNotes   String?
+  reviewedAt      DateTime?
+  createdAt       DateTime  @default(now())
 
   SellerProfile SellerProfile @relation(fields: [sellerProfileId], references: [id], onDelete: Cascade)
 }
 
 model AccountVerification {
-  id          String    @id @default(uuid())
-  userId      String
-  type        String    // EMAIL, PHONE, TWO_FACTOR
-  status      String    @default("PENDING") // PENDING, VERIFIED, DISABLED
-  verifiedAt  DateTime?
-  createdAt   DateTime  @default(now())
+  id         String    @id @default(uuid())
+  userId     String
+  type       String // EMAIL, PHONE, TWO_FACTOR
+  status     String    @default("PENDING") // PENDING, VERIFIED, DISABLED
+  verifiedAt DateTime?
+  createdAt  DateTime  @default(now())
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model UserAddress {
-  id             String   @id @default(uuid())
-  userId         String
-  countryCode    String
-  state          String
-  city           String
-  zone           String?
-  addressLine1   String
-  reference      String?
-  latitude       Float?
-  longitude      Float?
-  isPinManual    Boolean  @default(false)
-  status         String   @default("UNVERIFIED") // UNVERIFIED, VERIFIED, PARTIAL, MANUAL_REVIEW
-  isDefault      Boolean  @default(false)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id           String  @id @default(uuid())
+  userId       String
+  countryCode  String
+  state        String
+  city         String
+  zone         String?
+  addressLine1 String
+  reference    String?
+  latitude     Float?
+  longitude    Float?
+  isPinManual  Boolean @default(false)
+  status       String  @default("UNVERIFIED") // UNVERIFIED, VERIFIED, PARTIAL, MANUAL_REVIEW
+  isDefault    Boolean @default(false)
+
+  // --- NUCLEO GEO ESTRUCTURADO ---
+  cityCode       String?
+  departmentCode String?
+  citySource     String? @default("catalog") // catalog, manual_request
+  cityNameRaw    String? // Nombre real si el usuario usó "No encuentro mi ciudad"
+
+  // --- ESTADOS LOGÍSTICOS (Address Intelligence) ---
+  geoStatus           String? @default("pending_review") // pending_geocode, pending_review, geocoded, invalid_location
+  coverageStatus      String? @default("pending_review") // pending_review, covered, out_of_bounds, restricted
+  deliveryEligibility String? @default("pending_review") // pending_review, door_delivery, pickup_required, locker_required, no_delivery
+  addressSource       String? @default("user_selected") // user_selected, manual_request, admin_created, imported
+  gpsRequiredLater    Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   User          User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
   Verifications AddressVerification[]
 }
 
 model AddressVerification {
-  id             String   @id @default(uuid())
-  addressId      String
-  status         String   // VERIFIED, FAILED, REVIEW_REQUIRED
-  provider       String?  // Ej. Google Maps, Internal
-  rawResponse    Json?
-  createdAt      DateTime @default(now())
+  id          String   @id @default(uuid())
+  addressId   String
+  status      String // VERIFIED, FAILED, REVIEW_REQUIRED
+  provider    String? // Ej. Google Maps, Internal
+  rawResponse Json?
+  createdAt   DateTime @default(now())
 
   Address UserAddress @relation(fields: [addressId], references: [id], onDelete: Cascade)
 }
@@ -528,12 +542,12 @@ model UserPreference {
 }
 
 model AccountEvent {
-  id          String   @id @default(uuid())
-  userId      String
-  eventType   String   // account_created, seller_onboarding_started, etc
-  payload     Json?
-  ipAddress   String?
-  createdAt   DateTime @default(now())
+  id        String   @id @default(uuid())
+  userId    String
+  eventType String // account_created, seller_onboarding_started, etc
+  payload   Json?
+  ipAddress String?
+  createdAt DateTime @default(now())
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
