@@ -15,9 +15,12 @@ export default async function CompleteProfilePage({
 }) {
   const { country } = await params;
   const sParams = await searchParams;
-  const intent = sParams?.intent as string || 'buyer';
-  const errorKey = sParams?.error as string;
-  const next = sParams?.next as string;
+  const rawIntent = Array.isArray(sParams?.intent) ? sParams.intent[0] : sParams?.intent;
+  const rawNext = Array.isArray(sParams?.next) ? sParams.next[0] : sParams?.next;
+  
+  const intent = rawIntent === 'seller' || rawNext?.includes('/vendedor/') ? 'seller' : 'buyer';
+  const errorKey = Array.isArray(sParams?.error) ? sParams.error[0] : sParams?.error;
+  const next = rawNext as string | undefined;
 
   const cookieStore = await cookies();
   const locale = cookieStore.get('NEXT_LOCALE')?.value || defaultLocale;
