@@ -2,6 +2,7 @@ import { getDictionary, defaultLocale } from '@/i18n';
 import { cookies } from 'next/headers';
 import { SubmitButton } from '../SubmitButton';
 import { resetPasswordAction } from '../actions';
+import { PasswordInput } from '../PasswordInput';
 
 export default async function ResetPasswordV2Page({
   params,
@@ -41,24 +42,12 @@ export default async function ResetPasswordV2Page({
 
         <div>
           <label className="block text-sm font-medium text-secondary mb-1">{dict.auth.password}</label>
-          <input 
-            type="password" 
-            name="password"
-            required
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-            placeholder="••••••••"
-          />
+          <PasswordInput name="password" />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-secondary mb-1">{dict.auth.passwordConfirm}</label>
-          <input 
-            type="password" 
-            name="passwordConfirm"
-            required
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-            placeholder="••••••••"
-          />
+          <PasswordInput name="passwordConfirm" />
         </div>
 
         <SubmitButton pendingText="Actualizando...">

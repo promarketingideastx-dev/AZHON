@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { SubmitButton } from '../SubmitButton';
 import { signupAction, googleOAuthAction } from '../actions';
 import { ArrowLeft } from 'lucide-react';
+import { PasswordInput } from '../PasswordInput';
 
 export default async function SignupV2Page({
   params,
@@ -93,24 +94,12 @@ export default async function SignupV2Page({
 
         <div>
           <label className="block text-sm font-medium text-secondary mb-1">{dict.auth.passwordLabel}</label>
-          <input 
-            type="password" 
-            name="password"
-            required
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-            placeholder="••••••••"
-          />
+          <PasswordInput name="password" />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-secondary mb-1">{dict.auth.confirmPasswordLabel}</label>
-          <input 
-            type="password" 
-            name="passwordConfirm"
-            required
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-            placeholder="••••••••"
-          />
+          <PasswordInput name="passwordConfirm" />
         </div>
 
         <SubmitButton pendingText="Creando...">

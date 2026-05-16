@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { SubmitButton } from '../SubmitButton';
 import { loginAction, googleOAuthAction } from '../actions';
 import { ArrowLeft } from 'lucide-react';
+import { PasswordInput } from '../PasswordInput';
 
 export default async function LoginV2Page({
   params,
@@ -117,13 +118,7 @@ export default async function LoginV2Page({
               {dict.auth.forgotPassword}
             </Link>
           </div>
-          <input 
-            type="password" 
-            name="password"
-            required
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-            placeholder="••••••••"
-          />
+          <PasswordInput name="password" />
         </div>
 
         <SubmitButton pendingText="Iniciando...">
