@@ -37,9 +37,11 @@
       "err_pass_mismatch": "As senhas não coincidem.",
       "err_invalid_creds": "E-mail ou senha incorretos.",
       "err_email_exists": "Já existe uma conta com este e-mail. Entre ou redefina sua senha.",
-      "err_email_exists_seller": "Já existe uma conta com este e-mail. Entre para continuar seu cadastro como vendedor.",
-      "err_email_exists_pending": "Já existe uma conta aguardando verificação. Verifique sua caixa de entrada ou reenvie a verificação.",
-      "signInToContinue": "Entrar para continuar"
+      "err_email_exists_seller": "Já existe uma conta com este e-mail. Faça login para continuar seu registro como vendedor.",
+      "err_email_exists_pending": "Já existe uma conta pendente de verificação. Verifique seu e-mail ou reenvie a verificação.",
+      "err_rate_limited": "Você tentou muitas vezes. Aguarde alguns minutos antes de tentar novamente.",
+      "err_password_policy": "A senha não atende aos requisitos de segurança.",
+      "signInToContinue": "Fazer login para continuar"
     },
     "alreadyHaveAccount": "Já tem uma conta?",
     "signInLink": "Entrar",

@@ -37,8 +37,10 @@
       "err_pass_mismatch": "Passwords do not match.",
       "err_invalid_creds": "Incorrect email or password.",
       "err_email_exists": "An account with this email already exists. Sign in or reset your password.",
-      "err_email_exists_seller": "An account with this email already exists. Sign in to continue your seller registration.",
-      "err_email_exists_pending": "An account with this email is waiting for verification. Check your inbox or resend verification.",
+      "err_email_exists_seller": "An account with this email already exists. Please sign in to continue your seller registration.",
+      "err_email_exists_pending": "An account pending verification already exists. Please check your email or resend verification.",
+      "err_rate_limited": "You have tried too many times. Please wait a few minutes before trying again.",
+      "err_password_policy": "Password does not meet the security requirements.",
       "signInToContinue": "Sign in to continue"
     },
     "alreadyHaveAccount": "Already have an account?",

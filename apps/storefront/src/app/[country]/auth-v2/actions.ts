@@ -42,8 +42,21 @@ async function resolveDestination(supabase: any, country: string, next: string |
 }
 
 function getErrorKey(message: string, intent?: string | null) {
-  if (message.includes('Invalid login credentials')) return 'err_invalid_creds';
-  if (message.includes('already registered') || message.includes('User already registered')) {
+  const msg = message.toLowerCase();
+  if (msg.includes('invalid login credentials')) return 'err_invalid_creds';
+  if (msg.includes('already registered')) {
+    if (intent === 'seller') return 'err_email_exists_seller';
+    return 'err_email_exists';
+  }
+  if (msg.includes('rate limit') || msg.includes('for security purposes') || msg.includes('too many requests')) {
+    return 'err_rate_limited';
+  }
+  if (msg.includes('password')) {
+    return 'err_password_policy';
+  }
+  if (msg.includes('database error')) {
+    // A database error during signup is almost always an orphaned public.User trigger constraint.
+    // It's safer to treat them as existing users and direct them to login.
     if (intent === 'seller') return 'err_email_exists_seller';
     return 'err_email_exists';
   }
@@ -139,11 +152,11 @@ export async function signupAction(formData: FormData) {
     hasSession: !!authData?.session, 
     hasUser: !!authData?.user, 
     success: !error,
-    error: error ? 'Supabase Auth Error' : null 
+    error: error ? { message: error.message, status: error.status, name: error.name } : null 
   });
 
   if (error) {
-    console.log('[AZHON_AUTH_V2_TRACE]', { step: 'signup:redirecting_due_to_error' });
+    console.log('[AZHON_AUTH_V2_TRACE]', { step: 'signup:redirecting_due_to_error', errorKey: getErrorKey(error.message, intent) });
     const qs = buildQueryString({ error: getErrorKey(error.message, intent), intent, next: nextParam });
     redirect(`/${country}/auth-v2/signup${qs}`)
   }
