@@ -100,7 +100,8 @@ export async function loginAction(formData: FormData) {
 
 export async function signupAction(formData: FormData) {
   const country = formData.get('country') as string
-  const email = formData.get('email') as string
+  const rawEmail = formData.get('email') as string
+  const email = rawEmail?.trim().toLowerCase()
   const password = formData.get('password') as string
   const passwordConfirm = formData.get('passwordConfirm') as string
   const intent = formData.get('intent') as string | null
@@ -113,6 +114,18 @@ export async function signupAction(formData: FormData) {
     country,
     emailMasked: maskEmail(email),
   });
+
+  // DUPLICATE EMAIL GUARD
+  const existingUser = await prisma.user.findFirst({
+    where: { email }
+  });
+
+  if (existingUser) {
+    console.log('[AZHON_AUTH_V2_TRACE]', { step: 'signup:email_already_exists_blocking' });
+    const errorKey = intent === 'seller' ? 'err_email_exists_seller' : 'err_email_exists';
+    const qs = buildQueryString({ error: errorKey, intent, next: nextParam });
+    redirect(`/${country}/auth-v2/signup${qs}`);
+  }
 
   const cookieStore = await cookies();
   if (intent) cookieStore.set('azhon_auth_intent', intent, { maxAge: 3600, path: '/' });
