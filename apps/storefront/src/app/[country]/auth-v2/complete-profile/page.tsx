@@ -17,19 +17,32 @@ export default async function CompleteProfilePage({
 }) {
   const { country } = await params;
   const sParams = await searchParams;
-  const rawIntent = Array.isArray(sParams?.intent) ? sParams.intent[0] : sParams?.intent;
-  const rawNext = Array.isArray(sParams?.next) ? sParams.next[0] : sParams?.next;
-  
-  const intent = rawIntent === 'seller' || rawNext?.includes('/vendedor/') ? 'seller' : 'buyer';
+  const sIntent = Array.isArray(sParams?.intent) ? sParams.intent[0] : sParams?.intent;
+  const sNext = Array.isArray(sParams?.next) ? sParams.next[0] : sParams?.next;
   const errorKey = Array.isArray(sParams?.error) ? sParams.error[0] : sParams?.error;
-  const next = rawNext as string | undefined;
 
   const cookieStore = await cookies();
   const locale = cookieStore.get('NEXT_LOCALE')?.value || defaultLocale;
   const dict = getDictionary(locale);
 
+  const cIntent = cookieStore.get('azhon_auth_intent')?.value;
+  const cNext = cookieStore.get('azhon_auth_next')?.value;
+
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+
+  const mIntent = user?.user_metadata?.auth_intent;
+  const mNext = user?.user_metadata?.auth_next;
+
+  const resolvedNext = sNext || cNext || mNext || undefined;
+  let resolvedIntent = sIntent || cIntent || mIntent;
+
+  if (resolvedNext?.includes('/vendedor/')) {
+    resolvedIntent = 'seller';
+  }
+
+  const intent = resolvedIntent === 'seller' ? 'seller' : 'buyer';
+  const next = resolvedNext;
 
   if (!user) {
     const qs = new URLSearchParams();
@@ -41,7 +54,7 @@ export default async function CompleteProfilePage({
   const errors = dict.auth?.complete_profile ?? {};
   const errorMessage =
     errorKey && typeof errorKey === "string"
-      ? errors[errorKey as keyof typeof errors] ?? 'Algo salió mal. Inténtalo nuevamente.'
+      ? errors[errorKey as keyof typeof errors] ?? dict.auth?.errors?.err_generic ?? 'Algo salió mal. Inténtalo nuevamente.'
       : null;
 
   return (

@@ -106,7 +106,15 @@ export async function loginAction(formData: FormData) {
     if (!isProfileComplete) {
       console.log(`[AZHON_AUTH_V2_TRACE] loginAction:profile_incomplete, redirecting to complete-profile`);
       const nextPath = encodeURIComponent(destination);
-      redirect(`/${country}/auth-v2/complete-profile?intent=${intent || 'buyer'}&next=${nextPath}`);
+      
+      const cookieStore = await cookies();
+      const finalIntent = intent || 'buyer';
+      cookieStore.set('azhon_auth_intent', finalIntent, { maxAge: 3600, path: '/', sameSite: 'lax' });
+      if (destination) {
+        cookieStore.set('azhon_auth_next', destination, { maxAge: 3600, path: '/', sameSite: 'lax' });
+      }
+
+      redirect(`/${country}/auth-v2/complete-profile?intent=${finalIntent}&next=${nextPath}`);
     }
   }
   
@@ -131,6 +139,8 @@ export async function signupAction(formData: FormData) {
     emailMasked: maskEmail(email),
   });
 
+  const cookieStore = await cookies();
+  
   // DUPLICATE EMAIL GUARD
   const existingUser = await prisma.user.findFirst({
     where: { email }
@@ -138,14 +148,15 @@ export async function signupAction(formData: FormData) {
 
   if (existingUser) {
     console.log('[AZHON_AUTH_V2_TRACE]', { step: 'signup:email_already_exists_blocking' });
+    if (intent) cookieStore.set('azhon_auth_intent', intent, { maxAge: 3600, path: '/', sameSite: 'lax' });
+    if (nextParam) cookieStore.set('azhon_auth_next', nextParam, { maxAge: 3600, path: '/', sameSite: 'lax' });
     const errorKey = intent === 'seller' ? 'err_email_exists_seller' : 'err_email_exists';
     const qs = buildQueryString({ error: errorKey, intent, next: nextParam });
     redirect(`/${country}/auth-v2/signup${qs}`);
   }
 
-  const cookieStore = await cookies();
-  if (intent) cookieStore.set('azhon_auth_intent', intent, { maxAge: 3600, path: '/' });
-  if (nextParam) cookieStore.set('azhon_auth_next', nextParam, { maxAge: 3600, path: '/' });
+  if (intent) cookieStore.set('azhon_auth_intent', intent, { maxAge: 3600, path: '/', sameSite: 'lax' });
+  if (nextParam) cookieStore.set('azhon_auth_next', nextParam, { maxAge: 3600, path: '/', sameSite: 'lax' });
 
   const supabase = await createClient()
 
