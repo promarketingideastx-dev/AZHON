@@ -59,6 +59,10 @@ export default async function SignupV2Page({
         </p>
       </div>
 
+      <div className="mb-6 w-full p-4 bg-blue-50 border border-blue-100 rounded-lg text-sm text-blue-800 text-center">
+        {dict.auth.email_notice || 'Verifica que tu nombre, teléfono y correo estén correctos. Te enviaremos un mensaje para confirmar tu email. Si no lo ves en tu bandeja de entrada, revisa la carpeta de spam o correo no deseado.'}
+      </div>
+
       {errorMessage && (
         <div className="mb-6 w-full p-4 bg-red-50 border border-red-100 rounded-lg flex flex-col gap-3 items-center">
           <p className="text-sm text-red-600 text-center font-medium">

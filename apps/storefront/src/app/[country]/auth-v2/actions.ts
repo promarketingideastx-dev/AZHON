@@ -7,6 +7,18 @@ import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
 import { prisma } from '@/lib/prisma'
 import { normalizeAuthNext } from '@/utils/url'
+import dns from 'dns';
+
+// Domain typos mapping
+const COMMON_TYPOS: Record<string, string> = {
+  'gamil.com': 'gmail.com',
+  'gmai.com': 'gmail.com',
+  'gmial.com': 'gmail.com',
+  'hotmial.com': 'hotmail.com',
+  'hotmai.com': 'hotmail.com',
+  'outlook.co': 'outlook.com',
+  'yaho.com': 'yahoo.com'
+};
 
 // Helper to mask email for safe logging
 const maskEmail = (e: string) => e ? e.replace(/(.{2})(.*)(?=@)/, "$1***") : 'unknown';
@@ -130,6 +142,49 @@ export async function signupAction(formData: FormData) {
     country,
     emailMasked: maskEmail(email),
   });
+
+  if (!email || !email.includes('@')) {
+    const qs = buildQueryString({ error: 'err_invalid_email', intent, next: nextParam });
+    redirect(`/${country}/auth-v2/signup${qs}`);
+  }
+
+  const [localPart, domain] = email.split('@');
+  if (!domain || !domain.includes('.')) {
+    const qs = buildQueryString({ error: 'err_invalid_email', intent, next: nextParam });
+    redirect(`/${country}/auth-v2/signup${qs}`);
+  }
+
+  if (COMMON_TYPOS[domain]) {
+    const qs = buildQueryString({ error: 'err_domain_typo', intent, next: nextParam });
+    redirect(`/${country}/auth-v2/signup${qs}`);
+  }
+
+  // DNS MX Check
+  let dnsError: string | null = null;
+  try {
+    const mxRecords = await dns.promises.resolveMx(domain);
+    if (!mxRecords || mxRecords.length === 0) {
+      dnsError = 'err_domain_not_found';
+    }
+  } catch (err: any) {
+    if (err.code === 'ENOTFOUND' || err.code === 'ENODATA') {
+      try {
+        const aRecords = await dns.promises.resolve4(domain);
+        if (!aRecords || aRecords.length === 0) {
+          dnsError = 'err_domain_not_found';
+        }
+      } catch (fallbackErr) {
+        dnsError = 'err_domain_not_found';
+      }
+    } else {
+      dnsError = 'err_domain_check_failed';
+    }
+  }
+
+  if (dnsError) {
+    const qs = buildQueryString({ error: dnsError, intent, next: nextParam });
+    redirect(`/${country}/auth-v2/signup${qs}`);
+  }
 
   const cookieStore = await cookies();
   
