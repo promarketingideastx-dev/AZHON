@@ -84,6 +84,10 @@ export default async function SellerOnboardingPage({
     redirect(`/${country}/login?intent=seller`);
   }
 
+  const categories = await prisma.category.findMany({
+    where: { parentId: null }
+  });
+
   return (
     <div className="min-h-screen bg-neutral-50 pb-20">
       <div className="bg-white border-b border-neutral-100 py-6 mb-8">
@@ -97,6 +101,7 @@ export default async function SellerOnboardingPage({
         initialStep={session.currentStep} 
         initialData={session.progressData}
         dict={dict}
+        categories={categories}
       />
     </div>
   );

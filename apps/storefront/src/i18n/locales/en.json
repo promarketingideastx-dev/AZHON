@@ -678,6 +678,25 @@
     "ready_submit_desc": "By submitting this application, your seller profile will enter review by our Super Admin team. Meanwhile, your store will be created in draft mode.",
     "review": "Review",
     "submitting": "Submitting...",
-    "submit_app": "Submit Application"
+    "submit_app": "Submit Application",
+    "personal_title": "Personal Information",
+    "personal_desc": "Information needed to verify your identity.",
+    "dateOfBirth": "Date of Birth",
+    "gender": "Gender",
+    "gender_prefer_not_to_say": "Prefer not to say",
+    "gender_male": "Male",
+    "gender_female": "Female",
+    "gender_other": "Other",
+    "err_under_18": "You must be over 18 years old to become a seller.",
+    "err_dob_required": "Date of birth is required.",
+    "select_department": "Select a department",
+    "department": "Department / State",
+    "select_city": "Select a city",
+    "manual_city_checkbox": "I can't find my city",
+    "manual_city_input": "Enter your city name",
+    "err_department_required": "Department is required.",
+    "err_city_required": "City is required.",
+    "err_no_categories_loaded": "Categories could not be loaded. Please try again later.",
+    "upcoming_country_blocked": "AZHON Sellers will be available in {country} soon. You cannot complete the operational registration at this time."
   }
 }

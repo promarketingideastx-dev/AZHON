@@ -668,6 +668,25 @@
     "ready_submit_desc": "Ao enviar esta solicitação, seu perfil de vendedor entrará em análise pela nossa equipe Super Admin. Enquanto isso, sua loja será criada em modo rascunho.",
     "review": "Revisar",
     "submitting": "Enviando...",
-    "submit_app": "Enviar Solicitação"
+    "submit_app": "Enviar Solicitação",
+    "personal_title": "Informações Pessoais",
+    "personal_desc": "Dados necessários para verificar sua identidade.",
+    "dateOfBirth": "Data de Nascimento",
+    "gender": "Gênero",
+    "gender_prefer_not_to_say": "Prefiro não dizer",
+    "gender_male": "Masculino",
+    "gender_female": "Feminino",
+    "gender_other": "Outro",
+    "err_under_18": "Você deve ser maior de 18 anos para ser um vendedor.",
+    "err_dob_required": "A data de nascimento é obrigatória.",
+    "select_department": "Selecione um departamento",
+    "department": "Departamento / Estado",
+    "select_city": "Selecione uma cidade",
+    "manual_city_checkbox": "Não encontro minha cidade",
+    "manual_city_input": "Escreva o nome da sua cidade",
+    "err_department_required": "O departamento é obrigatório.",
+    "err_city_required": "A cidade é obrigatória.",
+    "err_no_categories_loaded": "As categorias não puderam ser carregadas. Por favor, tente novamente mais tarde.",
+    "upcoming_country_blocked": "AZHON Sellers estará disponível em {country} em breve. Por enquanto, você não pode concluir o registro operacional."
   }
 }

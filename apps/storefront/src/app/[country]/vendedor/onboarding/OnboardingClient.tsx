@@ -3,26 +3,38 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { saveOnboardingStepAction, submitOnboardingAction } from './actions';
+import { SUPPORTED_SELLER_COUNTRIES, MASTER_GEO_CATALOG } from '@/config/geo';
 
 export default function OnboardingClient({
   country,
   initialStep,
   initialData,
-  dict
+  dict,
+  categories
 }: {
   country: string;
   initialStep: string;
   initialData: any;
   dict?: any;
+  categories?: { id: string, slug: string, name: string }[];
 }) {
   const router = useRouter();
   const [step, setStep] = useState(initialStep);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<any>(initialData || {});
 
+  // Geo states for ADDRESS step
+  const [selectedDepartmentCode, setSelectedDepartmentCode] = useState<string>(
+    initialData?.ADDRESS?.departmentCode || ''
+  );
+  const [isCityManual, setIsCityManual] = useState<boolean>(
+    initialData?.ADDRESS?.citySource === 'manual_request'
+  );
+
   const STEPS = [
     'INTENT',
     'RESIDENCE',
+    'PERSONAL',
     'BUSINESS_TYPE',
     'COMMERCIAL',
     'ADDRESS',
@@ -53,11 +65,16 @@ export default function OnboardingClient({
     setLoading(true);
     try {
       await submitOnboardingAction(country);
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
-      alert("Error submitting application");
+      alert(e.message || "Error submitting application");
       setLoading(false);
     }
+  };
+
+  const getActiveCountryCatalog = () => {
+    const code = formData?.RESIDENCE?.targetCountry || country.toUpperCase();
+    return MASTER_GEO_CATALOG[code];
   };
 
   return (
@@ -96,30 +113,93 @@ export default function OnboardingClient({
             <form onSubmit={(e) => {
               e.preventDefault();
               const fd = new FormData(e.currentTarget);
+              const target = fd.get('targetCountry') as string;
+              const catalog = MASTER_GEO_CATALOG[target];
+              if (catalog?.status === 'upcoming') {
+                alert((dict?.onboarding?.upcoming_country_blocked || 'AZHON Sellers estará disponible en {country} próximamente. Por ahora, no puedes completar el registro operativo.').replace('{country}', catalog.name));
+                return;
+              }
               handleNext({ 
                 residenceCountry: fd.get('residenceCountry'),
-                targetCountry: fd.get('targetCountry')
-              }, 'BUSINESS_TYPE');
+                targetCountry: target
+              }, 'PERSONAL');
             }}>
               <div className="space-y-4 mb-8">
                 <div>
                   <label className="block text-sm font-bold text-secondary mb-2">{dict?.onboarding?.country_residence || 'País de Residencia'}</label>
                   <select name="residenceCountry" defaultValue={formData?.RESIDENCE?.residenceCountry || country.toUpperCase()} className="w-full border border-neutral-200 rounded-xl px-4 py-3 bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary">
-                    <option value="HN">{dict?.onboarding?.honduras || 'Honduras'}</option>
-                    <option value="MX">{dict?.onboarding?.mexico || 'México'}</option>
+                    {SUPPORTED_SELLER_COUNTRIES.map(code => (
+                      <option key={`res-${code}`} value={code}>{MASTER_GEO_CATALOG[code].name}</option>
+                    ))}
                     <option value="OTHER">{dict?.onboarding?.other_intl || 'Otro (Internacional)'}</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-secondary mb-2">{dict?.onboarding?.target_market || 'Mercado Principal de Ventas'}</label>
                   <select name="targetCountry" defaultValue={formData?.RESIDENCE?.targetCountry || country.toUpperCase()} className="w-full border border-neutral-200 rounded-xl px-4 py-3 bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary">
-                    <option value="HN">{dict?.onboarding?.honduras || 'Honduras'}</option>
-                    <option value="MX">{dict?.onboarding?.mexico || 'México'}</option>
+                    {SUPPORTED_SELLER_COUNTRIES.map(code => (
+                      <option key={`tgt-${code}`} value={code}>
+                        {MASTER_GEO_CATALOG[code].name} {MASTER_GEO_CATALOG[code].status === 'upcoming' ? '(Próximamente)' : ''}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
               <div className="flex gap-4">
                 <button type="button" onClick={() => setStep('INTENT')} className="w-1/3 bg-neutral-100 text-secondary font-bold py-3.5 rounded-xl hover:bg-neutral-200 transition disabled:opacity-50">{dict?.onboarding?.back || 'Atrás'}</button>
+                <button type="submit" disabled={loading} className="w-2/3 bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-orange-600 transition disabled:opacity-50">{dict?.onboarding?.next || 'Siguiente'}</button>
+              </div>
+            </form>
+          </div>
+        )}
+
+        {step === 'PERSONAL' && (
+          <div className="animate-fade-in">
+            <h2 className="text-2xl font-bold text-secondary mb-4">{dict?.onboarding?.personal_title || 'Información Personal'}</h2>
+            <p className="text-neutral mb-6">{dict?.onboarding?.personal_desc || 'Datos necesarios para verificar tu identidad.'}</p>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              const fd = new FormData(e.currentTarget);
+              const dob = fd.get('dateOfBirth') as string;
+              
+              if (!dob) {
+                alert(dict?.onboarding?.err_dob_required || 'La fecha de nacimiento es obligatoria.');
+                return;
+              }
+
+              const birthDate = new Date(dob);
+              const today = new Date();
+              let age = today.getFullYear() - birthDate.getFullYear();
+              const m = today.getMonth() - birthDate.getMonth();
+              if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                  age--;
+              }
+
+              if (age < 18) {
+                alert(dict?.onboarding?.err_under_18 || 'Debes ser mayor de 18 años para ser vendedor.');
+                return;
+              }
+
+              handleNext({ dateOfBirth: dob, gender: fd.get('gender') }, 'BUSINESS_TYPE');
+            }}>
+              <div className="space-y-4 mb-8">
+                <div>
+                  <label className="block text-sm font-bold text-secondary mb-2">{dict?.onboarding?.dateOfBirth || 'Fecha de Nacimiento'}</label>
+                  <input type="date" name="dateOfBirth" required defaultValue={formData?.PERSONAL?.dateOfBirth || ''} className="w-full border border-neutral-200 rounded-xl px-4 py-3 bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-secondary mb-2">{dict?.onboarding?.gender || 'Género'}</label>
+                  <select name="gender" required defaultValue={formData?.PERSONAL?.gender || ''} className="w-full border border-neutral-200 rounded-xl px-4 py-3 bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary">
+                    <option value="">{dict?.onboarding?.select_category || 'Selecciona una opción'}</option>
+                    <option value="male">{dict?.onboarding?.gender_male || 'Masculino'}</option>
+                    <option value="female">{dict?.onboarding?.gender_female || 'Femenino'}</option>
+                    <option value="other">{dict?.onboarding?.gender_other || 'Otro'}</option>
+                    <option value="prefer_not_to_say">{dict?.onboarding?.gender_prefer_not_to_say || 'Prefiero no decirlo'}</option>
+                  </select>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <button type="button" onClick={() => setStep('RESIDENCE')} className="w-1/3 bg-neutral-100 text-secondary font-bold py-3.5 rounded-xl hover:bg-neutral-200 transition disabled:opacity-50">{dict?.onboarding?.back || 'Atrás'}</button>
                 <button type="submit" disabled={loading} className="w-2/3 bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-orange-600 transition disabled:opacity-50">{dict?.onboarding?.next || 'Siguiente'}</button>
               </div>
             </form>
@@ -137,14 +217,14 @@ export default function OnboardingClient({
             }}>
               <div className="space-y-4 mb-8">
                 <label className="flex items-start p-4 border border-neutral-200 rounded-xl cursor-pointer hover:border-primary transition-colors">
-                  <input type="radio" name="businessType" value="FORMAL" defaultChecked className="mt-1 text-primary focus:ring-primary" />
+                  <input type="radio" name="businessType" value="FORMAL" defaultChecked={formData?.BUSINESS_TYPE?.businessType !== 'REGULARIZATION'} className="mt-1 text-primary focus:ring-primary" />
                   <div className="ml-3">
                     <span className="block text-sm font-bold text-secondary">{dict?.onboarding?.formal_biz || 'Empresa Formal Registrada'}</span>
                     <span className="block text-sm text-neutral mt-1">{dict?.onboarding?.formal_biz_desc || 'Cuento con registro tributario (RTN/RFC) y puedo emitir facturas.'}</span>
                   </div>
                 </label>
                 <label className="flex items-start p-4 border border-neutral-200 rounded-xl cursor-pointer hover:border-primary transition-colors">
-                  <input type="radio" name="businessType" value="REGULARIZATION" className="mt-1 text-primary focus:ring-primary" />
+                  <input type="radio" name="businessType" value="REGULARIZATION" defaultChecked={formData?.BUSINESS_TYPE?.businessType === 'REGULARIZATION'} className="mt-1 text-primary focus:ring-primary" />
                   <div className="ml-3">
                     <span className="block text-sm font-bold text-secondary">{dict?.onboarding?.regularization || 'En Vías de Regularización'}</span>
                     <span className="block text-sm text-neutral mt-1">{dict?.onboarding?.regularization_desc || 'Soy emprendedor individual sin registro fiscal formal activo.'}</span>
@@ -152,7 +232,7 @@ export default function OnboardingClient({
                 </label>
               </div>
               <div className="flex gap-4">
-                <button type="button" onClick={() => setStep('RESIDENCE')} className="w-1/3 bg-neutral-100 text-secondary font-bold py-3.5 rounded-xl hover:bg-neutral-200 transition disabled:opacity-50">{dict?.onboarding?.back || 'Atrás'}</button>
+                <button type="button" onClick={() => setStep('PERSONAL')} className="w-1/3 bg-neutral-100 text-secondary font-bold py-3.5 rounded-xl hover:bg-neutral-200 transition disabled:opacity-50">{dict?.onboarding?.back || 'Atrás'}</button>
                 <button type="submit" disabled={loading} className="w-2/3 bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-orange-600 transition disabled:opacity-50">{dict?.onboarding?.next || 'Siguiente'}</button>
               </div>
             </form>
@@ -163,6 +243,11 @@ export default function OnboardingClient({
           <div className="animate-fade-in">
             <h2 className="text-2xl font-bold text-secondary mb-4">{dict?.onboarding?.commercial_title || 'Datos Comerciales'}</h2>
             <p className="text-neutral mb-6">{dict?.onboarding?.commercial_desc || '¿Cómo conocerán los clientes a tu tienda?'}</p>
+            {(!categories || categories.length === 0) ? (
+              <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl mb-6">
+                {dict?.onboarding?.err_no_categories_loaded || 'No se pudieron cargar las categorías. Por favor, intenta más tarde.'}
+              </div>
+            ) : (
             <form onSubmit={(e) => {
               e.preventDefault();
               const fd = new FormData(e.currentTarget);
@@ -175,13 +260,11 @@ export default function OnboardingClient({
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-secondary mb-2">{dict?.onboarding?.main_category || 'Categoría Principal (Opcional)'}</label>
-                  <select name="category" className="w-full border border-neutral-200 rounded-xl px-4 py-3 bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary">
+                  <select name="category" defaultValue={formData?.COMMERCIAL?.category || ''} className="w-full border border-neutral-200 rounded-xl px-4 py-3 bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary">
                     <option value="">{dict?.onboarding?.select_category || 'Selecciona una categoría'}</option>
-                    <option value="electronics">{dict?.onboarding?.cat_electronics || 'Electrónica y Tecnología'}</option>
-                    <option value="fashion">{dict?.onboarding?.cat_fashion || 'Moda y Accesorios'}</option>
-                    <option value="home">{dict?.onboarding?.cat_home || 'Hogar y Muebles'}</option>
-                    <option value="auto">{dict?.onboarding?.cat_auto || 'Repuestos y Automotriz'}</option>
-                    <option value="other">{dict?.onboarding?.cat_other || 'Otra'}</option>
+                    {categories.map(cat => (
+                      <option key={cat.id} value={cat.id}>{cat.name}</option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -190,6 +273,7 @@ export default function OnboardingClient({
                 <button type="submit" disabled={loading} className="w-2/3 bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-orange-600 transition disabled:opacity-50">{dict?.onboarding?.next || 'Siguiente'}</button>
               </div>
             </form>
+            )}
           </div>
         )}
 
@@ -200,20 +284,115 @@ export default function OnboardingClient({
             <form onSubmit={(e) => {
               e.preventDefault();
               const fd = new FormData(e.currentTarget);
-              handleNext({ addressLine1: fd.get('addressLine1'), city: fd.get('city') }, 'DOCUMENTS');
+              const addrLine = fd.get('addressLine1') as string;
+              
+              let payload: any = { addressLine1: addrLine };
+              
+              if (isCityManual) {
+                const cityName = fd.get('cityNameRaw') as string;
+                if (!cityName) {
+                  alert(dict?.onboarding?.err_city_required || 'La ciudad es obligatoria.');
+                  return;
+                }
+                const catalog = getActiveCountryCatalog();
+                const dName = selectedDepartmentCode && catalog ? catalog.departments.find(d => d.departmentCode === selectedDepartmentCode)?.name : '';
+                payload = {
+                  ...payload,
+                  citySource: 'manual_request',
+                  cityNameRaw: cityName,
+                  departmentCode: selectedDepartmentCode || null,
+                  departmentName: dName || cityName,
+                  cityCode: null,
+                  geoStatus: 'pending_review',
+                  coverageStatus: 'pending_review',
+                  deliveryEligibility: 'pending_review'
+                };
+              } else {
+                const depCode = fd.get('departmentCode') as string;
+                const citCode = fd.get('cityCode') as string;
+                if (!depCode) {
+                  alert(dict?.onboarding?.err_department_required || 'El departamento es obligatorio.');
+                  return;
+                }
+                if (!citCode) {
+                  alert(dict?.onboarding?.err_city_required || 'La ciudad es obligatoria.');
+                  return;
+                }
+                
+                const catalog = getActiveCountryCatalog();
+                const dep = catalog?.departments.find(d => d.departmentCode === depCode);
+                const cit = dep?.cities.find(c => c.cityCode === citCode);
+                
+                payload = {
+                  ...payload,
+                  citySource: 'catalog',
+                  departmentCode: depCode,
+                  departmentName: dep?.name,
+                  cityCode: citCode,
+                  cityNameRaw: cit?.name,
+                  geoStatus: cit?.geoStatus || 'pending_review',
+                  coverageStatus: cit?.coverageStatus || 'pending_review',
+                  deliveryEligibility: cit?.deliveryEligibility || 'pending_review'
+                };
+              }
+
+              handleNext(payload, 'DOCUMENTS');
             }}>
-              <div className="bg-blue-50 border border-blue-100 text-blue-800 p-4 rounded-xl mb-6 text-sm flex gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 flex-shrink-0 mt-0.5"><path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
-                <span>{dict?.onboarding?.address_warning || 'El módulo de Address Intelligence con geolocalización está en construcción. Por ahora ingresa tu dirección manualmente.'}</span>
-              </div>
               <div className="space-y-4 mb-8">
                 <div>
-                  <label className="block text-sm font-bold text-secondary mb-2">{dict?.onboarding?.city || 'Ciudad / Municipio'}</label>
-                  <input type="text" name="city" required placeholder={dict?.onboarding?.city_ph || 'Ej. Tegucigalpa'} className="w-full border border-neutral-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
+                  <label className="block text-sm font-bold text-secondary mb-2">{dict?.onboarding?.department || 'Departamento / Estado'}</label>
+                  <select 
+                    name="departmentCode" 
+                    value={selectedDepartmentCode}
+                    onChange={(e) => {
+                      setSelectedDepartmentCode(e.target.value);
+                      if (!isCityManual) {
+                        const cityCodeSelect = document.querySelector('select[name="cityCode"]') as HTMLSelectElement;
+                        if (cityCodeSelect) cityCodeSelect.value = '';
+                      }
+                    }}
+                    className="w-full border border-neutral-200 rounded-xl px-4 py-3 bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                  >
+                    <option value="">{dict?.onboarding?.select_department || 'Selecciona un departamento'}</option>
+                    {getActiveCountryCatalog()?.departments.map(d => (
+                      <option key={d.departmentCode} value={d.departmentCode}>{d.name}</option>
+                    ))}
+                  </select>
                 </div>
+                
+                <div className="flex items-center gap-2 my-2">
+                  <input 
+                    type="checkbox" 
+                    id="manualCityToggle" 
+                    checked={isCityManual}
+                    onChange={(e) => setIsCityManual(e.target.checked)}
+                    className="rounded text-primary focus:ring-primary w-5 h-5"
+                  />
+                  <label htmlFor="manualCityToggle" className="text-sm font-medium text-neutral-600 cursor-pointer">
+                    {dict?.onboarding?.manual_city_checkbox || 'No encuentro mi ciudad'}
+                  </label>
+                </div>
+
+                {isCityManual ? (
+                  <div className="animate-fade-in">
+                    <label className="block text-sm font-bold text-secondary mb-2">{dict?.onboarding?.manual_city_input || 'Escribe el nombre de tu ciudad'}</label>
+                    <input type="text" name="cityNameRaw" defaultValue={formData?.ADDRESS?.cityNameRaw || ''} placeholder="Ej. Tegucigalpa" className="w-full border border-neutral-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
+                  </div>
+                ) : (
+                  <div className="animate-fade-in">
+                    <label className="block text-sm font-bold text-secondary mb-2">{dict?.onboarding?.city || 'Ciudad / Municipio'}</label>
+                    <select name="cityCode" defaultValue={formData?.ADDRESS?.cityCode || ''} className="w-full border border-neutral-200 rounded-xl px-4 py-3 bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary">
+                      <option value="">{dict?.onboarding?.select_city || 'Selecciona una ciudad'}</option>
+                      {selectedDepartmentCode && getActiveCountryCatalog()?.departments.find(d => d.departmentCode === selectedDepartmentCode)?.cities.map(c => (
+                        <option key={c.cityCode} value={c.cityCode}>{c.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+                
                 <div>
                   <label className="block text-sm font-bold text-secondary mb-2">{dict?.onboarding?.full_address || 'Dirección Completa'}</label>
-                  <textarea name="addressLine1" required rows={3} placeholder={dict?.onboarding?.full_address_ph || 'Colonia, Calle, Número de Casa/Local...'} className="w-full border border-neutral-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"></textarea>
+                  <textarea name="addressLine1" required defaultValue={formData?.ADDRESS?.addressLine1 || ''} rows={3} placeholder={dict?.onboarding?.full_address_ph || 'Colonia, Calle, Número de Casa/Local...'} className="w-full border border-neutral-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"></textarea>
                 </div>
               </div>
               <div className="flex gap-4">

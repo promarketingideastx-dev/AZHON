@@ -124,13 +124,55 @@ export async function submitOnboardingAction(country: string) {
   const progressData = session.progressData as Record<string, any> || {};
 
   // Extraer data acumulada
+  const personalData = progressData['PERSONAL'] || {};
   const commercialData = progressData['COMMERCIAL'] || {};
   const businessTypeData = progressData['BUSINESS_TYPE'] || {};
   const residenceData = progressData['RESIDENCE'] || {};
+  const addressData = progressData['ADDRESS'] || {};
   
+  // Validación de edad en Backend
+  if (!personalData.dateOfBirth) {
+    throw new Error("Date of birth is required.");
+  }
+  const birthDate = new Date(personalData.dateOfBirth);
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+  }
+  if (age < 18) {
+    throw new Error("User must be 18 or older to become a seller.");
+  }
+
   const storeName = commercialData.storeName || `Tienda de ${user.email}`;
   const category = commercialData.category ? [commercialData.category] : [];
   const targetCountry = residenceData.targetCountry ? [residenceData.targetCountry] : [];
+
+  // Crear UserAddress
+  if (addressData.addressLine1 && (addressData.cityCode || addressData.cityNameRaw)) {
+    const geoCountry = residenceData.targetCountry || residenceData.residenceCountry || country.toUpperCase();
+    await prisma.userAddress.create({
+      data: {
+        userId: user.id,
+        countryCode: geoCountry,
+        state: addressData.departmentName || '',
+        city: addressData.cityNameRaw || '',
+        addressLine1: addressData.addressLine1,
+        isDefault: true,
+        status: 'UNVERIFIED',
+        cityCode: addressData.cityCode || null,
+        departmentCode: addressData.departmentCode || null,
+        citySource: addressData.citySource || 'manual_request',
+        cityNameRaw: addressData.cityNameRaw || null,
+        geoStatus: addressData.geoStatus || 'pending_review',
+        coverageStatus: addressData.coverageStatus || 'pending_review',
+        deliveryEligibility: addressData.deliveryEligibility || 'pending_review',
+        addressSource: 'seller_onboarding',
+        gpsRequiredLater: true
+      }
+    });
+  }
 
   // 1. Cerrar Sesión de Onboarding
   await prisma.sellerOnboardingSession.update({
