@@ -707,6 +707,58 @@
     "err_no_categories_loaded": "No se pudieron cargar las categorías. Por favor, intenta más tarde.",
     "upcoming_country_blocked": "AZHON Sellers estará disponible en {country} próximamente. Por ahora, no puedes completar el registro operativo."
   },
+  "adminShell": {
+    "backToHome": "Volver al Inicio",
+    "comingSoon": "Pronto",
+    "topbar": {
+      "title": "Command Center",
+      "logout": "Cerrar Sesión"
+    },
+    "groups": {
+      "core": "CORE",
+      "operations": "OPERACIONES",
+      "logistics": "LOGÍSTICA & GEO",
+      "system": "SISTEMA"
+    },
+    "menu": {
+      "dashboard": "Command Center",
+      "sellerIntake": "Seller Intake",
+      "productReview": "Revisión Productos",
+      "discrepancias": "WMS Discrepancias",
+      "users": "Usuarios / Buyers",
+      "crm": "AZHON Care (CRM)",
+      "orders": "Órdenes",
+      "finance": "Finanzas",
+      "campaigns": "Campañas",
+      "delivery": "Delivery Intelligence",
+      "address": "Address Intelligence",
+      "wms": "Warehouse Full",
+      "pickup": "Pickup Points",
+      "categories": "Marketplace Control",
+      "access": "Control de Acceso",
+      "audit": "Auditoría / Eventos",
+      "settings": "Configuración Global"
+    }
+  },
+  "adminDashboard": {
+    "title": "Command Center",
+    "subtitle": "Panel central de operaciones de AZHON.",
+    "kpis": {
+      "users": "Usuarios Totales",
+      "stores": "Tiendas Creadas",
+      "sellersActive": "Sellers Activos",
+      "sellersReview": "Sellers en Revisión"
+    },
+    "modulesTitle": "Módulos Operativos",
+    "modules": {
+      "sellerIntakeDesc": "Revisión y aprobación de solicitudes de nuevos vendedores en la plataforma.",
+      "wmsDesc": "Control y resolución de discrepancias en bodega.",
+      "catalogDesc": "Aprobación de publicaciones de productos nuevos.",
+      "financeDesc": "Módulo financiero desactivado hasta que existan datos transaccionales reales."
+    },
+    "activityTitle": "Actividad Reciente",
+    "noActivity": "No hay eventos auditables recientes."
+  },
   "adminSellers": {
     "title": "Solicitudes de Vendedores",
     "detailTitle": "Detalle de la Solicitud",

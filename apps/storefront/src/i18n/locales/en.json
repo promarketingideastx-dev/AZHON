@@ -710,6 +710,58 @@
     "err_no_categories_loaded": "Categories could not be loaded. Please try again later.",
     "upcoming_country_blocked": "AZHON Sellers will be available in {country} soon. You cannot complete the operational registration at this time."
   },
+  "adminShell": {
+    "backToHome": "Back to Home",
+    "comingSoon": "Coming Soon",
+    "topbar": {
+      "title": "Command Center",
+      "logout": "Log Out"
+    },
+    "groups": {
+      "core": "CORE",
+      "operations": "OPERATIONS",
+      "logistics": "LOGISTICS & GEO",
+      "system": "SYSTEM"
+    },
+    "menu": {
+      "dashboard": "Command Center",
+      "sellerIntake": "Seller Intake",
+      "productReview": "Product Review",
+      "discrepancias": "WMS Discrepancies",
+      "users": "Users / Buyers",
+      "crm": "AZHON Care (CRM)",
+      "orders": "Orders",
+      "finance": "Finance",
+      "campaigns": "Campaigns",
+      "delivery": "Delivery Intelligence",
+      "address": "Address Intelligence",
+      "wms": "Warehouse Full",
+      "pickup": "Pickup Points",
+      "categories": "Marketplace Control",
+      "access": "Access Control",
+      "audit": "Audit / Events",
+      "settings": "Global Settings"
+    }
+  },
+  "adminDashboard": {
+    "title": "Command Center",
+    "subtitle": "Central operations panel for AZHON.",
+    "kpis": {
+      "users": "Total Users",
+      "stores": "Created Stores",
+      "sellersActive": "Active Sellers",
+      "sellersReview": "Sellers in Review"
+    },
+    "modulesTitle": "Operational Modules",
+    "modules": {
+      "sellerIntakeDesc": "Review and approval of new seller applications on the platform.",
+      "wmsDesc": "Control and resolution of warehouse discrepancies.",
+      "catalogDesc": "Approval of new product listings.",
+      "financeDesc": "Financial module disabled until real transactional data exists."
+    },
+    "activityTitle": "Recent Activity",
+    "noActivity": "No recent auditable events."
+  },
   "adminSellers": {
     "title": "Seller Applications",
     "detailTitle": "Application Detail",

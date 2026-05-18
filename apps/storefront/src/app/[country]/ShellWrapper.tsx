@@ -12,7 +12,16 @@ export function ShellWrapper({
   footer: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const isAuthRoute = pathname?.includes('/login') || pathname?.includes('/reset-password');
+  const isAuthRoute = pathname?.includes('/login') || pathname?.includes('/reset-password') || pathname?.includes('/auth-v2');
+  const isAdminRoute = pathname?.includes('/admin');
+
+  if (isAdminRoute) {
+    return (
+      <div className="flex-1 flex flex-col bg-gray-50 w-full min-h-screen">
+        {children}
+      </div>
+    );
+  }
 
   if (isAuthRoute) {
     // Isolated minimalist shell for auth routes
