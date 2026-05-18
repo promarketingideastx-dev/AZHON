@@ -370,6 +370,17 @@ export async function googleOAuthAction(formData: FormData) {
   const destination = await resolveDestination(supabase, country, nextParam, intent);
   const intentParam = intent ? `&intent=${intent}` : '';
 
+  // Persist state in cookies defensively before redirect
+  const cookieStore = await cookies()
+  if (intent) {
+    cookieStore.set('azhon_auth_intent', intent, { maxAge: 60 * 60 * 24, path: '/', httpOnly: true, sameSite: 'lax' })
+  }
+  if (nextParam) {
+    cookieStore.set('azhon_auth_next', nextParam, { maxAge: 60 * 60 * 24, path: '/', httpOnly: true, sameSite: 'lax' })
+  }
+  cookieStore.set('NEXT_LOCALE', country === 'br' ? 'pt-BR' : country === 'us' ? 'en' : 'es', { maxAge: 60 * 60 * 24 * 30, path: '/' })
+
+
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
@@ -443,10 +454,20 @@ export async function completeProfileAction(formData: FormData) {
   const fullName = `${firstName.trim()} ${lastName.trim()}`;
 
   try {
-    // 1. Update User phone
-    await prisma.user.update({
+    const tenantId = process.env.NEXT_PUBLIC_TENANT_ID || 'DEFAULT_TENANT';
+    
+    // 1. Defensively Upsert User
+    await prisma.user.upsert({
       where: { id: user.id },
-      data: { phone: phone.trim() }
+      create: {
+        id: user.id,
+        tenantId,
+        email: user.email || '',
+        phone: phone.trim(),
+        role: 'BUYER',
+        status: 'ACTIVE'
+      },
+      update: { phone: phone.trim() }
     });
 
     // 2. Upsert BuyerProfile

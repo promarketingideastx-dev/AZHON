@@ -1,5 +1,6 @@
 {
   "auth": {
+    "redirecting": "Redirigiendo...",
     "intent_title": "¿Cómo deseas ingresar?",
     "intent_subtitle": "Selecciona el tipo de cuenta para continuar.",
     "intent_buyer": "Quiero comprar",

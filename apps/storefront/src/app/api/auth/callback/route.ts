@@ -11,8 +11,8 @@ export async function GET(request: NextRequest) {
   const intentCookie = cookieStore.get('azhon_auth_intent')?.value
   const nextCookie = cookieStore.get('azhon_auth_next')?.value
 
-  let next = requestUrl.searchParams.get('next') || nextCookie || '/'
-  let intent = requestUrl.searchParams.get('intent') || intentCookie || null
+  let intent = intentCookie || requestUrl.searchParams.get('intent') || null
+  let next = nextCookie || requestUrl.searchParams.get('next') || '/'
 
   let countryPrefix = '';
   const nextSegment = next.split('/')[1];
@@ -49,16 +49,34 @@ export async function GET(request: NextRequest) {
         const metaNext = authData.user.user_metadata?.auth_next;
         const metaCountry = authData.user.user_metadata?.auth_country;
 
-        if (metaIntent && (!intent || intent !== 'seller')) {
+        if (!intent && metaIntent) {
           console.log(`[AZHON_AUTH_V2_TRACE] callback:metadata_intent_found, intent: ${metaIntent}`);
           intent = metaIntent;
         }
-        if (metaNext && next === '/') {
-          next = metaNext;
+        if (!intent) {
+          intent = 'buyer';
+        }
+        if (!next || next === '/') {
+          next = metaNext || '/';
         }
         if (metaCountry && !countryPrefix) {
           countryPrefix = `/${metaCountry}`;
         }
+        
+        // Defensively upsert User in Prisma to prevent orphan users if Supabase trigger failed
+        const tenantId = process.env.NEXT_PUBLIC_TENANT_ID || 'DEFAULT_TENANT';
+        await prisma.user.upsert({
+          where: { id: authData.user.id },
+          create: {
+            id: authData.user.id,
+            tenantId,
+            email: authData.user.email || '',
+            role: 'BUYER',
+            status: 'ACTIVE'
+          },
+          update: {} // Do not overwrite existing user
+        });
+
         let { data: dbUser } = await supabase
           .from('User')
           .select('role')

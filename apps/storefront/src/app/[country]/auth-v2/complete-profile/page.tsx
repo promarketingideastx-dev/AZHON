@@ -57,6 +57,17 @@ export default async function CompleteProfilePage({
       ? errors[errorKey as keyof typeof errors] ?? dict.auth?.errors?.err_generic ?? 'Algo salió mal. Inténtalo nuevamente.'
       : null;
 
+  // Extract metadata to prefill
+  const metaFullName = user?.user_metadata?.full_name || '';
+  let defaultFirstName = '';
+  let defaultLastName = '';
+  
+  if (metaFullName) {
+    const parts = metaFullName.split(' ');
+    defaultFirstName = parts[0] || '';
+    defaultLastName = parts.slice(1).join(' ') || '';
+  }
+
   return (
     <div className="w-full flex flex-col items-center relative animate-fade-in">
       <div className="mb-8 w-full text-center">
@@ -86,6 +97,7 @@ export default async function CompleteProfilePage({
             </label>
             <input 
               id="firstName" name="firstName" type="text" required 
+              defaultValue={defaultFirstName}
               className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm text-secondary bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" 
               placeholder={dict.auth?.complete_profile?.placeholder_first_name || 'Tu nombre'}
             />
@@ -97,6 +109,7 @@ export default async function CompleteProfilePage({
             </label>
             <input 
               id="lastName" name="lastName" type="text" required 
+              defaultValue={defaultLastName}
               className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm text-secondary bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" 
               placeholder={dict.auth?.complete_profile?.placeholder_last_name || 'Tu apellido'}
             />
@@ -114,10 +127,7 @@ export default async function CompleteProfilePage({
           </div>
 
           <div className="mt-4">
-            <SubmitButton 
-              pendingText="..." 
-              className="w-full bg-primary text-white rounded-full py-3.5 font-bold hover:bg-orange-600 transition-colors shadow-sm disabled:opacity-50"
-            >
+            <SubmitButton pendingText={dict.auth?.redirecting || "Redirigiendo..."} className="mt-2 w-full py-3.5 bg-primary hover:bg-primary/90 text-white font-bold rounded-lg transition-colors">
               {dict.auth?.complete_profile?.btn_continue || 'Continuar'}
             </SubmitButton>
           </div>
