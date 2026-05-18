@@ -105,7 +105,7 @@ export async function GET(request: NextRequest) {
 
         // Redirection Precedence (state -> next)
         if (dbUser) {
-          if (dbUser.role === 'SUPER_ADMIN') redirectUrl = `${countryPrefix}/admin`;
+          if (dbUser.role === 'SUPER_ADMIN') redirectUrl = `${countryPrefix}/admin/sellers`;
           else if (dbUser.role === 'SELLER') redirectUrl = `${countryPrefix}/vendedor`;
           else redirectUrl = `${countryPrefix || '/'}/perfil`; // Default for BUYER
         }
