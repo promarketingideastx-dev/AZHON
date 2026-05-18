@@ -4,15 +4,25 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { getDictionary, defaultLocale } from '@/i18n';
-import { AlertCircle, CheckCircle, XCircle, ArrowLeft, Store, User as UserIcon, MapPin, Calendar, FileText } from 'lucide-react';
-import { approveSellerAction, rejectSellerAction, requestSellerInfoAction } from '../actions';
+import { AlertCircle, ArrowLeft, Store, User as UserIcon, List, Clock } from 'lucide-react';
+import { Business360Tabs } from '../components/Business360Tabs';
+import { ReviewChecklist } from '../components/ReviewChecklist';
+import { DecisionPanel } from '../components/DecisionPanel';
+import { AddressOperativeCard } from '../components/AddressOperativeCard';
+import { HonestPlaceholder } from '../components/HonestPlaceholder';
+import { DataSourceBadge } from '../components/DataSourceBadge';
 
 export default async function AdminSellerDetailPage({
   params,
+  searchParams
 }: {
   params: Promise<{ country: string, id: string }>;
+  searchParams: Promise<{ tab?: string }>;
 }) {
   const { country, id } = await params;
+  const { tab } = await searchParams;
+  const currentTab = tab || 'summary';
+  
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -29,7 +39,7 @@ export default async function AdminSellerDetailPage({
       <div className="min-h-screen bg-neutral-50 flex items-center justify-center p-6">
         <div className="bg-white p-8 rounded-2xl shadow-sm border border-neutral-200 max-w-md text-center">
           <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-          <h1 className="text-xl font-bold text-secondary mb-2">{dict?.adminSellers?.accessDenied || 'Acceso Denegado'}</h1>
+          <h1 className="text-xl font-bold text-secondary mb-2">{dict?.adminSellers?.accessDenied }</h1>
         </div>
       </div>
     );
@@ -63,21 +73,30 @@ export default async function AdminSellerDetailPage({
   const store = profile.User?.Stores?.[0];
   const addressData = progressData?.ADDRESS || {};
   const personalData = progressData?.PERSONAL || {};
-  
-  const isPending = profile.status === 'UNDER_REVIEW' || profile.status === 'PENDING_DOCUMENTS';
+
+  const tabs = [
+    { id: 'summary', label: dict?.adminSellerReview?.tabs?.summary  },
+    { id: 'identity', label: dict?.adminSellerReview?.tabs?.identity  },
+    { id: 'business', label: dict?.adminSellerReview?.tabs?.business  },
+    { id: 'categories', label: dict?.adminSellerReview?.tabs?.categories  },
+    { id: 'address', label: dict?.adminSellerReview?.tabs?.address  },
+    { id: 'kyc', label: dict?.adminSellerReview?.tabs?.kyc  },
+    { id: 'crm', label: dict?.adminSellerReview?.tabs?.crm  },
+    { id: 'audit', label: dict?.adminSellerReview?.tabs?.audit  },
+  ];
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 p-6">
-      <div className="flex items-center gap-4 mb-6">
+    <div className="max-w-5xl mx-auto space-y-6 p-6">
+      <div className="flex items-center gap-4 mb-2">
         <Link href={`/${country}/admin/sellers`} className="p-2 hover:bg-neutral-100 rounded-full transition text-neutral">
           <ArrowLeft className="w-5 h-5" />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-secondary">{dict?.adminSellers?.detailTitle || 'Detalle de la Solicitud'}</h1>
-          <p className="text-sm text-neutral font-mono mt-1">{dict?.adminSellers?.idLabel || 'ID:'} {profile.id}</p>
+          <h1 className="text-2xl font-bold text-secondary">{dict?.adminSellerReview?.title }</h1>
+          <p className="text-sm text-neutral font-mono mt-1">{dict?.adminSellers?.idLabel } {profile.id}</p>
         </div>
         <div className="ml-auto">
-          <span className={`px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 ${
+          <span className={`px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 ${
             profile.status === 'ACTIVE' ? 'bg-green-100 text-green-800' :
             profile.status === 'REJECTED' ? 'bg-red-100 text-red-800' :
             'bg-blue-100 text-blue-800'
@@ -87,146 +106,179 @@ export default async function AdminSellerDetailPage({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* User Data */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-neutral-200 space-y-4">
-          <h2 className="text-lg font-bold text-secondary flex items-center gap-2 border-b border-neutral-100 pb-3">
-            <UserIcon className="w-5 h-5 text-primary" /> {dict?.adminSellers?.user || 'Usuario'}
-          </h2>
-          <div>
-            <p className="text-xs font-bold text-neutral-400 uppercase">{dict?.adminSellers?.emailLabel || 'Email'}</p>
-            <p className="font-medium text-secondary">{profile.User?.email || 'N/A'}</p>
-          </div>
-          <div>
-            <p className="text-xs font-bold text-neutral-400 uppercase">{dict?.adminSellers?.phone || 'Teléfono'}</p>
-            <p className="font-medium text-secondary">{profile.User?.phone || 'N/A'}</p>
-          </div>
-          <div>
-            <p className="text-xs font-bold text-neutral-400 uppercase">{dict?.adminSellers?.personalData || 'Datos Personales'}</p>
-            <p className="font-medium text-secondary text-sm">{dict?.adminSellers?.dobLabel || 'DOB:'} {personalData?.dateOfBirth || 'N/A'}</p>
-            <p className="font-medium text-secondary text-sm">{dict?.adminSellers?.genderLabel || 'Gender:'} {personalData?.gender || 'N/A'}</p>
-          </div>
-        </div>
+      <Business360Tabs currentTab={currentTab} country={country} profileId={profile.id} tabs={tabs} />
 
-        {/* Store / Business Data */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-neutral-200 space-y-4">
-          <h2 className="text-lg font-bold text-secondary flex items-center gap-2 border-b border-neutral-100 pb-3">
-            <Store className="w-5 h-5 text-primary" /> {dict?.adminSellers?.store || 'Perfil de Tienda'}
-          </h2>
-          <div>
-            <p className="text-xs font-bold text-neutral-400 uppercase">{dict?.adminSellers?.commerceName || 'Comercio'}</p>
-            <p className="font-medium text-secondary">{profile.commercialName || 'N/A'}</p>
+      <div className="mt-6">
+        {currentTab === 'summary' && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <ReviewChecklist 
+              title={dict?.adminSellerReview?.checklist?.title }
+              items={[
+                { label: dict?.adminSellerReview?.checklist?.userCheck , status: profile.User ? 'valid' : 'missing' },
+                { label: dict?.adminSellerReview?.checklist?.profileCheck , status: profile ? 'valid' : 'missing' },
+                { label: dict?.adminSellerReview?.checklist?.storeCheck , status: store ? 'valid' : 'missing' },
+                { label: dict?.adminSellerReview?.checklist?.onboardingCheck , status: session ? 'valid' : 'missing' },
+                { label: dict?.adminSellerReview?.checklist?.addressCheck , status: Object.keys(addressData).length > 0 ? 'valid' : 'missing' },
+                { label: dict?.adminSellerReview?.checklist?.categoriesCheck , status: profile.targetCategories.length > 0 ? 'valid' : 'missing' },
+                { label: dict?.adminSellerReview?.checklist?.eventCheck , status: events.length > 0 ? 'valid' : 'missing' },
+                { label: dict?.adminSellerReview?.checklist?.kycCheck , status: 'pending_module' }
+              ]}
+            />
+            <DecisionPanel profileId={profile.id} currentStatus={profile.status} dict={dict} />
           </div>
-          <div>
-            <p className="text-xs font-bold text-neutral-400 uppercase">{dict?.adminSellers?.businessType || 'Tipo de Negocio'}</p>
-            <p className="font-medium text-secondary">{profile.businessType || 'N/A'}</p>
-          </div>
-          <div>
-            <p className="text-xs font-bold text-neutral-400 uppercase">{dict?.adminSellers?.targetCategories || 'Categorías Objetivo'}</p>
-            <p className="font-medium text-secondary">{profile.targetCategories.join(', ') || 'N/A'}</p>
-          </div>
-          {store && (
-            <div className="pt-2">
-              <span className="bg-neutral-100 px-2 py-1 rounded text-xs font-bold text-secondary">{dict?.adminSellers?.storeKycLabel || 'Store KYC:'} {store.kycStatus}</span>
-            </div>
-          )}
-        </div>
+        )}
 
-        {/* Address Data */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-neutral-200 space-y-4 md:col-span-2">
-          <h2 className="text-lg font-bold text-secondary flex items-center gap-2 border-b border-neutral-100 pb-3">
-            <MapPin className="w-5 h-5 text-primary" /> {dict?.adminSellers?.address || 'Dirección y Operaciones'}
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <p className="text-xs font-bold text-neutral-400 uppercase">{dict?.adminSellers?.country || 'País'}</p>
-              <p className="font-medium text-secondary">{addressData?.countryCode || 'N/A'}</p>
+        {currentTab === 'identity' && (
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-neutral-200 space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-bold text-secondary flex items-center gap-2">
+                <UserIcon className="w-5 h-5 text-primary" /> {dict?.adminSellerReview?.tabs?.identity }
+              </h2>
+              <DataSourceBadge source="User" label="User Auth & progressData" />
             </div>
-            <div>
-              <p className="text-xs font-bold text-neutral-400 uppercase">{dict?.adminSellers?.department || 'Departamento'}</p>
-              <p className="font-medium text-secondary">{addressData?.departmentName || 'N/A'}</p>
-            </div>
-            <div>
-              <p className="text-xs font-bold text-neutral-400 uppercase">{dict?.adminSellers?.city || 'Ciudad'}</p>
-              <p className="font-medium text-secondary">{addressData?.cityNameRaw || 'N/A'}</p>
-            </div>
-            <div className="md:col-span-3">
-              <p className="text-xs font-bold text-neutral-400 uppercase">{dict?.adminSellers?.addressLine || 'Línea de Dirección'}</p>
-              <p className="font-medium text-secondary">{addressData?.addressLine1 || 'N/A'}</p>
-            </div>
-            <div>
-              <p className="text-xs font-bold text-neutral-400 uppercase">{dict?.adminSellers?.source || 'Fuente'}</p>
-              <span className="text-xs font-mono bg-neutral-100 px-2 py-1 rounded">{addressData?.citySource || 'N/A'}</span>
-            </div>
-            <div>
-              <p className="text-xs font-bold text-neutral-400 uppercase">{dict?.adminSellers?.delivery || 'Delivery'}</p>
-              <span className="text-xs font-mono bg-neutral-100 px-2 py-1 rounded">{addressData?.deliveryEligibility || 'N/A'}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Events Timeline */}
-      <div className="bg-white p-6 rounded-2xl shadow-sm border border-neutral-200">
-        <h2 className="text-lg font-bold text-secondary flex items-center gap-2 border-b border-neutral-100 pb-3 mb-4">
-          <FileText className="w-5 h-5 text-primary" /> {dict?.adminSellers?.events || 'Eventos y Registro'}
-        </h2>
-        <div className="space-y-4">
-          {events.length === 0 ? (
-            <p className="text-sm text-neutral">{dict?.adminSellers?.noEvents || 'No hay eventos registrados.'}</p>
-          ) : (
-            events.map(ev => {
-              const p = ev.payload as any;
-              return (
-                <div key={ev.id} className="flex gap-4 text-sm">
-                  <div className="w-32 flex-shrink-0 text-neutral-400 font-mono text-xs">
-                    {ev.createdAt.toLocaleString()}
-                  </div>
-                  <div>
-                    <span className="font-bold text-secondary mr-2">{ev.eventType}</span>
-                    {p?.reason && <p className="text-red-600 mt-1">{dict?.adminSellers?.reasonLabel || 'Motivo:'} {p.reason}</p>}
-                    {p?.adminEmail && <p className="text-neutral-500 text-xs mt-1">{dict?.adminSellers?.byLabel || 'Por:'} {p.adminEmail}</p>}
-                  </div>
-                </div>
-              );
-            })
-          )}
-        </div>
-      </div>
-
-      {/* Admin Actions */}
-      {isPending && (
-        <div className="bg-neutral-50 p-6 rounded-2xl border border-neutral-200">
-          <h3 className="font-bold text-secondary mb-4">{dict?.adminSellers?.operativeActions || 'Acciones Operativas'}</h3>
-          <div className="flex flex-col md:flex-row gap-4">
             
-            <form action={approveSellerAction} className="flex-1">
-              <input type="hidden" name="sellerId" value={profile.id} />
-              <button type="submit" className="w-full bg-green-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-green-700 transition">
-                <CheckCircle className="w-5 h-5"/> {dict?.adminSellers?.btnApprove || 'Aprobar Vendedor'}
-              </button>
-            </form>
-
-            <form action={rejectSellerAction} className="flex-1 flex flex-col gap-2">
-              <input type="hidden" name="sellerId" value={profile.id} />
-              <input type="text" name="reason" required placeholder={dict?.adminSellers?.rejectReason || 'Motivo de rechazo...'} className="w-full px-4 py-2 rounded-xl border border-neutral-300 focus:outline-none focus:border-red-500" />
-              <button type="submit" className="w-full bg-red-100 text-red-700 font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-red-200 transition">
-                <XCircle className="w-5 h-5"/> {dict?.adminSellers?.btnReject || 'Rechazar'}
-              </button>
-            </form>
-
-            <form action={requestSellerInfoAction} className="flex-1 flex flex-col gap-2">
-              <input type="hidden" name="sellerId" value={profile.id} />
-              <input type="text" name="reason" required placeholder={dict?.adminSellers?.infoReason || 'Información Solicitada...'} className="w-full px-4 py-2 rounded-xl border border-neutral-300 focus:outline-none focus:border-orange-500" />
-              <button type="submit" className="w-full bg-orange-100 text-orange-700 font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-orange-200 transition">
-                <AlertCircle className="w-5 h-5"/> {dict?.adminSellers?.btnRequestInfo || 'Pedir más información'}
-              </button>
-            </form>
-
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <p className="text-xs font-bold text-neutral-400 uppercase">{dict?.adminSellers?.emailLabel }</p>
+                <p className="font-medium text-secondary">{profile.User?.email }</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-neutral-400 uppercase">{dict?.adminSellers?.phone }</p>
+                <p className="font-medium text-secondary">{profile.User?.phone }</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-neutral-400 uppercase">{dict?.adminSellers?.dobLabel }</p>
+                <p className="font-medium text-secondary">{personalData?.dateOfBirth }</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-neutral-400 uppercase">{dict?.adminSellers?.genderLabel }</p>
+                <p className="font-medium text-secondary">{personalData?.gender }</p>
+              </div>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
+        {currentTab === 'business' && (
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-neutral-200 space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-bold text-secondary flex items-center gap-2">
+                <Store className="w-5 h-5 text-primary" /> {dict?.adminSellerReview?.tabs?.business }
+              </h2>
+              <DataSourceBadge source="Store" label="Store DB" />
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <p className="text-xs font-bold text-neutral-400 uppercase">{dict?.adminSellers?.commerceName }</p>
+                <p className="font-medium text-secondary">{profile.commercialName || store?.name }</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-neutral-400 uppercase">{dict?.adminSellers?.businessType }</p>
+                <p className="font-medium text-secondary">{profile.businessType }</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-neutral-400 uppercase">{dict?.adminSellers?.storeKycLabel }</p>
+                <p className="font-medium text-secondary">{store?.kycStatus }</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {currentTab === 'categories' && (
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-neutral-200 space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-bold text-secondary flex items-center gap-2">
+                <List className="w-5 h-5 text-primary" /> {dict?.adminSellerReview?.tabs?.categories }
+              </h2>
+              <DataSourceBadge source="SellerProfile" label="SellerProfile targetCategories" />
+            </div>
+
+            <div className="bg-orange-50 text-orange-800 text-sm p-4 rounded-xl border border-orange-200 font-medium">
+              {dict?.adminSellerReview?.warnings?.categoriesUnverified }
+            </div>
+            
+            <div className="flex flex-wrap gap-2">
+              {profile.targetCategories && profile.targetCategories.length > 0 ? (
+                profile.targetCategories.map((cat, i) => (
+                  <span key={i} className="bg-neutral-100 border border-neutral-200 text-secondary px-3 py-1.5 rounded-lg text-sm font-medium">
+                    {cat}
+                  </span>
+                ))
+              ) : (
+                <p className="text-sm text-neutral-500 italic">{dict?.adminSellerReview?.emptyStates?.noCategories }</p>
+              )}
+            </div>
+          </div>
+        )}
+
+        {currentTab === 'address' && (
+          <AddressOperativeCard addressData={addressData} dict={dict} />
+        )}
+
+        {currentTab === 'kyc' && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-bold text-secondary flex items-center gap-2">
+                <Store className="w-5 h-5 text-primary" /> {dict?.adminSellerReview?.tabs?.kyc }
+              </h2>
+              <DataSourceBadge source="System" label="Pending Infrastructure" />
+            </div>
+            <HonestPlaceholder 
+              title={dict?.adminSellerReview?.placeholders?.kycTitle }
+              description={dict?.adminSellerReview?.placeholders?.kycDesc }
+            />
+          </div>
+        )}
+
+        {currentTab === 'crm' && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-bold text-secondary flex items-center gap-2">
+                <Clock className="w-5 h-5 text-primary" /> {dict?.adminSellerReview?.tabs?.crm }
+              </h2>
+              <DataSourceBadge source="System" label="Pending Module" />
+            </div>
+            <HonestPlaceholder 
+              title={dict?.adminSellerReview?.placeholders?.crmTitle }
+              description={dict?.adminSellerReview?.placeholders?.crmDesc }
+            />
+          </div>
+        )}
+
+        {currentTab === 'audit' && (
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-neutral-200 space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-bold text-secondary flex items-center gap-2">
+                <Clock className="w-5 h-5 text-primary" /> {dict?.adminSellerReview?.tabs?.audit }
+              </h2>
+              <DataSourceBadge source="AccountEvent" label="System Audit" />
+            </div>
+            
+            <div className="space-y-4">
+              {events.length === 0 ? (
+                <p className="text-sm text-neutral">{dict?.adminSellers?.noEvents }</p>
+              ) : (
+                events.map(ev => {
+                  const p = ev.payload as any;
+                  return (
+                    <div key={ev.id} className="flex gap-4 text-sm bg-neutral-50 p-4 rounded-xl border border-neutral-100">
+                      <div className="w-32 flex-shrink-0 text-neutral-500 font-mono text-xs">
+                        {ev.createdAt.toLocaleString()}
+                      </div>
+                      <div>
+                        <span className="font-bold text-secondary mr-2">{ev.eventType}</span>
+                        {p?.reason && <p className="text-red-600 mt-1">{dict?.adminSellers?.reasonLabel } {p.reason}</p>}
+                        {p?.adminEmail && <p className="text-neutral-500 text-xs mt-1">{dict?.adminSellers?.byLabel } {p.adminEmail}</p>}
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </div>
+        )}
+
+      </div>
     </div>
   );
 }

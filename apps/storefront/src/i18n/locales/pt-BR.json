@@ -801,5 +801,77 @@
     "genderLabel": "Gênero:",
     "storeKycLabel": "Store KYC:",
     "statusLabel": "Status:"
+  },
+  "adminSellerReview": {
+    "title": "Centro de Operações Business 360",
+    "tabs": {
+      "summary": "Resumo",
+      "identity": "Identidade",
+      "business": "Negócio",
+      "categories": "Categorias",
+      "address": "Endereço Físico",
+      "kyc": "KYC e Documentos",
+      "crm": "Histórico e Notas",
+      "audit": "Auditoria"
+    },
+    "table": {
+      "colDocs": "Documentos"
+    },
+    "buttons": {
+      "audit": "Auditar"
+    },
+    "checklist": {
+      "title": "Checklist de Revisão",
+      "userCheck": "Usuário Registrado",
+      "profileCheck": "Perfil de Negócio Existe",
+      "storeCheck": "Loja Associada",
+      "onboardingCheck": "Onboarding Concluído",
+      "addressCheck": "Endereço Declarado",
+      "categoriesCheck": "Categorias Declaradas",
+      "eventCheck": "Histórico do Sistema",
+      "kycCheck": "Revisão Documental KYC"
+    },
+    "placeholders": {
+      "kycTitle": "Módulo de Documentos KYC Pendente",
+      "kycDesc": "Os documentos formais serão conectados quando o SellerComplianceRecord / AccountVerification e o armazenamento privado existirem.",
+      "kycPendingModule": "Módulo Pendente",
+      "crmTitle": "Módulo CRM / AZHON Care Pendiente",
+      "crmDesc": "Notas internas e casos AZHON Care serão conectados quando o módulo CRM/Care existir."
+    },
+    "warnings": {
+      "addressGpsUnverified": "O endereço foi declarado pelo vendedor. O GPS ou a cidade registrada não verificam a cobertura nem habilitam a entrega na porta. Requer futura revisão operacional.",
+      "categoriesUnverified": "Categorias autodeclaradas. Não garantem habilitação automática. Autorização no catálogo pendente do módulo Category DB."
+    },
+    "decisionPanel": {
+      "title": "Decisão Operacional",
+      "actionWarning": "A verificação documental KYC ainda não está conectada. Antes de aprovar um vendedor real, a AZHON deve confirmar a revisão operacional exigida pela política atual."
+    },
+    "address": {
+      "addressLine": "Linha de Endereço",
+      "reference": "Referência",
+      "cityNameRaw": "Cidade (Declarada)",
+      "cityCode": "Código da Cidade",
+      "departmentCode": "Código do Departamento",
+      "citySource": "Fonte da Cidade",
+      "geoStatus": "Status Geográfico",
+      "coverageStatus": "Status de Cobertura",
+      "deliveryEligibility": "Elegibilidade de Entrega",
+      "addressSource": "Fonte do Endereço",
+      "status": "Status",
+      "coordinates": "Coordenadas (Lat, Lng)",
+      "gpsRequiredLater": "GPS Necessário",
+      "isPinManual": "Pin Manual"
+    },
+    "sources": {
+      "sourceUser": "Usuário Auth",
+      "sourceProfile": "Perfil DB",
+      "sourceStore": "Loja DB",
+      "sourceInput": "Entrada do Usuário",
+      "sourceSystem": "Sistema"
+    },
+    "emptyStates": {
+      "noAddress": "Nenhum dado de endereço registrado.",
+      "noCategories": "Nenhuma categoria registrada."
+    }
   }
 }

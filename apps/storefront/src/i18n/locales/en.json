@@ -811,5 +811,77 @@
     "genderLabel": "Gender:",
     "storeKycLabel": "Store KYC:",
     "statusLabel": "Status:"
+  },
+  "adminSellerReview": {
+    "title": "Business 360 Operations Center",
+    "tabs": {
+      "summary": "Summary",
+      "identity": "Identity",
+      "business": "Business",
+      "categories": "Categories",
+      "address": "Physical Address",
+      "kyc": "KYC & Documents",
+      "crm": "History & Notes",
+      "audit": "Audit"
+    },
+    "table": {
+      "colDocs": "Documents"
+    },
+    "buttons": {
+      "audit": "Audit"
+    },
+    "checklist": {
+      "title": "Review Checklist",
+      "userCheck": "Registered User",
+      "profileCheck": "Business Profile Exists",
+      "storeCheck": "Associated Store",
+      "onboardingCheck": "Onboarding Completed",
+      "addressCheck": "Address Declared",
+      "categoriesCheck": "Categories Declared",
+      "eventCheck": "System History",
+      "kycCheck": "KYC Document Review"
+    },
+    "placeholders": {
+      "kycTitle": "Pending KYC Document Module",
+      "kycDesc": "Formal documents will be connected when SellerComplianceRecord / AccountVerification and private storage are implemented.",
+      "kycPendingModule": "Pending Module",
+      "crmTitle": "Pending CRM / AZHON Care Module",
+      "crmDesc": "Internal notes and AZHON Care cases will be connected when the CRM/Care module exists."
+    },
+    "warnings": {
+      "addressGpsUnverified": "The address was declared by the seller. GPS or registered city do not verify coverage or enable door delivery. Requires future operational review.",
+      "categoriesUnverified": "Self-declared categories. Does not guarantee automatic enablement. Catalog authorization pending Category DB module."
+    },
+    "decisionPanel": {
+      "title": "Operative Decision",
+      "actionWarning": "KYC documentary verification is not yet connected. Before approving a real seller, AZHON must confirm the operational review required by the current policy."
+    },
+    "address": {
+      "addressLine": "Address Line",
+      "reference": "Reference",
+      "cityNameRaw": "City (Declared)",
+      "cityCode": "City Code",
+      "departmentCode": "Department Code",
+      "citySource": "City Source",
+      "geoStatus": "Geo Status",
+      "coverageStatus": "Coverage Status",
+      "deliveryEligibility": "Delivery Eligibility",
+      "addressSource": "Address Source",
+      "status": "Status",
+      "coordinates": "Coordinates (Lat, Lng)",
+      "gpsRequiredLater": "GPS Required Later",
+      "isPinManual": "Manual Pin"
+    },
+    "sources": {
+      "sourceUser": "Auth User",
+      "sourceProfile": "DB Profile",
+      "sourceStore": "DB Store",
+      "sourceInput": "User Input",
+      "sourceSystem": "System"
+    },
+    "emptyStates": {
+      "noAddress": "No address data registered.",
+      "noCategories": "No categories registered."
+    }
   }
 }
